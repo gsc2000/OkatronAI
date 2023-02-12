@@ -13,8 +13,10 @@ class UserReq(enum.Enum):
     STOP: str = "Stop"
 
 class UserIO():
+    """ユーザリクエストを処理"""
     def __init__(self) -> None:
         pass
 
-    async def recvMesse(self):
+    def recvMesse(self):
+        """メッセージの取得"""
         pass

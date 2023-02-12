@@ -3,7 +3,8 @@
 import os
 import sys
 
-import asyncio
+import cv2
+import numpy as np
 
 import DataBaseapi as db
 from UserIO import UserIO, UserReq
@@ -12,31 +13,35 @@ from Captor.WebCamera import WebCamera
 from Inferencer.YOLOv5Detector import YOLOv5Detector
 
 class OkatronServer():
-    """アプリ本体"""
+    """アプリ本体
+    Serverを介してGUIから届くユーザリクエストの処理や
+    内部状態に応じて行う処理を変更
+    """
     def __init__(self, state) -> None:
         self.state: OkatronState = state
 
         self.show_img = None
-        self.setting()
 
-    def setting(self):
-        self.user_io = UserIO()
-        self.captor = WebCamera(self.state.camera)
-        self.inferencer = YOLOv5Detector(self.state.yolov5)
+        # テスト
+        cv2.namedWindow("Test", cv2.WINDOW_NORMAL)
 
-    def run(self):
+    def run(self) -> None:
+        """メインループ"""
         while True:
             if self.state.status == Status.IDLE:
                 # 画像取得
-                self.captor_work()
+                img = self.captor_work()
             elif self.state.status == Status.WORKING:
                 # AI処理
                 img = self.captor_work()
-                det = self.inferencer_work(img)
+                det, img = self.inferencer_work(img)
+                res = self.motorcontroller_work(det)
 
+            cv2.imshow("Test", img)
+            cv2.waitKey(1)
             self.updateState()
 
-    def updateState(self):
+    def updateState(self) -> None:
         """アプリの状態を更新する"""
         now_status = self.state.status
 
@@ -52,23 +57,23 @@ class OkatronServer():
         if now_status != self.state.status:
             print("State Change:\t[ {} -> {} ]".format(now_status.name, self.state.status.name))
 
-    def user_io_work(self):
+    def user_io_work(self) -> None:
         """ユーザからのリクエストを処理する"""
-        msg = self.user_io.recvMesse()
+        msg = self.state.user_io.recvMesse()
         return msg
 
-    def captor_work(self):
+    def captor_work(self) -> None:
         """画像を取得する"""
-        img = self.captor.capture()
-        print(img.shape)
+        img = self.state.captor.capture()
+        # print(img.shape)
         return img
 
-    def inferencer_work(self, img):
+    def inferencer_work(self, img) -> np.ndarray:
         """AI処理する"""
-        # det = self.inferencer.detect(img)
-        # return det
-        pass
+        det = self.state.yolov5.detect(img)
+        img = self.state.yolov5.showResult(img, det)
+        return det, img
 
-    def motorcontroller_work(self, det):
+    def motorcontroller_work(self, det) -> bool:
         """モータを制御する"""
-        pass
+        return True

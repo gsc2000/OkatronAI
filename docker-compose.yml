@@ -1,0 +1,10 @@
+version: '3'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
+    network_mode: "host"
+    volumes:
+      - ${PWD}/server:/server
+    container_name: 'OkatronServer'

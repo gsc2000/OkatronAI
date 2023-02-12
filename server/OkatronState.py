@@ -4,6 +4,9 @@ import enum
 
 from UserIO import UserIO
 import DataBaseapi as db
+from Captor.WebCamera import WebCamera
+from Inferencer.YOLOv5Detector import YOLOv5Detector
+from MotorController.Controller import Controller
 
 class Mode(enum.Enum):
     """OkatronServerのモード"""
@@ -18,21 +21,33 @@ class Status(enum.Enum):
     WORKING: str = "Working"
 
 class OkatronState():
-    """Okatronの内部状態"""
+    """Okatronの内部状態
+    Okatronで使用する機能はここで制御する
+    """
 
     def __init__(self, config_path) -> None:
         self._mode: Mode = Mode.NONE
         self._status: Status = Status.WORKING
 
-        self.setting(config_path)
+        config = db.readConfig(config_path)
 
-    def setting(self, path):
-        config = db.readConfig(path)
+        self._user_io = UserIO()
+        self._captor = WebCamera(config["camera"])
+        self._yolov5 = YOLOv5Detector(config["yolov5"])
+        self._cont = Controller()
 
-        self._camera = config["camera"]
-        self._yolov5 = config["yolov5"]
-        self._yolov5["image"] = (config["yolov5"]["image"]["width"], config["yolov5"]["image"]["height"])
+    def resetInferencerModel(self, weight: str) -> None:
+        """AIモデルをリセット
+        Args:
+            weight: モデルの重み
+        """
+        self._yolov5.setupModel(weight)
 
+    def resetInferencerInfo(self, info: dict) -> None:
+        """
+        Args:
+            info: YOLOの推論設定情報"""
+        self._yolov5.setupInfo(**info)
 
     @property
     def mode(self):
@@ -45,8 +60,11 @@ class OkatronState():
         self._status = status
 
     @property
-    def camera(self):
-        return self._camera
+    def user_io(self):
+        return self._user_io
+    @property
+    def captor(self):
+        return self._captor
     @property
     def yolov5(self):
         return self._yolov5
