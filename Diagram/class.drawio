@@ -1,0 +1,90 @@
+<mxfile host="65bd71144e">
+    <diagram id="X56hWuXkz_R3zDNtnNjE" name="ページ1">
+        <mxGraphModel dx="1066" dy="619" grid="1" gridSize="6" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="フロントエンド&lt;br&gt;HTML" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="72" y="48" width="120" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="FastAPI" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="72" y="192" width="120" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="バックエンド&lt;br&gt;OkatronServer" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="72" y="336" width="120" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="・ユーザが見るところ&lt;br&gt;・ユーザからのリクエスト受付け" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="216" y="48" width="204" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="・フロントエンドのリクエスト処理&lt;br&gt;・バックエンドのリクエスト処理" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="216" y="192" width="216" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="・アプリの処理&lt;br&gt;　・撮影&lt;br&gt;　・AI処理&lt;br&gt;　・モータ制御" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="216" y="336" width="108" height="78" as="geometry"/>
+                </mxCell>
+                <mxCell id="Wj6vKax3r_KFzhZyF8nQ-7" value="DataBaseAPI&lt;br&gt;ファイル操作する" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="408" y="336" width="120" height="72" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="zQk6bGxmD2O_SKdqkDCD" name="ページ2">
+        <mxGraphModel dx="1421" dy="825" grid="1" gridSize="6" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="VoaXFm8t6S9eDuqUZ-T1-1" value="OkatronServer" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="24" width="120" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="BVa3IJ_TPYBYKUTRfkue-1" value="Captor&lt;br&gt;画像取得する" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="360" width="120" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="BVa3IJ_TPYBYKUTRfkue-2" value="Inferencer&lt;br&gt;AI処理する" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="480" width="120" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="BVa3IJ_TPYBYKUTRfkue-3" value="Controller&lt;br&gt;モータ制御する" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="600" width="120" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3HYLjl3j5u4OknyyOl0-1" value="DataBaseAPI&lt;br&gt;ファイル操作する" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="426" y="360" width="120" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3HYLjl3j5u4OknyyOl0-2" value="" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="240" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3HYLjl3j5u4OknyyOl0-3" value="Start IO" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="144" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="v3HYLjl3j5u4OknyyOl0-4" value="" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=-180;" vertex="1" parent="1">
+                    <mxGeometry x="234" y="732" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="-4FnLEYG4q4dIlAEOyTR-3" value="OkatronSatus" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="642" y="24" width="120" height="72" as="geometry"/>
+                </mxCell>
+                <mxCell id="-4FnLEYG4q4dIlAEOyTR-5" value="OkatronMode" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="648" y="150" width="140" height="104" as="geometry"/>
+                </mxCell>
+                <mxCell id="-4FnLEYG4q4dIlAEOyTR-6" value="OperationMode" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="-4FnLEYG4q4dIlAEOyTR-5">
+                    <mxGeometry y="26" width="140" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="-4FnLEYG4q4dIlAEOyTR-7" value="SettingMode" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="-4FnLEYG4q4dIlAEOyTR-5">
+                    <mxGeometry y="52" width="140" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="-4FnLEYG4q4dIlAEOyTR-8" value="Item 3" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="-4FnLEYG4q4dIlAEOyTR-5">
+                    <mxGeometry y="78" width="140" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="-4FnLEYG4q4dIlAEOyTR-9" value="OkatronState" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="840" y="144" width="140" height="104" as="geometry"/>
+                </mxCell>
+                <mxCell id="-4FnLEYG4q4dIlAEOyTR-10" value="Idle" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="-4FnLEYG4q4dIlAEOyTR-9">
+                    <mxGeometry y="26" width="140" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="-4FnLEYG4q4dIlAEOyTR-11" value="Working" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="-4FnLEYG4q4dIlAEOyTR-9">
+                    <mxGeometry y="52" width="140" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="-4FnLEYG4q4dIlAEOyTR-12" value="Item 3" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="-4FnLEYG4q4dIlAEOyTR-9">
+                    <mxGeometry y="78" width="140" height="26" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
