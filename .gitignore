@@ -17,4 +17,7 @@ notebook/
 # Workspace
 .Workspace
 
+# yolo weight
+server/inferencer/yolov5_module/weight
+
 
