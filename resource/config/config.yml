@@ -1,0 +1,14 @@
+camera:
+  id: 0
+  width: 320
+  height: 240
+  fps: 30
+
+yolov5:
+  weight: yolov5n.pt
+  image:
+    width: 320
+    height: 320
+  conf: 0.45
+  iou: 0.45
+  det_class: 0
