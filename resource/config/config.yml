@@ -1,3 +1,6 @@
+base:
+  mode: "Auto"
+
 camera:
   id: 0
   width: 320

@@ -3,6 +3,7 @@
 import os
 import sys
 
+import time
 import cv2
 import numpy as np
 
@@ -14,7 +15,7 @@ from Inferencer.YOLOv5Detector import YOLOv5Detector
 
 class OkatronServer():
     """アプリ本体
-    Serverを介してGUIから届くユーザリクエストの処理や
+    GUIから届くユーザリクエストの処理や
     内部状態に応じて行う処理を変更
     """
     def __init__(self, state) -> None:
@@ -28,26 +29,45 @@ class OkatronServer():
     def run(self) -> None:
         """メインループ"""
         while True:
-            if self.state.status == Status.IDLE:
-                # 画像取得
-                img = self.captor_work()
-            elif self.state.status == Status.WORKING:
-                # AI処理
-                img = self.captor_work()
-                det, img = self.inferencer_work(img)
-                res = self.motorcontroller_work(det)
+            if self.state.mode == Mode.AUTO:
+                self.autoMode()
+            elif self.state.mode == Mode.MANUAL:
+                self.manualMode()
+            elif self.state.mode == Mode.PROGRAM:
+                self.programMode()
 
-            cv2.imshow("Test", img)
-            cv2.waitKey(1)
             self.updateState()
+
+    def autoMode(self):
+        """自動追従モードの動作"""
+        if self.state.status == Status.IDLE:
+            # 画像取得
+            img = self.captorWork()
+            self.showImg(img)
+        elif self.state.status == Status.WORKING:
+            # AI処理
+            img = self.captorWork()
+            det, img = self.inferencerWork(img)
+            res = self.motorcontroller_work(det)
+
+            self.showImg(img)
+
+    def manualMode(self):
+        """マニュアルモードの動作"""
+        pass
+
+    def programMode(self):
+        """プログラムモードの動作"""
+        pass
 
     def updateState(self) -> None:
         """アプリの状態を更新する"""
         now_status = self.state.status
 
-        msg = self.user_io_work()
-        if msg == UserReq.START:
-            self.state.status(Status.WORKING)
+        # time.sleep(1)
+        msg = self.userioWork()
+        if msg == UserReq.START.value:
+            self.state.status = Status.WORKING
 
         if now_status == Status.IDLE:
             pass
@@ -57,18 +77,31 @@ class OkatronServer():
         if now_status != self.state.status:
             print("State Change:\t[ {} -> {} ]".format(now_status.name, self.state.status.name))
 
-    def user_io_work(self) -> None:
+    def showImg(self, img: np.ndarray):
+        """GUIに表示する画像の処理
+        Args:
+            img: 表示したい画像
+        """
+        # テスト用
+        cv2.imshow("Test", img)
+
+    def userioWork(self) -> str:
         """ユーザからのリクエストを処理する"""
-        msg = self.state.user_io.recvMesse()
+        # テスト用
+        msg = None
+        key = cv2.waitKey(1)
+        if key == ord("s"):
+            msg = "Start"
+        # msg = self.state.user_io.recvMesse()
         return msg
 
-    def captor_work(self) -> None:
+    def captorWork(self) -> None:
         """画像を取得する"""
         img = self.state.captor.capture()
         # print(img.shape)
         return img
 
-    def inferencer_work(self, img) -> np.ndarray:
+    def inferencerWork(self, img) -> np.ndarray:
         """AI処理する"""
         det = self.state.yolov5.detect(img)
         img = self.state.yolov5.showResult(img, det)
