@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md-10">
+        <h1>Okatron AI</h1>
+    </div>
+    <!-- <div class="col-md-2">
+        <img src="resource/img/logo_GSMSOKTC.png">
+    </div> -->
+</div>
+
+
+<hr>
+<div class="row">
+    <img src="{{ url_for('video_feed') }}">
+    <!-- jinja2のテンプレートの書き方です。/video_feedを呼び出しています。 -->
+    <div class="col-md-2">
+        <form method="post" action="/">
+            <button type="submit" name="start" value="Start" class="btn btn-primary">START</button>
+            <button type="submit" name="stop" value="Stop" class="btn btn-danger">STOP</button>
+        </form>
+    </div>
+</div>
+
+<p>This is a Okatron AI application powered by <b>GSMS OKTC</b></p>
+
+{% endblock %}

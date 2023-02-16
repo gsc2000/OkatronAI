@@ -20,14 +20,15 @@ def myArgParser() -> argparse.Namespace:
     args = parser.parse_args()
     return args
 
-def main():
+class main_app():
     """アプリを起動する"""
-    args: argparse.Namespace = myArgParser()
+    def __init__(self) -> None:
+        # args: argparse.Namespace = myArgParser()
 
-    state: OkatronState = OkatronState(args.config)
-    server: OkatronServer = OkatronServer(state)
+        state: OkatronState = OkatronState('../resource/config/config.yml')
+        self.server: OkatronServer = OkatronServer(state)
 
-    server.run()
+        self.server.run()
 
 if __name__ == "__main__":
-    main()
+    main_app()

@@ -30,7 +30,7 @@ class OkatronState():
         config = db.readConfig(config_path)
 
         self._mode: Mode = Mode(config["base"]["mode"])
-        self._status: Status = Status.NONE
+        self._status: Status = Status.IDLE
 
         self._user_io = UserIO()
         self._captor = WebCamera(config["camera"])

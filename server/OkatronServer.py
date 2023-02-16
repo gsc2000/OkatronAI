@@ -23,34 +23,41 @@ class OkatronServer():
 
         self.show_img = None
 
+        self.user_io = False
+
         # テスト
-        cv2.namedWindow("Test", cv2.WINDOW_NORMAL)
+        # cv2.namedWindow("Test", cv2.WINDOW_NORMAL)
 
     def run(self) -> None:
         """メインループ"""
-        while True:
-            if self.state.mode == Mode.AUTO:
-                self.autoMode()
-            elif self.state.mode == Mode.MANUAL:
-                self.manualMode()
-            elif self.state.mode == Mode.PROGRAM:
-                self.programMode()
+        # while True:
+        if self.state.mode == Mode.AUTO:
+            img = self.autoMode()
+        elif self.state.mode == Mode.MANUAL:
+            self.manualMode()
+        elif self.state.mode == Mode.PROGRAM:
+            self.programMode()
 
-            self.updateState()
+        self.updateState()
+
+        # self.show_img = img
+        return img
 
     def autoMode(self):
         """自動追従モードの動作"""
+        img = np.zeros((240, 320, 3), dtype="uint8")
         if self.state.status == Status.IDLE:
             # 画像取得
             img = self.captorWork()
-            self.showImg(img)
+            # self.showImg(img)
         elif self.state.status == Status.WORKING:
             # AI処理
             img = self.captorWork()
             det, img = self.inferencerWork(img)
             res = self.motorcontroller_work(det)
 
-            self.showImg(img)
+            # self.showImg(img)
+        return cv2.imencode('.jpg', img)[1].tobytes()
 
     def manualMode(self):
         """マニュアルモードの動作"""
@@ -65,9 +72,12 @@ class OkatronServer():
         now_status = self.state.status
 
         # time.sleep(1)
-        msg = self.userioWork()
-        if msg == UserReq.START.value:
+        # msg = self.userioWork()
+        if self.user_io == UserReq.START:
             self.state.status = Status.WORKING
+            self.user_io = UserReq.NONE
+        elif self.user_io == UserReq.STOP:
+            self.state.status = Status.IDLE
 
         if now_status == Status.IDLE:
             pass
@@ -83,15 +93,16 @@ class OkatronServer():
             img: 表示したい画像
         """
         # テスト用
-        cv2.imshow("Test", img)
+        img = cv2.imencode('.jpg', img)[1].tobytes()
+        return img
 
     def userioWork(self) -> str:
         """ユーザからのリクエストを処理する"""
         # テスト用
         msg = None
-        key = cv2.waitKey(1)
-        if key == ord("s"):
-            msg = "Start"
+        # key = cv2.waitKey(1)
+        # if key == ord("s"):
+        #     msg = "Start"
         # msg = self.state.user_io.recvMesse()
         return msg
 
