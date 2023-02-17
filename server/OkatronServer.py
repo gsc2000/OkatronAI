@@ -53,7 +53,9 @@ class OkatronServer():
         elif self.state.status == Status.WORKING:
             # AI処理
             img = self.captorWork()
+            lap_time = time.time()
             det, img = self.inferencerWork(img)
+            print("YOLO FPS:\t{}".format((time.time()-lap_time+0.0001)**-1))
             res = self.motorcontroller_work(det)
 
             # self.showImg(img)
