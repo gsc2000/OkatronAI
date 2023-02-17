@@ -45,7 +45,7 @@ class OkatronServer():
 
     def autoMode(self):
         """自動追従モードの動作"""
-        img = np.zeros((240, 320, 3), dtype="uint8")
+        # img = np.zeros((240, 320, 3), dtype="uint8")
         if self.state.status == Status.IDLE:
             # 画像取得
             img = self.captorWork()
