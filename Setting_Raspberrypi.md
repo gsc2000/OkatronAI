@@ -79,3 +79,11 @@ pyenv global 3.8.16
 python3.8 -V
 -> Python 3.8.16
 ```
+
+# ポート
+```
+sudo apt install nmap
+```
+```
+sudo apt install ufw -y
+```
