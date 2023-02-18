@@ -6,7 +6,7 @@ from UserIO import UserIO
 import DataBaseapi as db
 from Captor.WebCamera import WebCamera
 from Inferencer.YOLOv5Detector import YOLOv5Detector
-from MotorController.Controller import Controller
+from MotorController.OkatronController import OkatronController
 
 class Mode(enum.Enum):
     """OkatronServerのモード"""
