@@ -69,7 +69,7 @@ class YOLOv5Detector():
             torch.Tensor: 検出結果
         """
         #入力データの前処理
-        img, ratio, padding = self.preprocess(img, False)
+        img, ratio, padding = self.preprocess(img, True)
 
         # Inference
         pred = self.model(img, augment=self.augment, visualize=self.visualize)
