@@ -55,4 +55,4 @@ async def process_image(request: Request, start: str = Form(default=''), stop: s
         okatron.server.user_io = UserReq.STOP
     return templates.TemplateResponse("index.html", {"request": request})
 
-uvicorn.run(app=app, port=8000)
+uvicorn.run(app=app, host="0.0.0.0",port=8000)
