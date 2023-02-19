@@ -43,6 +43,7 @@ class OkatronServer():
         """WebSocketからのリクエストを処理する"""
         while True:
             try:
+                print("BeforeRecv")
                 msg = await sock.recv()
                 msg = json.loads(msg)
                 print("Websocket Recv:\t{}".format(msg))
