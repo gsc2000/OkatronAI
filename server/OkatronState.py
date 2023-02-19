@@ -36,7 +36,7 @@ class OkatronState():
         # self._user_io = UserIO()
         self._captor = WebCamera(config["camera"])
         self._yolov5 = YOLOv5Detector(config["yolov5"])
-        self._cont = Controller()
+        self._cont = OkatronController()
 
         print("OkatronState Setup")
 

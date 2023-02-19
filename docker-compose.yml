@@ -3,8 +3,8 @@ services:
   server:
     build: ./server
     container_name: 'OkatronServer'
-    tty: true
-    stdin_open: true
+    # tty: true
+    # stdin_open: true
     ports:
       - "8050:8050"
     networks:
@@ -14,13 +14,15 @@ services:
       - ./resouece:/resource
       - ./resource/config:/resource/config
       - ./resource/model:/resource/model
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
 
 
   fastapi:
     build: ./FastAPI
     container_name: 'FastAPI'
-    tty: true
-    stdin_open: true
+    # tty: true
+    # stdin_open: true
     ports:
       - "8000:8000"
     networks:

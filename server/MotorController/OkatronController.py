@@ -2,7 +2,9 @@
 import os
 import sys
 
-from BaseController import DCController, ServoController
+import numpy as np
+
+from MotorController.BaseController import DCController, ServoController
 
 class OkatronController():
     """Okatron用モータ制御のクラス"""

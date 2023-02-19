@@ -5,9 +5,19 @@
     <div class="col-md-10">
         <h1>Okatron AI</h1>
     </div>
+
     <div class="col text-end" >
-        <img src="/img/logo.png" style="width:50%;" alt="ロゴ" />
+        <img src="/FastAPI/web/img/logo.png">
+        <!-- <img src="images/image.jpg" > -->
     </div>
+</div>
+
+<div class="cross-layout">
+    <button class="position-top btn cross-key-btn"><span class="top-mark">▲</span></button>
+    <button class="position-left btn cross-key-btn"><span class="left-mark">▲</span></button>
+    <button class="position-center btn cross-key-btn"><span class="center-mark">●</span></button>
+    <button class="position-right btn cross-key-btn"><span class="right-mark">▲</span></button>
+    <button class="position-bottom btn cross-key-btn"><span class="bottom-mark">▲</span></button>
 </div>
 
 <div class="row">
@@ -26,6 +36,27 @@
                 var arrayBufferView = new Uint8Array(event.data);
                 var blob = new Blob([arrayBufferView], { type: "image/jpeg" });
                 image.src = URL.createObjectURL(blob);
+            };
+        </script>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        <canvas id="canvas1" width="640" height="480"></canvas>
+        <script>
+            var canvas1 = document.getElementById('canvas1');
+            var context1 = canvas1.getContext('2d');
+            var ws1 = new WebSocket('ws://localhost:8000/ws/img1');
+            ws1.binaryType = 'arraybuffer';
+            ws1.onmessage = function(event) {
+                var image1 = new Image();
+                image1.onload = function() {
+                    context1.drawImage(this, 0, 0, canvas1.width, canvas1.height);
+                };
+                var arrayBufferView = new Uint8Array(event.data);
+                var blob = new Blob([arrayBufferView], { type: "image/jpeg" });
+                image1.src = URL.createObjectURL(blob);
             };
         </script>
     </div>
