@@ -22,12 +22,13 @@ def myArgParser() -> argparse.Namespace:
 
 def main():
     """アプリを起動する"""
+    print("OkatronAI Boot")
     args: argparse.Namespace = myArgParser()
 
     state: OkatronState = OkatronState(args.config)
     server: OkatronServer = OkatronServer(state)
 
-    server.run()
+    asyncio.run(server.run())
 
 if __name__ == "__main__":
     main()

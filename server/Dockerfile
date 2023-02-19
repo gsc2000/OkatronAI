@@ -3,12 +3,16 @@ FROM python:3.9-buster
 ENV TZ=Asia/Tokyo
 ENV PYTHONUNBUFFERED=1
 
-RUN apt-get update && apt-get upgrade -y
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y libgl1-mesa-dev
 
 RUN pip install --upgrade pip && \
     pip install --upgrade setuptools wheel
 
-# COPY ./requirements.txt ./
+COPY ./ ./server/
+WORKDIR /server
+
 RUN pip install -r requirements.txt
 
-# COPY ./ ./server/
+# CMD "python3 main.py"

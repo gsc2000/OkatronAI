@@ -7,6 +7,15 @@ import cv2
 
 import numpy as np
 
+class NullCamera():
+    """Win上での開発用"""
+    def __init__(self, info:dict) -> None:
+        self.test_img = cv2.imread("Captor/test.jpg")
+
+    def capture(self):
+        """画像取得処理"""
+        return self.test_img
+
 class WebCamera():
     """WebCamera"""
     def __init__(self, info: dict) -> None:

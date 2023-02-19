@@ -7,6 +7,7 @@ services:
     stdin_open: true
     ports:
       - "8050:8050"
+    # network_mode: "host"
     networks:
       okatronAI:
         ipv4_address: 172.18.0.10
@@ -14,6 +15,8 @@ services:
       - ./resouece:/resource
       - ./resource/config:/resource/config
       - ./resource/model:/resource/model
+      - ./server:/server
+    # working_dir: .
 
 
   fastapi:
@@ -23,6 +26,7 @@ services:
     stdin_open: true
     ports:
       - "8000:8000"
+    # network_mode: "host"
     networks:
       okatronAI:
         ipv4_address: 172.18.0.20

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebCam Streaming</title>
+</head>
+<body>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    <script>
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        var ws = new WebSocket('ws://localhost:8000/ws1');
+        ws.binaryType = 'arraybuffer';
+        ws.onmessage = function(event) {
+            var image = new Image();
+            image.onload = function() {
+                context.drawImage(this, 0, 0, canvas.width, canvas.height);
+            };
+            var arrayBufferView = new Uint8Array(event.data);
+            var blob = new Blob([arrayBufferView], { type: "image/jpeg" });
+            image.src = URL.createObjectURL(blob);
+        };
+    </script>
+</body>
+
+<body>
+  <canvas id="canvas" width="640" height="480"></canvas>
+  <script>
+      var canvas = document.getElementById('canvas');
+      var context = canvas.getContext('2d');
+      var ws = new WebSocket('ws://localhost:8000/ws2');
+      ws.binaryType = 'arraybuffer';
+      ws.onmessage = function(event) {
+          var image = new Image();
+          image.onload = function() {
+              context.drawImage(this, 0, 0, canvas.width, canvas.height);
+          };
+          var arrayBufferView = new Uint8Array(event.data);
+          var blob = new Blob([arrayBufferView], { type: "image/jpeg" });
+          image.src = URL.createObjectURL(blob);
+      };
+  </script>
+</body>
+</html>

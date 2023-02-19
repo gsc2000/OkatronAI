@@ -5,6 +5,7 @@ import enum
 from UserIO import UserIO
 import DataBaseapi as db
 from Captor.WebCamera import WebCamera
+# from Captor.WebCamera import NullCamera as WebCamera
 from Inferencer.YOLOv5Detector import YOLOv5Detector
 from MotorController.Controller import Controller
 
@@ -30,12 +31,14 @@ class OkatronState():
         config = db.readConfig(config_path)
 
         self._mode: Mode = Mode(config["base"]["mode"])
-        self._status: Status = Status.NONE
+        self._status: Status = Status.IDLE
 
-        self._user_io = UserIO()
+        # self._user_io = UserIO()
         self._captor = WebCamera(config["camera"])
         self._yolov5 = YOLOv5Detector(config["yolov5"])
         self._cont = Controller()
+
+        print("OkatronState Setup")
 
     def resetInferencerModel(self, weight: str) -> None:
         """AIモデルをリセット
@@ -60,9 +63,9 @@ class OkatronState():
     def status(self, status):
         self._status = status
 
-    @property
-    def user_io(self):
-        return self._user_io
+    # @property
+    # def user_io(self):
+    #     return self._user_io
     @property
     def captor(self):
         return self._captor

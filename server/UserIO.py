@@ -4,8 +4,10 @@ import os
 import sys
 
 import enum
+import json
 
 import asyncio
+import websockets as wb
 
 class UserReq(enum.Enum):
     """ユーザリクエストの種類"""
@@ -14,9 +16,11 @@ class UserReq(enum.Enum):
 
 class UserIO():
     """ユーザリクエストを処理"""
-    def __init__(self) -> None:
-        pass
+    def __init__(self, sock) -> None:
+        self.sock = sock
 
-    def recvMesse(self):
+    async def recvMesse(self):
         """メッセージの取得"""
-        pass
+        command = await self.sock.recv()
+        print(command)
+        return json.loads(command)

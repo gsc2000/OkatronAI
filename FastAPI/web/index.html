@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md-10">
+        <h1>Okatron AI</h1>
+    </div>
+    <div class="col text-end" >
+        <img src="/img/logo.png" style="width:50%;" alt="ロゴ" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10">
+        <canvas id="canvas" width="640" height="480"></canvas>
+        <script>
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            var ws = new WebSocket('ws://localhost:8000/ws/img');
+            ws.binaryType = 'arraybuffer';
+            ws.onmessage = function(event) {
+                var image = new Image();
+                image.onload = function() {
+                    context.drawImage(this, 0, 0, canvas.width, canvas.height);
+                };
+                var arrayBufferView = new Uint8Array(event.data);
+                var blob = new Blob([arrayBufferView], { type: "image/jpeg" });
+                image.src = URL.createObjectURL(blob);
+            };
+        </script>
+    </div>
+</div>
+
+<p>This is a Okatron AI application powered by <b>GSMS OKTC</b></p>
+
+{% endblock %}
