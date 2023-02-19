@@ -15,7 +15,7 @@ services:
       - ./resource/config:/resource/config
       - ./resource/model:/resource/model
     devices:
-      - "/dev/ttyUSB0:/dev/ttyUSB0"
+      - "/dev/video0:/dev/video0"
 
 
   fastapi:
