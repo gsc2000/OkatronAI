@@ -86,7 +86,7 @@ class OkatronServer():
             # AI処理
             img = self.captorWork()
             det, img = self.inferencerWork(img)
-            res = self.motorcontroller_work(det)
+            res = self.motorcontrollerWork(det)
 
         return img
 
@@ -127,6 +127,6 @@ class OkatronServer():
         img = self.state.yolov5.showResult(img, det)
         return det, img
 
-    def motorcontroller_work(self, det) -> bool:
+    def motorcontrollerWork(self, det) -> bool:
         """モータを制御する"""
         return True
