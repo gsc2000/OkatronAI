@@ -16,7 +16,6 @@ services:
       - ./resource/config:/resource/config
       - ./resource/model:/resource/model
       - ./server:/server
-    # working_dir: .
 
 
   fastapi:
