@@ -19,7 +19,8 @@
         <script>
             var canvas = document.getElementById('canvas');
             var context = canvas.getContext('2d');
-            var ws = new WebSocket('ws://localhost:8000/ws/img');
+            var ipAddress = window.location.hostname;
+            var ws = new WebSocket('ws://'+ipAddress+':8000/ws/img1');
             ws.binaryType = 'arraybuffer';
             ws.onmessage = function(event) {
                 var image = new Image();
