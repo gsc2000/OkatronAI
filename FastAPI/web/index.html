@@ -7,21 +7,14 @@
     </div>
 
     <div class="col text-end" >
-        <img src="/FastAPI/web/img/logo.png">
-        <!-- <img src="images/image.jpg" > -->
+        <img src="/img/logo.png" width="40%">
     </div>
 </div>
-
-<div class="cross-layout">
-    <button class="position-top btn cross-key-btn"><span class="top-mark">▲</span></button>
-    <button class="position-left btn cross-key-btn"><span class="left-mark">▲</span></button>
-    <button class="position-center btn cross-key-btn"><span class="center-mark">●</span></button>
-    <button class="position-right btn cross-key-btn"><span class="right-mark">▲</span></button>
-    <button class="position-bottom btn cross-key-btn"><span class="bottom-mark">▲</span></button>
-</div>
+<br>
+<hr>
 
 <div class="row">
-    <div class="col-md-10">
+    <div class="col-md-8">
         <canvas id="canvas" width="640" height="480"></canvas>
         <script>
             var canvas = document.getElementById('canvas');
@@ -39,8 +32,20 @@
             };
         </script>
     </div>
+    <div class="col-md-4">
+        <p class="text-center">移動</p>
+        <!-- <h1 class="text-centor">移動</h1> -->
+        <div class="cross-layout">
+            <button class="position-top btn cross-key-btn"><span class="top-mark">▲</span></button>
+            <button class="position-left btn cross-key-btn"><span class="left-mark">▲</span></button>
+            <!-- <button class="position-center btn cross-key-btn"><span class="center-mark">●</span></button> -->
+            <button class="position-right btn cross-key-btn"><span class="right-mark">▲</span></button>
+            <button class="position-bottom btn cross-key-btn"><span class="bottom-mark">▲</span></button>
+        </div>
+    </div>
 </div>
-
+<br>
+<hr>
 <div class="row">
     <div class="col-md-10">
         <canvas id="canvas1" width="640" height="480"></canvas>
@@ -61,7 +66,8 @@
         </script>
     </div>
 </div>
-
+<br>
+<hr>
 <p>This is a Okatron AI application powered by <b>GSMS OKTC</b></p>
 
 {% endblock %}
