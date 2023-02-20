@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8">
+        <canvas id="canvas" width="640" height="480"></canvas>
+        <script>
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            var ipAddress = window.location.hostname;
+            var ws = new WebSocket('ws://'+ipAddress+':8000/ws/img');
+            ws.binaryType = 'arraybuffer';
+            ws.onmessage = function(event) {
+                var image = new Image();
+                image.onload = function() {
+                    context.drawImage(this, 0, 0, canvas.width, canvas.height);
+                };
+                var arrayBufferView = new Uint8Array(event.data);
+                var blob = new Blob([arrayBufferView], { type: "image/jpeg" });
+                image.src = URL.createObjectURL(blob);
+            };
+        </script>
+    </div>
+    <div class="col-md-4">
+        <p class="text-center">移動</p>
+        <!-- <h1 class="text-centor">移動</h1> -->
+        <div class="cross-layout">
+            <button class="position-top btn cross-key-btn"><span class="top-mark">▲</span></button>
+            <button class="position-left btn cross-key-btn"><span class="left-mark">▲</span></button>
+            <!-- <button class="position-center btn cross-key-btn"><span class="center-mark">●</span></button> -->
+            <button class="position-right btn cross-key-btn"><span class="right-mark">▲</span></button>
+            <button class="position-bottom btn cross-key-btn"><span class="bottom-mark">▲</span></button>
+        </div>
+    </div>
+</div>
+<br>
+<hr>
+<p>This is a Okatron AI application powered by <b>GSMS OKTC</b></p>
+
+{% endblock %}

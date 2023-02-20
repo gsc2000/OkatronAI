@@ -7,34 +7,8 @@ services:
     stdin_open: true
     ports:
       - "8050:8050"
-    # network_mode: "host"
-    networks:
-      okatronAI:
-        ipv4_address: 172.18.0.10
     volumes:
-      - ./resouece:/resource
+      - ./resource:/resource
       - ./resource/config:/resource/config
       - ./resource/model:/resource/model
       - ./server:/server
-
-
-  fastapi:
-    build: ./FastAPI
-    container_name: 'FastAPI'
-    tty: true
-    stdin_open: true
-    ports:
-      - "8000:8000"
-    # network_mode: "host"
-    networks:
-      okatronAI:
-        ipv4_address: 172.18.0.20
-    volumes:
-      - ./FastAPI:/FastAPI
-
-networks:
-  okatronAI:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.18.0.0/16
