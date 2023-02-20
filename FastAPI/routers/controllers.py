@@ -44,21 +44,10 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
         async with websockets.connect('ws://172.18.0.10:8050') as okatron_server_sock:
-                print("img1")
+                # print("img1")
                 await okatron_server_sock.send(json.dumps({"img": "req"}))
                 img = await okatron_server_sock.recv()
-                print("img1 recv")
-                await websocket.send_bytes(img)
-
-@router.websocket("/ws/img1") # 画像のみ要求
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    while True:
-        async with websockets.connect('ws://172.18.0.10:8050') as okatron_server_sock:
-                print("img2")
-                await okatron_server_sock.send(json.dumps({"img": "req"}))
-                img = await okatron_server_sock.recv()
-                print("img2 recv")
+                # print("img1 recv")
                 await websocket.send_bytes(img)
 
 # @router.websocket("/ws/req") # 画像とユーザリクエスト

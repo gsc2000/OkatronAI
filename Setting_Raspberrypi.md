@@ -79,3 +79,15 @@ pyenv global 3.8.16
 python3.8 -V
 -> Python 3.8.16
 ```
+
+# Dockerのインストール
+下記サイトの「convenience script による Docker Engine のインストール」から参照
+```
+https://dev.classmethod.jp/articles/install-docker-for-raspberry-pi-4/
+```
+
+「E: Sub-process /usr/bin/dpkg returned an error code (1)」のような
+エラーが出た場合は下記サイト参照
+```
+https://qiita.com/Crow314/items/794cabf5603cc5938855
+```

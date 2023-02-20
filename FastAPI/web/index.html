@@ -20,7 +20,7 @@
             var canvas = document.getElementById('canvas');
             var context = canvas.getContext('2d');
             var ipAddress = window.location.hostname;
-            var ws = new WebSocket('ws://'+ipAddress+':8000/ws/img1');
+            var ws = new WebSocket('ws://'+ipAddress+':8000/ws/img');
             ws.binaryType = 'arraybuffer';
             ws.onmessage = function(event) {
                 var image = new Image();
@@ -43,28 +43,6 @@
             <button class="position-right btn cross-key-btn"><span class="right-mark">▲</span></button>
             <button class="position-bottom btn cross-key-btn"><span class="bottom-mark">▲</span></button>
         </div>
-    </div>
-</div>
-<br>
-<hr>
-<div class="row">
-    <div class="col-md-10">
-        <canvas id="canvas1" width="640" height="480"></canvas>
-        <script>
-            var canvas1 = document.getElementById('canvas1');
-            var context1 = canvas1.getContext('2d');
-            var ws1 = new WebSocket('ws://localhost:8000/ws/img1');
-            ws1.binaryType = 'arraybuffer';
-            ws1.onmessage = function(event) {
-                var image1 = new Image();
-                image1.onload = function() {
-                    context1.drawImage(this, 0, 0, canvas1.width, canvas1.height);
-                };
-                var arrayBufferView = new Uint8Array(event.data);
-                var blob = new Blob([arrayBufferView], { type: "image/jpeg" });
-                image1.src = URL.createObjectURL(blob);
-            };
-        </script>
     </div>
 </div>
 <br>
