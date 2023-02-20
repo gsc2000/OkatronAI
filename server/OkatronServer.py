@@ -43,26 +43,24 @@ class OkatronServer():
         """WebSocketからのリクエストを処理する"""
         while True:
             try:
-                print("BeforeRecv")
                 msg = await sock.recv()
                 msg = json.loads(msg)
-                print("Websocket Recv:\t{}".format(msg))
                 await self.dispatchMsg(sock, msg)
             except:
                 pass
 
     async def dispatchMsg(self, sock, msg):
-        print("Dispatch Message")
+        # print("Dispatch Message")
         for key in msg.keys():
             if key == "img":
-                print("Recv Img Req")
+                # print("Recv Img Req")
                 await self.proc(sock)
             elif key == "user":
                 await self.updateState()
 
     async def proc(self, sock):
         """"""
-        print("Process")
+        # print("Process")
         if self.state.mode == Mode.AUTO:
             img = self.autoMode()
         elif self.state.mode == Mode.MANUAL:
@@ -72,13 +70,13 @@ class OkatronServer():
 
         img = cv2.imencode('.jpg', img)[1]
         # img_base64 = base64.b64encode(img).decode('utf-8')
-        print("Websocket Send")
+        # print("Websocket Send")
         await sock.send(img.tobytes())
         await asyncio.sleep(0.01)
 
     def autoMode(self):
         """自動追従モードの動作"""
-        print("Auto Mode")
+        # print("Auto Mode")
         if self.state.status == Status.IDLE:
             # 画像取得
             img = self.captorWork()
