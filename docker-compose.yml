@@ -5,32 +5,20 @@ services:
     container_name: 'OkatronServer'
     tty: true
     stdin_open: true
+    # network_mode: "host"
     ports:
-      - "8050:8050"
+      - "8000:8000"
     networks:
       okatronAI:
         ipv4_address: 172.18.0.10
     volumes:
-      - ./resouece:/resource
+      - ./resource:/resource
       - ./resource/config:/resource/config
       - ./resource/model:/resource/model
       - ./server:/server
     devices:
       - "/dev/video0:/dev/video0"
-
-
-  fastapi:
-    build: ./FastAPI
-    container_name: 'FastAPI'
-    tty: true
-    stdin_open: true
-    ports:
-      - "8000:8000"
-    networks:
-      okatronAI:
-        ipv4_address: 172.18.0.20
-    volumes:
-      - ./FastAPI:/FastAPI
+    command: python App.py
 
 networks:
   okatronAI:

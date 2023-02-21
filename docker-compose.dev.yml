@@ -5,11 +5,22 @@ services:
     container_name: 'OkatronServer'
     tty: true
     stdin_open: true
-    network_mode: "host"
+    # network_mode: "host"
     ports:
       - "8000:8000"
+    networks:
+      okatronAI:
+        ipv4_address: 172.18.0.10
     volumes:
       - ./resource:/resource
       - ./resource/config:/resource/config
       - ./resource/model:/resource/model
       - ./server:/server
+    # command: python App.py
+
+networks:
+  okatronAI:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
