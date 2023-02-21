@@ -21,6 +21,29 @@
                 <button type="button" class="btn btn-info btn-lg {% if btn3_class_active %}active{% endif %}" onclick="window.location.href='/auto/class/3'">Cell phone</button>
             </div>
         </div>
+        <div class="d-flex flex-column">
+            <p><b>IOU</b></p>
+            <input id="inputNumber" type="text" name="number">
+            <button id="submitButton" type="button" class="btn btn-info btn-lg">SET</button>
+        </div>
+        <script>
+            $(document).ready(function() {
+            $("#submitButton").click(function() {
+                var number = $("#inputNumber").val();  // テキストボックスから値を取得
+                $.ajax({
+                type: "POST",  // POSTリクエストを送信
+                url: "/auto/iou",  // リクエスト先のURL
+                data: {number: number},  // テキストボックスから取得した値をリクエストに含める
+                // success: function(result) {
+                //     console.log(result);  // リクエストが成功した場合に実行される処理
+                // },
+                // error: function(jqXHR, textStatus, errorThrown) {
+                //     console.log(textStatus, errorThrown);  // リクエストが失敗した場合に実行される処理
+                // }
+                });
+            });
+            });
+        </script>
     </div>
 </div>
 

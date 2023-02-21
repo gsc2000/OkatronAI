@@ -29,9 +29,6 @@ class OkatronServer():
 
         # self.show_img = None
 
-        # テスト
-        # cv2.namedWindow("Test", cv2.WINDOW_NORMAL)
-
     def run(self) -> None:
         """メインループ"""
         if self.state.mode == Mode.AUTO:
