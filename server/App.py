@@ -89,6 +89,12 @@ async def toggle_button(request: Request, button_id: int):
                                        "btn2_class_active": button2_active,
                                        "btn3_class_active": button3_active})
 
+# @app.get("/auto/iou")
+# async def iou(request: Request):
+#     iou = request.form['iou']  # テキストボックスから取得した値を変数に格納
+#     state.yolo_info["iou"] = iou
+#     state.resetInferencerInfo()
+
 async def gen():
     while True:
         frame = server.run()
