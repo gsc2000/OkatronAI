@@ -30,10 +30,28 @@ class DCController():
 
     def left(self):
         """左に向く"""
+        print("Left")
+        stop_motor()
+        GPIO.output( MOTOR_L1, GPIO.HIGH )
+        GPIO.output( MOTOR_L2, GPIO.LOW )
+        GPIO.output( MOTOR_R1, GPIO.HIGH )
+        GPIO.output( MOTOR_R2, GPIO.LOW )
+        
+        pi.softPwmWrite(OUTPUT_PIN_L, 30)
+        pi.softPwmWrite(OUTPUT_PIN_R, 15)
         pass
 
     def right(self):
         """右に向く"""
+        print("Right")
+        stop_motor()
+        GPIO.output( MOTOR_L1, GPIO.HIGH )
+        GPIO.output( MOTOR_L2, GPIO.LOW )
+        GPIO.output( MOTOR_R1, GPIO.HIGH )
+        GPIO.output( MOTOR_R2, GPIO.LOW )
+        
+        pi.softPwmWrite(OUTPUT_PIN_L, 15)
+        pi.softPwmWrite(OUTPUT_PIN_R, 30)
         pass
 
     def up(self):
@@ -46,10 +64,27 @@ class DCController():
 
     def forward(self):
         """前進する"""
+        print("Foward")
+        stop_motor()
+        GPIO.output( MOTOR_L1, GPIO.HIGH)
+        GPIO.output( MOTOR_L2, GPIO.LOW )
+        GPIO.output( MOTOR_R1, GPIO.HIGH )
+        GPIO.output( MOTOR_R2, GPIO.LOW )
+        
+        pi.softPwmWrite(OUTPUT_PIN_L, 5)
+        pi.softPwmWrite(OUTPUT_PIN_R, 5)
         pass
 
     def back(self):
         """後進する"""
+        stop_motor()
+        GPIO.output( MOTOR_L1, GPIO.LOW )
+        GPIO.output( MOTOR_L2, GPIO.HIGH )
+        GPIO.output( MOTOR_R1, GPIO.LOW )
+        GPIO.output( MOTOR_R2, GPIO.HIGH )
+        
+        pi.softPwmWrite(OUTPUT_PIN_L, 15)
+        pi.softPwmWrite(OUTPUT_PIN_R, 15)
         pass
 
     def stop(self):
