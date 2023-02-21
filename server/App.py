@@ -49,9 +49,8 @@ async def toggle_button(request: Request, button_id: int):
         state.mode = Mode.AUTO
         return templates.TemplateResponse("auto.html",
                                           {"request": request,
-                                           "button2_active": True})
+                                           "btn1_mode_active": True})
     elif button_id == 2:
-        button2_active = True
         return templates.TemplateResponse("index.html",
                                           {"request": request})
 
@@ -65,10 +64,30 @@ async def toggle_button(request: Request, button_id: int):
     elif button_id == 2:
         button2_active = True
         state.status = Status.IDLE
-    return templates.TemplateResponse("index.html",
+    return templates.TemplateResponse("auto.html",
                                       {"request": request,
-                                       "button1_active": button1_active,
-                                       "button2_active": button2_active})
+                                       "btn1_ai_active": button1_active,
+                                       "btn2_ai_active": button2_active})
+@app.get("/auto/class/{button_id}")
+async def toggle_button(request: Request, button_id: int):
+    button1_active = False
+    button2_active = False
+    button3_active = False
+    if button_id == 1:
+        button1_active = True
+        state.yolo_info["det_class"] = 0
+    elif button_id == 2:
+        button2_active = True
+        state.yolo_info["det_class"] = 16
+    elif button_id == 3:
+        button3_active = True
+        state.yolo_info["det_class"] = 67
+    state.resetInferencerInfo()
+    return templates.TemplateResponse("auto.html",
+                                      {"request": request,
+                                       "btn1_class_active": button1_active,
+                                       "btn2_class_active": button2_active,
+                                       "btn3_class_active": button3_active})
 
 async def gen():
     while True:
@@ -99,5 +118,5 @@ print("OkatronAI Boot")
 args: argparse.Namespace = myArgParser()
 state: OkatronState = OkatronState(args.config)
 server: OkatronServer = OkatronServer(state)
-# asyncio.run(server.run())
-uvicorn.run(app=app, host="127.0.0.1", port=8000)
+
+uvicorn.run(app=app, host="0.0.0.0", port=8000)

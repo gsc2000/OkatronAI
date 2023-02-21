@@ -35,7 +35,8 @@ class OkatronState():
 
         # self._user_io = UserIO()
         self._captor = WebCamera(config["camera"])
-        self._yolov5 = YOLOv5Detector(config["yolov5"])
+        self.yolov5 = YOLOv5Detector(config["yolov5"])
+        self.yolo_info = config["yolov5"]
         self._cont = OkatronController()
 
         print("OkatronState Setup")
@@ -45,13 +46,15 @@ class OkatronState():
         Args:
             weight: モデルの重み
         """
-        self._yolov5.setupModel(weight)
+        self.yolov5.setupModel(weight)
 
-    def resetInferencerInfo(self, info: dict) -> None:
+    def resetInferencerInfo(self) -> None:
         """
         Args:
-            info: YOLOの推論設定情報"""
-        self._yolov5.setupInfo(**info)
+            info: YOLOの推論設定情報
+        """
+        self.yolov5.setupInfo(tuple(self.yolo_info["image"]), self.yolo_info["conf"],
+                              self.yolo_info["iou"], self.yolo_info["det_class"])
 
     @property
     def mode(self):
@@ -72,6 +75,3 @@ class OkatronState():
     @property
     def captor(self):
         return self._captor
-    @property
-    def yolov5(self):
-        return self._yolov5

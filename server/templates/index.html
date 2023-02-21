@@ -1,21 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<hr>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-6">
-            <div class="btn-group btn-group-lg" role="group" aria-label="Toggle buttons">
-                <button type="button" class="btn btn-primary {% if button1_active %}active{% endif %}" onclick="window.location.href='/mode/1'">  AUTO  </button>
-                <button type="button" class="btn btn-danger {% if button2_active %}active{% endif %}" onclick="window.location.href='/mode/2'">MANUAL</button>
-            </div>
-            <p class="mt-3">
-                {% if button1_active %}
-                    This is the description for Button 1
-                {% elif button2_active %}
-                    This is the description for Button 2
-                {% endif %}
-            </p>
+        <div class="col-md-8">
+            <button type="button" class="btn btn-primary btn-lg {% if btn1_mode_active %}active{% endif %}" onclick="window.location.href='/mode/1'">AUTO</button>
+            <button type="button" class="btn btn-success btn-lg {% if btn2_mode_active %}active{% endif %}" onclick="window.location.href='/mode/2'">MANUAL</button>
         </div>
     </div>
 </div>
