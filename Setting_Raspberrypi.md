@@ -91,3 +91,18 @@ https://dev.classmethod.jp/articles/install-docker-for-raspberry-pi-4/
 ```
 https://qiita.com/Crow314/items/794cabf5603cc5938855
 ```
+
+# ポート開放
+必要なライブラリインストール
+```
+sudo apt install ufw -y
+```
+指定のポートを開放(今回は8000番)
+```
+sudo ufw allow 8000
+```
+
+下記サイトを参考にした
+```
+https://sukiburo.jp/raspberry-pi-firewall/
+```
