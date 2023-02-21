@@ -5,8 +5,9 @@ services:
     container_name: 'OkatronServer'
     tty: true
     stdin_open: true
+    network_mode: "host"
     ports:
-      - "8050:8050"
+      - "8000:8000"
     volumes:
       - ./resource:/resource
       - ./resource/config:/resource/config

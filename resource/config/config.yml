@@ -14,4 +14,4 @@ yolov5:
     - 320
   conf: 0.45
   iou: 0.45
-  det_class: 0
+  det_class: 16

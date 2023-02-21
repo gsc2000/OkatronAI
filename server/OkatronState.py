@@ -4,8 +4,8 @@ import enum
 
 from UserIO import UserIO
 import DataBaseapi as db
-from Captor.WebCamera import WebCamera
-# from Captor.WebCamera import NullCamera as WebCamera
+# from Captor.WebCamera import WebCamera
+from Captor.WebCamera import NullCamera as WebCamera
 from Inferencer.YOLOv5Detector import YOLOv5Detector
 from MotorController.OkatronController import OkatronController
 
@@ -56,6 +56,9 @@ class OkatronState():
     @property
     def mode(self):
         return self._mode
+    @mode.setter
+    def mode(self, mode):
+        self._mode = mode
     @property
     def status(self):
         return self._status

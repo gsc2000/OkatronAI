@@ -32,35 +32,8 @@ class OkatronServer():
         # テスト
         # cv2.namedWindow("Test", cv2.WINDOW_NORMAL)
 
-    async def run(self) -> None:
+    def run(self) -> None:
         """メインループ"""
-        print("Wait WebSocket Connect")
-        async with websockets.serve(self.websocketioWork, "0.0.0.0", 8050):
-            print("Comp WebSocket Connect")
-            await asyncio.Future()
-
-    async def websocketioWork(self, sock) -> str:
-        """WebSocketからのリクエストを処理する"""
-        while True:
-            try:
-                msg = await sock.recv()
-                msg = json.loads(msg)
-                await self.dispatchMsg(sock, msg)
-            except:
-                pass
-
-    async def dispatchMsg(self, sock, msg):
-        # print("Dispatch Message")
-        for key in msg.keys():
-            if key == "img":
-                # print("Recv Img Req")
-                await self.proc(sock)
-            elif key == "user":
-                await self.updateState()
-
-    async def proc(self, sock):
-        """"""
-        # print("Process")
         if self.state.mode == Mode.AUTO:
             img = self.autoMode()
         elif self.state.mode == Mode.MANUAL:
@@ -68,11 +41,27 @@ class OkatronServer():
         elif self.state.mode == Mode.PROGRAM:
             img = self.programMode()
 
-        img = cv2.imencode('.jpg', img)[1]
-        # img_base64 = base64.b64encode(img).decode('utf-8')
-        # print("Websocket Send")
-        await sock.send(img.tobytes())
-        await asyncio.sleep(0.01)
+        return img
+
+    # async def websocketioWork(self, sock) -> str:
+    #     """WebSocketからのリクエストを処理する"""
+    #     while True:
+    #         try:
+    #             msg = await sock.recv()
+    #             msg = json.loads(msg)
+    #             await self.dispatchMsg(sock, msg)
+    #         except:
+    #             pass
+
+    # async def dispatchMsg(self, sock, msg):
+    #     # print("Dispatch Message")
+    #     for key in msg.keys():
+    #         if key == "img":
+    #             # print("Recv Img Req")
+    #             await self.proc(sock)
+    #         elif key == "user":
+    #             await self.updateState()
+
 
     def autoMode(self):
         """自動追従モードの動作"""
@@ -97,14 +86,12 @@ class OkatronServer():
         """プログラムモードの動作"""
         pass
 
-    async def updateState(self) -> None:
+    def updateState(self) -> None:
         """アプリの状態を更新する"""
         now_status = self.state.status
 
-        # time.sleep(1)
-        msg = await self.q_command.get()
-        if msg == UserReq.START.value:
-            self.state.status = Status.WORKING
+        # if msg == UserReq.START.value:
+        #     self.state.status = Status.WORKING
 
         if now_status == Status.IDLE:
             pass
