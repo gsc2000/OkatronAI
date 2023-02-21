@@ -1,9 +1,32 @@
 """モータ用の制御"""
+import sys
+import time
+import RPi.GPIO as GPIO
+import wiringpi as pi
 
 class DCController():
     """DCモータ制御"""
     def __init__(self) -> None:
-        pass
+        MOTOR_L1 = 18
+        MOTOR_L2 = 23
+        MOTOR_R1 = 24
+        MOTOR_R2 = 25
+
+        OUTPUT_PIN_L = 13
+        OUTPUT_PIN_R = 19
+
+        GPIO.setmode( GPIO.BCM )
+        GPIO.setup( MOTOR_L1, GPIO.OUT )
+        GPIO.setup( MOTOR_L2, GPIO.OUT )
+        GPIO.setup( MOTOR_R1, GPIO.OUT )
+        GPIO.setup( MOTOR_R2, GPIO.OUT )
+
+        pi.wiringPiSetupGpio()
+        pi.pinMode(OUTPUT_PIN_L, pi.OUTPUT)
+        pi.pinMode(OUTPUT_PIN_R, pi.OUTPUT)
+
+        pi.softPwmCreate(OUTPUT_PIN_L, 0, 100)
+        pi.softPwmCreate(OUTPUT_PIN_R, 0, 100)
 
     def left(self):
         """左に向く"""
@@ -27,6 +50,19 @@ class DCController():
 
     def back(self):
         """後進する"""
+        pass
+
+    def stop(self):
+        """止まる"""
+        GPIO.output( MOTOR_L1, GPIO.LOW )
+        GPIO.output( MOTOR_L2, GPIO.LOW )
+        GPIO.output( MOTOR_R1, GPIO.LOW )
+        GPIO.output( MOTOR_R2, GPIO.LOW )
+        
+        pi.softPwmWrite(OUTPUT_PIN_L, 0)
+        pi.softPwmWrite(OUTPUT_PIN_R, 0)
+        
+        time.sleep(0.05)
 
 class ServoController():
     """サーボモータ制御"""
