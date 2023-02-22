@@ -10,7 +10,9 @@ from fastapi import FastAPI, WebSocket
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.encoders import jsonable_encoder
 from fastapi.requests import Request
+from pydantic import BaseModel
 
 import uvicorn
 
@@ -90,6 +92,16 @@ async def class3():
     state.yolo_info["det_class"] = 67
     state.resetInferencerInfo()
 
+
+class UploadJson(BaseModel):
+    op: str
+    content: str
+
+@app.post("/mode/3/info")
+async def prog_info(item: UploadJson):
+    print(item)
+    data = jsonable_encoder(item)
+    print((data))
 
 # @app.get("/auto/ai/{button_id}")
 # async def toggle_button(request: Request, button_id: int):
