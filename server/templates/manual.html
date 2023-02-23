@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<link rel="stylesheet" href="/static/css/cross-key.css">
 <br>
 <div class="row">
     <div class="col-md-10">
@@ -17,92 +18,115 @@
             <!-- jinja2のテンプレートの書き方です。/video_feedを呼び出しています。 -->
         </div>
         <br>
-        <div class="d-flex flex-column">
-            <p><b>AI</b></p>
-            <div class="btn-group btn-group-toggle mx-3 my-3" role="group" aria-label="Toggle buttons">
-                <button id=ai_start type="button" class="btn btn-primary btn-lg {% if btn1_ai_active %}active{% endif %}">START</button> <!--onclick="window.location.href='/auto/ai/1'">START</button>-->
-                <button id=ai_stop type="button" class="btn btn-danger btn-lg {% if btn2_ai_active %}active{% endif %}">STOP</button> <!--onclick="window.location.href='/auto/ai/2'">STOP</button>-->
+
+        <div class="col-md-6">
+          <div class="form-group row mb-3">
+            <div class="col-sm-5">
+            <label class="text-center"><b>MOVE</b></label>
+            <div class="cross-layout col-sm-5">
+              <button class="position-top btn cross-key-btn" id="move_top"><span class="top-mark">▲</span></button>
+              <button class="position-left btn cross-key-btn" id="move_left"><span class="left-mark">▲</span></button>
+              <button class="position-right btn cross-key-btn" id="move_right"><span class="right-mark">▲</span></button>
+              <button class="position-bottom btn cross-key-btn" id="move_bottom"><span class="bottom-mark">▲</span></button>
             </div>
-            <script>
-                const btn_ai_start = document.getElementById("ai_start");
-                const btn_ai_stop = document.getElementById("ai_stop");
+          </div>
 
-                btn_ai_start.addEventListener("click", function() {
-                  btn_ai_start.disabled = true;
-                  btn_ai_stop.disabled = false;
-                  fetch('/mode/1/ai_start', {
-                    method: 'POST'
-                  })
-                });
-                btn_ai_stop.addEventListener("click", function() {
-                  btn_ai_start.disabled = false;
-                  btn_ai_stop.disabled = true;
-                  fetch('/mode/1/ai_stop', {
-                    method: 'POST'
-                  })
-                });
-            </script>
-            <p><b>CLASS</b></p>
-            <div class="btn-group btn-group-toggle mx-3 my-3" role="group" aria-label="Toggle buttons">
-                <button id="class1" type="button" class="btn btn-info btn-lg {% if btn1_class_active %}active{% endif %}">Person</button>
-                <button id="class2" type="button" class="btn btn-info btn-lg {% if btn2_class_active %}active{% endif %}">Dog</button>
-                <button id="class3" type="button" class="btn btn-info btn-lg {% if btn3_class_active %}active{% endif %}">Cell phone</button>
-            </div>
-            <script>
-                const btn_class1 = document.getElementById("class1");
-                const btn_class2 = document.getElementById("class2");
-                const btn_class3 = document.getElementById("class3");
-
-                btn_class1.addEventListener("click", function() {
-                  btn_class1.disabled = true;
-                  btn_class2.disabled = false;
-                  btn_class3.disabled = false;
-                  fetch('/mode/1/class1', {
-                    method: 'POST'
-                  })
-                });
-                btn_class2.addEventListener("click", function() {
-                  btn_class1.disabled = false;
-                  btn_class2.disabled = true;
-                  btn_class3.disabled = false;
-                  fetch('/mode/1/class2', {
-                    method: 'POST'
-                  })
-                });
-                btn_class3.addEventListener("click", function() {
-                  btn_class1.disabled = false;
-                  btn_class2.disabled = false;
-                  btn_class3.disabled = true;
-                  fetch('/mode/1/class3', {
-                    method: 'POST'
-                  })
-                });
-            </script>
-
-
-            <!-- <p><b>IOU</b></p>
-            <input id="inputNumber" type="text" name="number">
-            <button id="submitButton" type="button" class="btn btn-info btn-lg">SET</button>
-            <script>
-                $(document).ready(function() {
-                $("#submitButton").click(function() {
-                    var number = $("#inputNumber").val();  // テキストボックスから値を取得
-                    $.ajax({
-                    type: "POST",  // POSTリクエストを送信
-                    url: "/auto/iou",  // リクエスト先のURL
-                    data: {iou: number},  // テキストボックスから取得した値をリクエストに含める
-                    success: function(result) {
-                        console.log(result);  // リクエストが成功した場合に実行される処理
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(textStatus, errorThrown);  // リクエストが失敗した場合に実行される処理
-                    }
-                    });
-                });
-                });
-            </script> -->
+          <div class="form-group row mb-3">
+            <div class="col-sm-5">
+              <label class="text-center"><b>CAMERA</b></label>
+              <div class="cross-layout col-sm-5">
+                <button class="position-top btn cross-key-btn" id="camera_top"><span class="top-mark">▲</span></button>
+                <button class="position-left btn cross-key-btn" id="camera_left"><span class="left-mark">▲</span></button>
+                <button class="position-right btn cross-key-btn" id="camera_right"><span class="right-mark">▲</span></button>
+                <button class="position-bottom btn cross-key-btn" id="camera_bottom"><span class="bottom-mark">▲</span></button>
+              </div>
+          </div>
         </div>
     </div>
 </div>
+
+<script>
+  const move_top = document.getElementById('move_top');
+  const move_left = document.getElementById('move_left');
+  const move_right = document.getElementById('move_right');
+  const move_bottom = document.getElementById('move_bottom');
+  const camera_top = document.getElementById('camera_top');
+  const camera_left = document.getElementById('camera_left');
+  const camera_right = document.getElementById('camera_right');
+  const camera_bottom = document.getElementById('camera_bottom');
+
+  move_top.addEventListener("mousedown", () => {
+    // FastAPIにリクエストを送信する
+    fetch("/mode/2/move_top")
+    // ボタンが離されるまで、処理を続ける
+    move_top.addEventListener("mouseup", () => {
+      // ボタンが離された時の処理をここに記述する
+    });
+  });
+
+  move_left.addEventListener("mousedown", () => {
+    // FastAPIにリクエストを送信する
+    fetch("/mode/2/move_left")
+    // ボタンが離されるまで、処理を続ける
+    move_left.addEventListener("mouseup", () => {
+      // ボタンが離された時の処理をここに記述する
+    });
+  });
+
+  move_right.addEventListener("mousedown", () => {
+    // FastAPIにリクエストを送信する
+    fetch("/mode/2/move_right")
+    // ボタンが離されるまで、処理を続ける
+    move_right.addEventListener("mouseup", () => {
+      // ボタンが離された時の処理をここに記述する
+    });
+  });
+
+  move_bottom.addEventListener("mousedown", () => {
+    // FastAPIにリクエストを送信する
+    fetch("/mode/2/move_bottom")
+    // ボタンが離されるまで、処理を続ける
+    move_bottom.addEventListener("mouseup", () => {
+      // ボタンが離された時の処理をここに記述する
+    });
+  });
+
+  camera_top.addEventListener("mousedown", () => {
+    // FastAPIにリクエストを送信する
+    fetch("/mode/2/camera_top")
+    // ボタンが離されるまで、処理を続ける
+    camera_top.addEventListener("mouseup", () => {
+      // ボタンが離された時の処理をここに記述する
+    });
+  });
+
+  camera_left.addEventListener("mousedown", () => {
+    // FastAPIにリクエストを送信する
+    fetch("/mode/2/camera_left")
+    // ボタンが離されるまで、処理を続ける
+    camera_left.addEventListener("mouseup", () => {
+      // ボタンが離された時の処理をここに記述する
+    });
+  });
+
+  camera_right.addEventListener("mousedown", () => {
+    // FastAPIにリクエストを送信する
+    fetch("/mode/2/camera_right")
+    // ボタンが離されるまで、処理を続ける
+    camera_right.addEventListener("mouseup", () => {
+      // ボタンが離された時の処理をここに記述する
+    });
+  });
+
+  camera_bottom.addEventListener("mousedown", () => {
+    // FastAPIにリクエストを送信する
+    fetch("/mode/2/camera_bottom")
+    // ボタンが離されるまで、処理を続ける
+    camera_bottom.addEventListener("mouseup", () => {
+      // ボタンが離された時の処理をここに記述する
+    });
+  });
+
+</script>
 
 {% endblock %}
