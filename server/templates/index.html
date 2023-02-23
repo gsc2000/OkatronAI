@@ -1,11 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
-
+<br>
+<div class="row">
+    <div class="col-md-10">
+        <h1>Okatron AI</h1>
+    </div>
+    <div class="col text-end" >
+        <img src="/static/img/logo.png" width="40%">
+    </div>
+    </div>
+<hr>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-8">
             <button type="button" class="btn btn-primary btn-lg {% if btn1_mode_active %}active{% endif %}" onclick="window.location.href='/mode/1'">AUTO</button>
             <button type="button" class="btn btn-success btn-lg {% if btn2_mode_active %}active{% endif %}" onclick="window.location.href='/mode/2'">MANUAL</button>
+            <button type="button" class="btn btn-warning btn-lg {% if btn3_mode_active %}active{% endif %}" onclick="window.location.href='/mode/3'">PROGRAM</button>
         </div>
     </div>
 </div>
