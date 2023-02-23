@@ -56,129 +56,35 @@
   const camera_bottom = document.getElementById('camera_bottom');
 
   move_top.addEventListener("mousedown", () => {
-    // 20ミリ秒ごとに「countUpDown()」関数を呼び出す繰り返しタイマー
-    intervalID = setInterval(
-                function(){
-                    // FastAPIにリクエストを送信する
-                    fetch("/mode/2/move_top");
-                },
-                20
-            );
-
-    // ボタンが離されるまで、処理を続ける
-    move_top.addEventListener("mouseup", () => {
-      clearInterval( intervalID );
-    });
+    fetch("/mode/2/move_top")
   });
 
   move_left.addEventListener("mousedown", () => {
-    // 20ミリ秒ごとに「countUpDown()」関数を呼び出す繰り返しタイマー
-    intervalID = setInterval(
-                function(){
-                    // FastAPIにリクエストを送信する
-                    fetch("/mode/2/move_left");
-                },
-                20
-            );
-
-    // ボタンが離されるまで、処理を続ける
-    move_left.addEventListener("mouseup", () => {
-      clearInterval(intervalID)
-    });
+    fetch("/mode/2/move_left");
   });
 
   move_right.addEventListener("mousedown", () => {
-    // 20ミリ秒ごとに「countUpDown()」関数を呼び出す繰り返しタイマー
-    intervalID = setInterval(
-                function(){
-                    // FastAPIにリクエストを送信する
-                    fetch("/mode/2/move_right");
-                },
-                20
-            );
-
-    // ボタンが離されるまで、処理を続ける
-    move_right.addEventListener("mouseup", () => {
-      clearInterval(intervalID)
-    });
+    fetch("/mode/2/move_right");
   });
 
   move_bottom.addEventListener("mousedown", () => {
-    // 20ミリ秒ごとに「countUpDown()」関数を呼び出す繰り返しタイマー
-    intervalID = setInterval(
-                function(){
-                    // FastAPIにリクエストを送信する
-                    fetch("/mode/2/move_bottom");
-                },
-                20
-            );
-    // ボタンが離されるまで、処理を続ける
-    move_bottom.addEventListener("mouseup", () => {
-      clearInterval(intervalID)
-    });
+    fetch("/mode/2/move_bottom");
   });
 
   camera_top.addEventListener("mousedown", () => {
-    // 20ミリ秒ごとに「countUpDown()」関数を呼び出す繰り返しタイマー
-    intervalID = setInterval(
-                function(){
-                    // FastAPIにリクエストを送信する
-                    fetch("/mode/2/camera_top");
-                },
-                20
-            );
-    // ボタンが離されるまで、処理を続ける
-    camera_top.addEventListener("mouseup", () => {
-      clearInterval(intervalID)
-    });
+    fetch("/mode/2/camera_top");
   });
 
   camera_left.addEventListener("mousedown", () => {
-    // 20ミリ秒ごとに「countUpDown()」関数を呼び出す繰り返しタイマー
-    intervalID = setInterval(
-                function(){
-                    // FastAPIにリクエストを送信する
-                    fetch("/mode/2/camera_left");
-                },
-                20
-            );
-
-    // ボタンが離されるまで、処理を続ける
-    camera_left.addEventListener("mouseup", () => {
-      clearInterval(intervalID)
-    });
+    fetch("/mode/2/camera_left");
   });
 
   camera_right.addEventListener("mousedown", () => {
-    // 20ミリ秒ごとに「countUpDown()」関数を呼び出す繰り返しタイマー
-    intervalID = setInterval(
-                function(){
-                    // FastAPIにリクエストを送信する
-                    fetch("/mode/2/camera_right");
-                },
-                20
-            );
-
-    // ボタンが離されるまで、処理を続ける
-    camera_right.addEventListener("mouseup", () => {
-      clearInterval(intervalID)
-    });
+    fetch("/mode/2/camera_right");
   });
 
   camera_bottom.addEventListener("mousedown", () => {
-    // 20ミリ秒ごとに「countUpDown()」関数を呼び出す繰り返しタイマー
-    intervalID = setInterval(
-                function(){
-                    // FastAPIにリクエストを送信する
-                    fetch("/mode/2/camera_bottom");
-                },
-                20
-            );
-
-    // ボタンが離されるまで、処理を続ける
-    camera_bottom.addEventListener("mouseup", () => {
-      clearInterval(intervalID)
-    });
+    fetch("/mode/2/camera_bottom");
   });
 
 </script>
