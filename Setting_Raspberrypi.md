@@ -106,3 +106,24 @@ sudo ufw allow 8000
 ```
 https://sukiburo.jp/raspberry-pi-firewall/
 ```
+
+# 自動ログイン
+## ラズパイ立ち上げ時にUSERNAMEとPASSが求められない設定
+参考サイト
+```
+https://manumaruscript.com/raspi-auto-login/
+```
+```
+sudo rasipi-config
+```
+以下UIでの設定
+```
+System Options
+S5 Boot / Auto Login
+B2 Console Autologin
+finish
+```
+再起動する
+```
+sudo reboot
+```
