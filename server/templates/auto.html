@@ -21,7 +21,7 @@
             <p><b>AI</b></p>
             <div class="btn-group btn-group-toggle mx-3 my-3" role="group" aria-label="Toggle buttons">
                 <button id=ai_start type="button" class="btn btn-primary btn-lg {% if btn1_ai_active %}active{% endif %}">START</button> <!--onclick="window.location.href='/auto/ai/1'">START</button>-->
-                <button id=ai_stop type="button" class="btn btn-danger btn-lg {% if btn2_ai_active %}active{% endif %}">STOP</button> <!--onclick="window.location.href='/auto/ai/2'">STOP</button>-->
+                <button id=ai_stop type="button" class="btn btn-danger btn-lg {% if btn2_ai_active %}active{% endif %}" disabled>STOP</button> <!--onclick="window.location.href='/auto/ai/2'">STOP</button>-->
             </div>
             <script>
                 const btn_ai_start = document.getElementById("ai_start");
@@ -44,7 +44,7 @@
             </script>
             <p><b>CLASS</b></p>
             <div class="btn-group btn-group-toggle mx-3 my-3" role="group" aria-label="Toggle buttons">
-                <button id="class1" type="button" class="btn btn-info btn-lg {% if btn1_class_active %}active{% endif %}">Person</button>
+                <button id="class1" type="button" class="btn btn-info btn-lg {% if btn1_class_active %}active{% endif %}" disabled>Person</button>
                 <button id="class2" type="button" class="btn btn-info btn-lg {% if btn2_class_active %}active{% endif %}">Dog</button>
                 <button id="class3" type="button" class="btn btn-info btn-lg {% if btn3_class_active %}active{% endif %}">Cell phone</button>
             </div>
