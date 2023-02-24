@@ -5,61 +5,96 @@ import sys
 # import wiringpi as pi
 
 import asyncio
+import threading
 import numpy as np
 import queue
+import time
 
 # from MotorController.BaseController import DCController, ServoController
+from MotorController.BaseController import NullDCController as DCController
+from MotorController.BaseController import NullServoController as ServoController
 
 class OkatronController():
     """Okatron用モータ制御のクラス"""
     def __init__(self) -> None:
-        # self.dc = DCController()
-        # self.servo = ServoController()
-        pass
+        self.dc = DCController()
+        self.servo = ServoController()
 
     def run(self, q_msg: queue.Queue):
         """
         検出結果の処理はここで行う
         """
         print("Okatron Controller Start")
+        # 平行処理
+        q_dc = queue.Queue(maxsize=1) # DC用キュー
+        q_servo = queue.Queue(maxsize=1) # SERVO用キュー
+        thread_dc = threading.Thread(target=self.dcControl, args=(q_dc, ))
+        thread_dc.daemon = True
+        thread_servo = threading.Thread(target=self.servoControl, args=(q_servo, ))
+        thread_servo.daemon = True
+
+        thread_dc.start()
+        thread_servo.start()
+
         while True:
             try:
                 msg = q_msg.get()
                 print("Recv[Controller]:{}".format(msg))
 
-                self.dcControl(msg["move"])
+                if not q_dc.full(): # キューがいっぱいだったら捨てる
+                    q_dc.put(msg["move"])
+                if not q_servo.full(): # キューがいっぱいだったら捨てる
+                    q_servo.put(msg["camera"])
             except:
                 pass
 
-    def dcControl(self, msg: list):
+    def dcControl(self, q_msg: queue.Queue):
         """DCモータ制御"""
-        motion = msg[0]
-        value = msg[1]
+        while True:
+            msg = q_msg.get() # キューに格納されるまでブロック
+            motion = msg[0] # 動作を取得
+            value = msg[1] # 値を取得
 
-        if motion == "stop":
-            # STOP処理
-            pass
-        elif motion == "top":
-            self.subdcControl(test_forward, value)
-        elif motion == "left":
-            self.subdcControl(test_forward, value)
-        elif motion == "right":
-            self.subdcControl(test_forward, value)
-        elif motion == "bottom":
-            self.subdcControl(test_forward, value)
+            if motion == "stop":
+                self.dc.stop()
+            elif motion == "top":
+                self.subdcControl(self.dc.forward, value)
+            elif motion == "left":
+                self.subdcControl(self.dc.left, value)
+            elif motion == "right":
+                self.subdcControl(self.dc.right, value)
+            elif motion == "bottom":
+                self.subdcControl(self.dc.back, value)
 
-    def subdcControl(self, method, value: int):
+            time.sleep(0.01) # スリープ設けないと動作を占有する可能性あり
+
+    def subdcControl(self, func, value: int):
         """DCモータ制御サブ"""
-        if value == 0:
-            print("PIN ON処理")
+        func() # ON
+        if value == -1: # 値が-1の場合はONして終わり
+            pass
         else:
-            for i in range(value): # 必要回数繰り返す
-                method()
+            time.sleep(value) # 0以上の場合は、停止
+            self.dc.stop()
 
-    def servoControl(self, msg: list):
+    def servoControl(self, q_msg: queue.Queue):
+        while True:
+            msg = q_msg.get() # キューに格納されるまでブロック
+            motion = msg[0] # 動作を取得
+            value = msg[1] # 値を取得
+
+            if motion == "stop":
+                self.dc.stop()
+            elif motion == "top":
+                self.subdcControl(self.servo.forward, value)
+            elif motion == "left":
+                self.subdcControl(self.servo.left, value)
+            elif motion == "right":
+                self.subdcControl(self.servo.right, value)
+            elif motion == "bottom":
+                self.subdcControl(self.servo.back, value)
+
+    def subservoControl(self, func, value):
+        """サーボ制御サブ"""
         pass
 
-
-def test_forward():
-    """テスト用"""
-    print("forward")

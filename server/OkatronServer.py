@@ -11,12 +11,7 @@ import asyncio
 import json
 import queue
 
-import DataBaseapi as db
-from UserIO import UserIO, UserReq
 from OkatronState import OkatronState, Mode, Status
-# from Captor.WebCamera import WebCamera
-from Captor.WebCamera import NullCamera as WebCamera
-from Inferencer.YOLOv5Detector import YOLOv5Detector
 
 class OkatronServer():
     """アプリ本体
@@ -25,9 +20,8 @@ class OkatronServer():
     """
     def __init__(self, state, q_recv_msg: queue.Queue, q_send_msg: queue.Queue) -> None:
         self.state: OkatronState = state
-        # self._message_lock = asyncio.Lock()
-        self.q_recv_msg = q_recv_msg
-        self.q_send_msg = q_send_msg
+        self.q_recv_msg = q_recv_msg # FastAPI <-> OkatronServer
+        self.q_send_msg = q_send_msg # OkatronServer <-> OkatronController
 
     def run(self) -> None:
         """メインループ"""
@@ -37,14 +31,10 @@ class OkatronServer():
             img = self.manualMode()
         elif self.state.mode == Mode.PROGRAM:
             img = self.programMode()
-
-        # self.q_img.put(img)
-        # print("Put image")
         return img
 
     def autoMode(self):
         """自動追従モードの動作"""
-        # print("Auto Mode")
         if self.state.status == Status.IDLE:
             # 画像取得
             img = self.captorWork()
@@ -81,7 +71,6 @@ class OkatronServer():
     def captorWork(self) -> None:
         """画像を取得する"""
         img = self.state.captor.capture()
-        # print(img.shape)
         return img
 
     def inferencerWork(self, img) -> np.ndarray:
@@ -94,11 +83,11 @@ class OkatronServer():
         """YOLOの検出結果から距離・角度を算出する"""
         # タイヤの動作決定
         move_direction = "top"
-        move_length = 10
+        move_length = 5
 
         # カメラの動作決定
         camera_direction = "top"
-        camera_deg = 10
+        camera_deg = 5
         msg = {"move": [move_direction, move_length],
                "camera": [camera_direction, camera_deg]}
         return msg
@@ -114,4 +103,4 @@ class OkatronServer():
         if msg["move"][0] == None and msg["camera"][0] == None:
             pass
         else:
-            self.q_send_msg.put(msg)
+            self.q_send_msg.put(msg) # OkatronControllerへ渡す

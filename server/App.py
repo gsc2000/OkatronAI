@@ -112,60 +112,60 @@ async def class3():
 @app.get("/mode/2/move_top")
 async def manual_move_top():
     # print("move_top")
-    msg = {"move": ["top", 0], "camera": [None, None]}
+    msg = {"move": ["top", -1], "camera": [None, None]}
     q_user_msg.put(msg)
 
 @app.get("/mode/2/move_left")
 async def manual_move_left():
     # print("move_left")
-    msg = {"move": ["left", 0], "camera": [None, None]}
+    msg = {"move": ["left", -1], "camera": [None, None]}
     q_user_msg.put(msg)
 
 @app.get("/mode/2/move_right")
 async def manual_move_right():
     # print("move_right")
-    msg = {"move": ["right", 0], "camera": [None, None]}
+    msg = {"move": ["right", -1], "camera": [None, None]}
     q_user_msg.put(msg)
 
 @app.get("/mode/2/move_bottom")
 async def manual_move_bottom():
     # print("move_bottom")
-    msg = {"move": ["bottom", 0], "camera": [None, None]}
+    msg = {"move": ["bottom", -1], "camera": [None, None]}
     q_user_msg.put(msg)
 
 @app.get("/mode/2/move_stop")
 async def manual_move_bottom():
     # print("move_stop")
-    msg = {"move": ["stop", 0], "camera": [None, None]}
+    msg = {"move": ["stop", -1], "camera": [None, None]}
     q_user_msg.put(msg)
 
 @app.get("/mode/2/camera_top")
 async def manual_camera_top():
     # print("camera_top")
-    msg = {"move": [None, None], "camera": ["top", 0]}
+    msg = {"move": [None, None], "camera": ["top", -1]}
     q_user_msg.put(msg)
 
 @app.get("/mode/2/camera_left")
 async def manual_camera_left():
-    msg = {"move": [None, None], "camera": ["left", 0]}
+    msg = {"move": [None, None], "camera": ["left", -1]}
     q_user_msg.put(msg)
 
 @app.get("/mode/2/camera_right")
 async def manual_camera_right():
     # print("camera_right")
-    msg = {"move": [None, None], "camera": ["right", 0]}
+    msg = {"move": [None, None], "camera": ["right", -1]}
     q_user_msg.put(msg)
 
 @app.get("/mode/2/camera_bottom")
 async def manual_camera_bottom():
     # print("camera_bottom")
-    msg = {"move": [None, None], "camera": ["bottom", 0]}
+    msg = {"move": [None, None], "camera": ["bottom", -1]}
     q_user_msg.put(msg)
 
 @app.get("/mode/2/camera_stop")
 async def manual_camera_bottom():
     # print("camera_stop")
-    msg = {"move": [None, None], "camera": ["stop", 0]}
+    msg = {"move": [None, None], "camera": ["stop", -1]}
     q_user_msg.put(msg)
 
 # Program
