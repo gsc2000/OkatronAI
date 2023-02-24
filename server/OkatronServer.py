@@ -23,11 +23,11 @@ class OkatronServer():
     GUIから届くユーザリクエストの処理や
     内部状態に応じて行う処理を変更
     """
-    def __init__(self, state, q_msg: queue.Queue) -> None:
+    def __init__(self, state, q_recv_msg: queue.Queue, q_send_msg: queue.Queue) -> None:
         self.state: OkatronState = state
-        self._message_lock = asyncio.Lock()
-        # self.q_img = q_img
-        self.q_msg = q_msg
+        # self._message_lock = asyncio.Lock()
+        self.q_recv_msg = q_recv_msg
+        self.q_send_msg = q_send_msg
 
     def run(self) -> None:
         """メインループ"""
@@ -53,8 +53,7 @@ class OkatronServer():
             # AI処理
             img = self.captorWork()
             det, img = self.inferencerWork(img)
-            msg = {}
-            msg["key"] = det
+            msg = self.postProcDet(det)
             self.motorcontrollerWork(msg)
 
         return img
@@ -64,7 +63,8 @@ class OkatronServer():
         # 画像取得
         img = self.captorWork()
         try:
-            msg = self.q_msg.get(False)
+            msg = self.q_recv_msg.get(False)
+            print("Recv[Server]:{}".format(msg))
             self.motorcontrollerWork(msg)
         except:
             pass
@@ -77,18 +77,6 @@ class OkatronServer():
             img = self.captorWork()
 
         return img
-
-    # def updateState(self) -> None:
-    #     """アプリの状態を更新する"""
-    #     now_status = self.state.status
-
-    #     if now_status == Status.IDLE:
-    #         pass
-    #     elif now_status == Status.WORKING:
-    #         pass
-
-    #     if now_status != self.state.status:
-    #         print("State Change:\t[ {} -> {} ]".format(now_status.name, self.state.status.name))
 
     def captorWork(self) -> None:
         """画像を取得する"""
@@ -103,7 +91,16 @@ class OkatronServer():
         return det, img
 
     def postProcDet(self, det: np.ndarray):
-        msg = {"move": ["top", 10], "camera": ["top", 10]}
+        """YOLOの検出結果から距離・角度を算出する"""
+        # タイヤの動作決定
+        move_direction = "top"
+        move_length = 10
+
+        # カメラの動作決定
+        camera_direction = "top"
+        camera_deg = 10
+        msg = {"move": [move_direction, move_length],
+               "camera": [camera_direction, camera_deg]}
         return msg
 
     def motorcontrollerWork(self, msg: dict) -> bool:
@@ -114,7 +111,7 @@ class OkatronServer():
                  0: ON
                  数字: 動作する距離・角度
         """
-        if msg["move"] == None and msg["camera"] == None:
+        if msg["move"][0] == None and msg["camera"][0] == None:
             pass
         else:
-            self.state.cont.run(msg)
+            self.q_send_msg.put(msg)
