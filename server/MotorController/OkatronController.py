@@ -1,6 +1,8 @@
 """Okatron用モータ制御"""
 import os
 import sys
+import RPi.GPIO as GPIO
+import wiringpi as pi
 
 import numpy as np
 
