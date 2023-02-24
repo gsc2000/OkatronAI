@@ -34,10 +34,10 @@ class OkatronState():
         self._status: Status = Status.IDLE
 
         # self._user_io = UserIO()
-        self._captor = WebCamera(config["camera"])
+        self.captor = WebCamera(config["camera"])
         self.yolov5 = YOLOv5Detector(config["yolov5"])
         self.yolo_info = config["yolov5"]
-        self._cont = OkatronController()
+        self.cont = OkatronController()
 
         print("OkatronState Setup")
 
@@ -72,6 +72,6 @@ class OkatronState():
     # @property
     # def user_io(self):
     #     return self._user_io
-    @property
-    def captor(self):
-        return self._captor
+    # @property
+    # def captor(self):
+    #     return self._captor

@@ -57,7 +57,7 @@ async def toggle_button(request: Request, button_id: int):
         return templates.TemplateResponse("manual.html",
                                           {"request": request})
     elif button_id == 3:
-        state.mdoe = Mode.PROGRAM
+        state.mode = Mode.PROGRAM
         return templates.TemplateResponse("program.html",
                                           {"request": request})
 
@@ -65,11 +65,15 @@ async def toggle_button(request: Request, button_id: int):
 # ----------------------------------------------------------------------------------------------------
 async def gen():
     while True:
-        frame = server.run()
-        frame = cv2.imencode('.jpg', frame)[1].tobytes()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-        await asyncio.sleep(0)
+        try:
+            # frame = await q_img.get()
+            frame = server.run()
+            frame = cv2.imencode('.jpg', frame)[1].tobytes()
+            yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+            await asyncio.sleep(0)
+        except:
+            pass
 
 @app.get('/video_feed')
 async def video_feed():
@@ -106,58 +110,62 @@ async def class3():
 # ----------------------------------------------------------------------------------------------------
 @app.get("/mode/2/move_top")
 async def manual_move_top():
-    print("move_top")
-    messe = {}
-    messe["key"] = "move_top"
-    q_messe.put(messe)
+    # print("move_top")
+    msg = {"move": ["top", 0], "camera": [None, None]}
+    q_msg.put(msg)
 
 @app.get("/mode/2/move_left")
 async def manual_move_left():
-    print("move_left")
-    messe = {}
-    messe["key"] = "move_left"
-    q_messe.put(messe)
+    # print("move_left")
+    msg = {"move": ["left", 0], "camera": [None, None]}
+    q_msg.put(msg)
 
 @app.get("/mode/2/move_right")
 async def manual_move_right():
-    print("move_right")
-    messe = {}
-    messe["key"] = "move_right"
-    q_messe.put(messe)
+    # print("move_right")
+    msg = {"move": ["right", 0], "camera": [None, None]}
+    q_msg.put(msg)
 
 @app.get("/mode/2/move_bottom")
 async def manual_move_bottom():
-    print("move_bottom")
-    messe = {}
-    messe["key"] = "move_bottom"
-    q_messe.put(messe)
+    # print("move_bottom")
+    msg = {"move": ["bottom", 0], "camera": [None, None]}
+    q_msg.put(msg)
+
+@app.get("/mode/2/move_stop")
+async def manual_move_bottom():
+    # print("move_stop")
+    msg = {"move": ["stop", 0], "camera": [None, None]}
+    q_msg.put(msg)
 
 @app.get("/mode/2/camera_top")
 async def manual_camera_top():
-    print("camera_top")
-    messe = {}
-    messe["key"] = "camera_top"
-    q_messe.put(messe)
+    # print("camera_top")
+    msg = {"move": [None, None], "camera": ["top", 0]}
+    q_msg.put(msg)
 
 @app.get("/mode/2/camera_left")
 async def manual_camera_left():
-    messe = {}
-    messe["key"] = "camera_left"
-    q_messe.put(messe)
+    msg = {"move": [None, None], "camera": ["left", 0]}
+    q_msg.put(msg)
 
 @app.get("/mode/2/camera_right")
 async def manual_camera_right():
-    print("camera_right")
-    messe = {}
-    messe["key"] = "camera_right"
-    q_messe.put(messe)
+    # print("camera_right")
+    msg = {"move": [None, None], "camera": ["right", 0]}
+    q_msg.put(msg)
 
 @app.get("/mode/2/camera_bottom")
 async def manual_camera_bottom():
-    print("camera_bottom")
-    messe = {}
-    messe["key"] = "camera_bottom"
-    q_messe.put(messe)
+    # print("camera_bottom")
+    msg = {"move": [None, None], "camera": ["bottom", 0]}
+    q_msg.put(msg)
+
+@app.get("/mode/2/camera_stop")
+async def manual_camera_bottom():
+    # print("camera_stop")
+    msg = {"move": [None, None], "camera": ["stop", 0]}
+    q_msg.put(msg)
 
 # Program
 # ----------------------------------------------------------------------------------------------------
@@ -176,7 +184,9 @@ async def prog_info(item: UploadJson):
 print("OkatronAI Boot")
 args: argparse.Namespace = myArgParser()
 state: OkatronState = OkatronState(args.config)
-q_messe = queue.Queue(maxsize=1)
-server: OkatronServer = OkatronServer(state, q_messe)
-
+# q_img = asyncio.Queue(maxsize=1)
+q_msg = queue.Queue(maxsize=1)
+server: OkatronServer = OkatronServer(state, q_msg)
+server.run()
+# asyncio.get_running_loop().create_task(server.run())
 uvicorn.run(app=app, host="0.0.0.0", port=8000)

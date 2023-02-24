@@ -23,10 +23,11 @@ class OkatronServer():
     GUIから届くユーザリクエストの処理や
     内部状態に応じて行う処理を変更
     """
-    def __init__(self, state, q_messe: queue.Queue) -> None:
+    def __init__(self, state, q_msg: queue.Queue) -> None:
         self.state: OkatronState = state
         self._message_lock = asyncio.Lock()
-        self.q_messe = q_messe
+        # self.q_img = q_img
+        self.q_msg = q_msg
 
     def run(self) -> None:
         """メインループ"""
@@ -37,6 +38,8 @@ class OkatronServer():
         elif self.state.mode == Mode.PROGRAM:
             img = self.programMode()
 
+        # self.q_img.put(img)
+        # print("Put image")
         return img
 
     def autoMode(self):
@@ -50,9 +53,9 @@ class OkatronServer():
             # AI処理
             img = self.captorWork()
             det, img = self.inferencerWork(img)
-            messe = {}
-            messe["key"] = det
-            res = self.motorcontrollerWork(messe)
+            msg = {}
+            msg["key"] = det
+            self.motorcontrollerWork(msg)
 
         return img
 
@@ -61,8 +64,8 @@ class OkatronServer():
         # 画像取得
         img = self.captorWork()
         try:
-            messe = self.q_messe.get(False)
-            res = self.motorcontrollerWork(messe)
+            msg = self.q_msg.get(False)
+            self.motorcontrollerWork(msg)
         except:
             pass
         return img
@@ -75,20 +78,17 @@ class OkatronServer():
 
         return img
 
-    def updateState(self) -> None:
-        """アプリの状態を更新する"""
-        now_status = self.state.status
+    # def updateState(self) -> None:
+    #     """アプリの状態を更新する"""
+    #     now_status = self.state.status
 
-        # if msg == UserReq.START.value:
-        #     self.state.status = Status.WORKING
+    #     if now_status == Status.IDLE:
+    #         pass
+    #     elif now_status == Status.WORKING:
+    #         pass
 
-        if now_status == Status.IDLE:
-            pass
-        elif now_status == Status.WORKING:
-            pass
-
-        if now_status != self.state.status:
-            print("State Change:\t[ {} -> {} ]".format(now_status.name, self.state.status.name))
+    #     if now_status != self.state.status:
+    #         print("State Change:\t[ {} -> {} ]".format(now_status.name, self.state.status.name))
 
     def captorWork(self) -> None:
         """画像を取得する"""
@@ -102,18 +102,19 @@ class OkatronServer():
         img = self.state.yolov5.showResult(img, det)
         return det, img
 
-    def motorcontrollerWork(self, messe: dict) -> bool:
-        """モータを制御する"""
-        if messe["key"] == None:
-            return False
+    def postProcDet(self, det: np.ndarray):
+        msg = {"move": ["top", 10], "camera": ["top", 10]}
+        return msg
 
-        if self.state.mode == Mode.AUTO:
-            det = messe["key"]
-            # print("server get:{}".format(det))
-        elif self.state.mode == Mode.MANUAL:
-            det = messe["key"]
-            print("server get:{}".format(det))
-        elif self.state.mode == Mode.PROGRAM:
-            det = messe["key"]
-            print("server get:{}".format(det))
-        return True
+    def motorcontrollerWork(self, msg: dict) -> bool:
+        """
+        モータを制御する
+        Args:
+            msg: 動作を指示するメッセージ
+                 0: ON
+                 数字: 動作する距離・角度
+        """
+        if msg["move"] == None and msg["camera"] == None:
+            pass
+        else:
+            self.state.cont.run(msg)

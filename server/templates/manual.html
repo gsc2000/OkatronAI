@@ -58,33 +58,57 @@
   move_top.addEventListener("mousedown", () => {
     fetch("/mode/2/move_top")
   });
+  move_top.addEventListener("mouseup", () => {
+    fetch("/mode/2/move_stop")
+  });
 
   move_left.addEventListener("mousedown", () => {
     fetch("/mode/2/move_left");
+  });
+  move_left.addEventListener("mouseup", () => {
+    fetch("/mode/2/move_stop")
   });
 
   move_right.addEventListener("mousedown", () => {
     fetch("/mode/2/move_right");
   });
+  move_right.addEventListener("mouseup", () => {
+    fetch("/mode/2/move_stop")
+  });
 
   move_bottom.addEventListener("mousedown", () => {
     fetch("/mode/2/move_bottom");
+  });
+  move_bottom.addEventListener("mouseup", () => {
+    fetch("/mode/2/move_stop")
   });
 
   camera_top.addEventListener("mousedown", () => {
     fetch("/mode/2/camera_top");
   });
+  camera_top.addEventListener("mouseup", () => {
+    fetch("/mode/2/camera_stop")
+  });
 
   camera_left.addEventListener("mousedown", () => {
     fetch("/mode/2/camera_left");
+  });
+  camera_left.addEventListener("mouseup", () => {
+    fetch("/mode/2/camera_stop")
   });
 
   camera_right.addEventListener("mousedown", () => {
     fetch("/mode/2/camera_right");
   });
+  camera_right.addEventListener("mouseup", () => {
+    fetch("/mode/2/camera_stop")
+  });
 
   camera_bottom.addEventListener("mousedown", () => {
     fetch("/mode/2/camera_bottom");
+  });
+  camera_bottom.addEventListener("mouseup", () => {
+    fetch("/mode/2/camera_stop")
   });
 
 </script>
