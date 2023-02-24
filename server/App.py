@@ -51,14 +51,17 @@ async def index(request: Request):
 async def toggle_button(request: Request, button_id: int):
     if button_id == 1:
         state.mode = Mode.AUTO
+        state.status = Status.IDLE
         return templates.TemplateResponse("auto.html",
                                           {"request": request})
     elif button_id == 2:
         state.mode = Mode.MANUAL
+        state.status = Status.IDLE
         return templates.TemplateResponse("manual.html",
                                           {"request": request})
     elif button_id == 3:
         state.mode = Mode.PROGRAM
+        state.status = Status.IDLE
         return templates.TemplateResponse("program.html",
                                           {"request": request})
 
