@@ -18,6 +18,7 @@ services:
       - ./server:/server
     devices:
       - "/dev/video0:/dev/video0"
+      - /dev/gpiomem
     command: python App.py
     restart: always
 
