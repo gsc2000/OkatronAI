@@ -68,18 +68,24 @@ class YOLOv5Detector():
         Returns:
             torch.Tensor: 検出結果
         """
+        raw_img = img.copy()
         #入力データの前処理
         img, ratio, padding = self.preprocess(img, False)
 
         # Inference
         pred = self.model(img, augment=self.augment, visualize=self.visualize)
         # NMS
-        pred = non_max_suppression(pred, self.conf_thres, self.iou_thres, self.classes, self.agnostic_nms, max_det=self.max_det)
-        # 出力結果の事後処理
-        # center_pix, num_human_det, obj = self.postprocess(pred, ratio, self.max_det)
+        pred = non_max_suppression(pred,
+                                   self.conf_thres,
+                                   self.iou_thres,
+                                   self.classes,
+                                   self.agnostic_nms,
+                                   max_det=self.max_det)[0]
+                                   # 複数画像を推論できる仕様になっているため、一枚目のみ抽出
 
-        # return center_pix, num_human_det, obj
-        return pred[0] # 複数画像を推論できる仕様になっているため、一枚目のみ抽出
+        # 画像サイズ調整
+        pred[:, :4] = scale_boxes(img.shape[2:], pred[:, :4], raw_img.shape).round()
+        return pred
 
     def preprocess(self, img: np.ndarray, fp16: bool=False) -> torch.Tensor:
         """
@@ -152,9 +158,6 @@ class YOLOv5Detector():
 
         annotator = Annotator(im0, line_width=line_thickness, example=str(self.names))
         if len(pred):
-            # Rescale boxes from img_size to im0 size
-            pred[:, :4] = scale_boxes(img.shape[:2], pred[:, :4], im0.shape).round()
-
             for *xyxy, conf, cls in reversed(pred):
                 c = int(cls)  # integer class
                 label = None if hide_labels else (self.names[c] if hide_conf else f'{self.names[c]} {conf:.2f}')
