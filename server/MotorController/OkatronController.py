@@ -1,8 +1,8 @@
 """Okatron用モータ制御"""
 import os
 import sys
-# import RPi.GPIO as GPIO
-# import wiringpi as pi
+import RPi.GPIO as GPIO
+import wiringpi as pi
 
 import asyncio
 import threading
@@ -10,9 +10,9 @@ import numpy as np
 import queue
 import time
 
-# from MotorController.BaseController import DCController, ServoController
-from MotorController.BaseController import NullDCController as DCController
-from MotorController.BaseController import NullServoController as ServoController
+from MotorController.BaseController import DCController, ServoController
+# from MotorController.BaseController import NullDCController as DCController
+# from MotorController.BaseController import NullServoController as ServoController
 
 class OkatronController():
     """Okatron用モータ制御のクラス"""
@@ -86,13 +86,13 @@ class OkatronController():
             if motion == "stop":
                 self.dc.stop()
             elif motion == "top":
-                self.subdcControl(self.servo.forward, value)
+                self.servo.up()
             elif motion == "left":
-                self.subdcControl(self.servo.left, value)
+                self.servo.left()
             elif motion == "right":
-                self.subdcControl(self.servo.right, value)
+                self.servo.right()
             elif motion == "bottom":
-                self.subdcControl(self.servo.back, value)
+                self.servo.down()
 
     def subservoControl(self, func, value):
         """サーボ制御サブ"""
