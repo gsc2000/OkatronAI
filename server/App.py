@@ -107,7 +107,7 @@ async def class2():
 
 @app.post("/mode/1/class3")
 async def class3():
-    state.yolo_info["det_class"] = 67
+    state.yolo_info["det_class"] = 39
     state.resetInferencerInfo()
 
 # Manual
