@@ -2,132 +2,133 @@
 {% block content %}
 <br>
 <div class="row">
-    <div class="col-md-10">
-        <h1>Okatron AI   PROGRAM MODE</h1>
-    </div>
-    <div class="col text-end" >
-        <img src="/static/img/logo.png" width="40%">
-    </div>
-    </div>
+  <div class="col-md-10">
+    <h1>Okatron AI   PROGRAM MODE</h1>
+  </div>
+  <div class="col text-end" >
+    <img src="/static/img/logo.png" width="40%">
+  </div>
+</div>
 <hr>
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-6">
-            <img src="{{ url_for('video_feed') }}" width="640" height="480" class="img-fluid mb-3">
-            <!-- jinja2のテンプレートの書き方です。/video_feedを呼び出しています。 -->
+  <div class="row">
+    <div class="col-md-6">
+      <img src="{{ url_for('video_feed') }}" width="640" height="480" class="img-fluid mb-3">
+    </div>
+    <br>
+    <div class="col-md-6">
+      <p><b>Set</b></p>
+      <div class="form-group row mb-3">
+        <label for="unit1" class="col-sm-1 col-form-label">Unit1:</label>
+        <div class="col-sm-5">
+          <select class="form-control" id="unit1">
+            <option value="" selected>Select</option>
+            <option value="1">前に進む[cm]</option>
+            <option value="2">右を向く(タイヤ)</option>
+            <option value="3">右を向く(カメラ)[度]</option>
+            <option value="4">左を向く(タイヤ)</option>
+            <option value="5">左を向く(カメラ)[度]</option>
+            <option value="6">後ろに進む[cm]</option>
+            <option value="7">上を向く[度]</option>
+            <option value="8">下を向く[度]</option>
+            <option value="9">物体を認識</option>
+          </select>
         </div>
-        <br>
-        <div class="col-md-6">
-            <p><b>Set</b></p>
-            <div class="form-group row mb-3">
-              <label for="unit1" class="col-sm-1 col-form-label">Unit1:</label>
-              <div class="col-sm-5">
-                <select class="form-control" id="unit1">
-                  <option value="" selected>Select</option>
-                  <option value="1">前に進む[cm]</option>
-                  <option value="2">右を向く(タイヤ)</option>
-                  <option value="3">右を向く(カメラ)[度]</option>
-                  <option value="4">左を向く(タイヤ)</option>
-                  <option value="5">左を向く(カメラ)[度]</option>
-                  <option value="6">後ろに進む[cm]</option>
-                  <option value="7">上を向く[度]</option>
-                  <option value="8">下を向く[度]</option>
-                  <option value="9">物体を認識</option>
-                </select>
-              </div>
-              <div class="col-sm-4">
-                <input type="number" class="form-control mr-2" id="input1" placeholder="Enter a number" disabled>
-              </div>
-            </div>
+        <div class="col-sm-4">
+          <input type="number" class="form-control mr-2" id="input1" placeholder="Enter a number" disabled>
+        </div>
+      </div>
 
-            <div class="form-group row mb-3">
-              <label for="unit2" class="col-sm-1 col-form-label">Unit2:</label>
-              <div class="col-sm-5">
-                <select class="form-control" id="unit2">
-                  <option value="" selected>Select</option>
-                  <option value="1">前に進む[cm]</option>
-                  <option value="2">右を向く(タイヤ)</option>
-                  <option value="3">右を向く(カメラ)[度]</option>
-                  <option value="4">左を向く(タイヤ)</option>
-                  <option value="5">左を向く(カメラ)[度]</option>
-                  <option value="6">後ろに進む[cm]</option>
-                  <option value="7">上を向く[度]</option>
-                  <option value="8">下を向く[度]</option>
-                  <option value="9">物体を認識</option>
-                </select>
-              </div>
-              <div class="col-sm-4">
-                <input type="number" class="form-control mr-2" id="input2" placeholder="Enter a number" disabled>
-              </div>
-            </div>
+      <div class="form-group row mb-3">
+        <label for="unit2" class="col-sm-1 col-form-label">Unit2:</label>
+        <div class="col-sm-5">
+          <select class="form-control" id="unit2">
+            <option value="" selected>Select</option>
+            <option value="1">前に進む[cm]</option>
+            <option value="2">右を向く(タイヤ)</option>
+            <option value="3">右を向く(カメラ)[度]</option>
+            <option value="4">左を向く(タイヤ)</option>
+            <option value="5">左を向く(カメラ)[度]</option>
+            <option value="6">後ろに進む[cm]</option>
+            <option value="7">上を向く[度]</option>
+            <option value="8">下を向く[度]</option>
+            <option value="9">物体を認識</option>
+          </select>
+        </div>
+        <div class="col-sm-4">
+          <input type="number" class="form-control mr-2" id="input2" placeholder="Enter a number" disabled>
+        </div>
+      </div>
 
-            <div class="form-group row mb-3">
-              <label for="unit3" class="col-sm-1 col-form-label">Unit3:</label>
-              <div class="col-sm-5">
-                <select class="form-control" id="unit3">
-                  <option value="" selected>Select</option>
-                  <option value="1">前に進む[cm]</option>
-                  <option value="2">右を向く(タイヤ)</option>
-                  <option value="3">右を向く(カメラ)[度]</option>
-                  <option value="4">左を向く(タイヤ)</option>
-                  <option value="5">左を向く(カメラ)[度]</option>
-                  <option value="6">後ろに進む[cm]</option>
-                  <option value="7">上を向く[度]</option>
-                  <option value="8">下を向く[度]</option>
-                  <option value="9">物体を認識</option>
-                </select>
-              </div>
-              <div class="col-sm-4">
-                <input type="number" class="form-control mr-2" id="input3" placeholder="Enter a number" disabled>
-              </div>
-            </div>
+      <div class="form-group row mb-3">
+        <label for="unit3" class="col-sm-1 col-form-label">Unit3:</label>
+        <div class="col-sm-5">
+          <select class="form-control" id="unit3">
+            <option value="" selected>Select</option>
+            <option value="1">前に進む[cm]</option>
+            <option value="2">右を向く(タイヤ)</option>
+            <option value="3">右を向く(カメラ)[度]</option>
+            <option value="4">左を向く(タイヤ)</option>
+            <option value="5">左を向く(カメラ)[度]</option>
+            <option value="6">後ろに進む[cm]</option>
+            <option value="7">上を向く[度]</option>
+            <option value="8">下を向く[度]</option>
+            <option value="9">物体を認識</option>
+          </select>
+        </div>
+        <div class="col-sm-4">
+          <input type="number" class="form-control mr-2" id="input3" placeholder="Enter a number" disabled>
+        </div>
+      </div>
 
-            <div class="form-group row mb-3">
-              <label for="unit4" class="col-sm-1 col-form-label">Unit4:</label>
-              <div class="col-sm-5">
-                <select class="form-control" id="unit4">
-                  <option value="" selected>Select</option>
-                  <option value="1">前に進む[cm]</option>
-                  <option value="2">右を向く(タイヤ)</option>
-                  <option value="3">右を向く(カメラ)[度]</option>
-                  <option value="4">左を向く(タイヤ)</option>
-                  <option value="5">左を向く(カメラ)[度]</option>
-                  <option value="6">後ろに進む[cm]</option>
-                  <option value="7">上を向く[度]</option>
-                  <option value="8">下を向く[度]</option>
-                  <option value="9">物体を認識</option>
-                </select>
-              </div>
-              <div class="col-sm-4">
-                <input type="number" class="form-control mr-2" id="input4" placeholder="Enter a number" disabled>
-              </div>
-            </div>
+      <div class="form-group row mb-3">
+        <label for="unit4" class="col-sm-1 col-form-label">Unit4:</label>
+        <div class="col-sm-5">
+          <select class="form-control" id="unit4">
+            <option value="" selected>Select</option>
+            <option value="1">前に進む[cm]</option>
+            <option value="2">右を向く(タイヤ)</option>
+            <option value="3">右を向く(カメラ)[度]</option>
+            <option value="4">左を向く(タイヤ)</option>
+            <option value="5">左を向く(カメラ)[度]</option>
+            <option value="6">後ろに進む[cm]</option>
+            <option value="7">上を向く[度]</option>
+            <option value="8">下を向く[度]</option>
+            <option value="9">物体を認識</option>
+          </select>
+        </div>
+        <div class="col-sm-4">
+          <input type="number" class="form-control mr-2" id="input4" placeholder="Enter a number" disabled>
+        </div>
+      </div>
 
-            <div class="form-group row mb-3">
-              <label for="unit5" class="col-sm-1 col-form-label">Unit5:</label>
-              <div class="col-sm-5">
-                <select class="form-control" id="unit5">
-                  <option value="" selected>Select</option>
-                  <option value="1">前に進む[cm]</option>
-                  <option value="2">右を向く(タイヤ)</option>
-                  <option value="3">右を向く(カメラ)[度]</option>
-                  <option value="4">左を向く(タイヤ)</option>
-                  <option value="5">左を向く(カメラ)[度]</option>
-                  <option value="6">後ろに進む[cm]</option>
-                  <option value="7">上を向く[度]</option>
-                  <option value="8">下を向く[度]</option>
-                  <option value="9">物体を認識</option>
-                </select>
-              </div>
-              <div class="col-sm-4">
-                <input type="number" class="form-control mr-2" id="input5" placeholder="Enter a number" disabled>
-              </div>
-            </div>
-
-            <div>
-              <button id="start-button" class="btn btn-primary mt-3">START</button>
-            </div>
+      <div class="form-group row mb-3">
+        <label for="unit5" class="col-sm-1 col-form-label">Unit5:</label>
+        <div class="col-sm-5">
+          <select class="form-control" id="unit5">
+            <option value="" selected>Select</option>
+            <option value="1">前に進む[cm]</option>
+            <option value="2">右を向く(タイヤ)</option>
+            <option value="3">右を向く(カメラ)[度]</option>
+            <option value="4">左を向く(タイヤ)</option>
+            <option value="5">左を向く(カメラ)[度]</option>
+            <option value="6">後ろに進む[cm]</option>
+            <option value="7">上を向く[度]</option>
+            <option value="8">下を向く[度]</option>
+            <option value="9">物体を認識</option>
+          </select>
+        </div>
+        <div class="col-sm-4">
+          <input type="number" class="form-control mr-2" id="input5" placeholder="Enter a number" disabled>
+        </div>
+      </div>
+      <div>
+        <button id="start-button" class="btn btn-primary mt-3">START</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   const unit1 = document.querySelector('#unit1');
@@ -197,10 +198,5 @@
   unit5.addEventListener('change', function(){dropdownChanged(unit5, input5)})
 
 </script>
-        </div>
-    </div>
-</div>
-
-
 
 {% endblock %}

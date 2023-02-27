@@ -75,7 +75,7 @@ async def gen():
             frame = cv2.imencode('.jpg', frame)[1].tobytes()
             yield (b'--frame\r\n'
                 b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-            await asyncio.sleep(0)
+            await asyncio.sleep(0.01)
         except:
             pass
 
