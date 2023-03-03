@@ -1,8 +1,12 @@
 """モータ用の制御"""
 import sys
 import time
-import RPi.GPIO as GPIO
-import wiringpi as pi
+
+try: # テスト用
+    import RPi.GPIO as GPIO
+    import wiringpi as pi
+except:
+    pass
 
 class DCController():
     """DCモータ制御"""

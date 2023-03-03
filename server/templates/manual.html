@@ -3,46 +3,46 @@
 <link rel="stylesheet" href="/static/css/cross-key.css">
 <br>
 <div class="row">
-    <div class="col-md-10">
-        <h1>Okatron AI   MANUAL MODE</h1>
-    </div>
-    <div class="col text-end" >
-        <img src="/static/img/logo.png" width="40%">
-    </div>
-    </div>
+  <div class="col-md-10">
+    <h1>Okatron AI   MANUAL MODE</h1>
+  </div>
+  <div class="col text-end" >
+    <img src="/static/img/logo.png" width="40%">
+  </div>
+</div>
 <hr>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-6">
-            <img src="{{ url_for('video_feed') }}" width="640" height="480" class="img-fluid mb-3">
-            <!-- jinja2のテンプレートの書き方です。/video_feedを呼び出しています。 -->
+  <div class="row">
+    <div class="col-md-6">
+      <img src="{{ url_for('video_feed') }}" width="640" height="480" class="img-fluid mb-3">
+    </div>
+    <br>
+    <div class="col-md-6">
+      <div class="form-group row mb-3">
+        <div class="col-sm-5">
+          <label class="text-center"><b>MOVE</b></label>
+          <div class="cross-layout col-sm-5">
+            <button class="position-top btn cross-key-btn" id="move_top"><span class="top-mark">▲</span></button>
+            <button class="position-left btn cross-key-btn" id="move_left"><span class="left-mark">▲</span></button>
+            <button class="position-right btn cross-key-btn" id="move_right"><span class="right-mark">▲</span></button>
+            <button class="position-bottom btn cross-key-btn" id="move_bottom"><span class="bottom-mark">▲</span></button>
+          </div>
         </div>
-        <br>
 
-        <div class="col-md-6">
-          <div class="form-group row mb-3">
-            <div class="col-sm-5">
-            <label class="text-center"><b>MOVE</b></label>
+        <div class="form-group row mb-3">
+          <div class="col-sm-5">
+            <label class="text-center"><b>CAMERA</b></label>
             <div class="cross-layout col-sm-5">
-              <button class="position-top btn cross-key-btn" id="move_top"><span class="top-mark">▲</span></button>
-              <button class="position-left btn cross-key-btn" id="move_left"><span class="left-mark">▲</span></button>
-              <button class="position-right btn cross-key-btn" id="move_right"><span class="right-mark">▲</span></button>
-              <button class="position-bottom btn cross-key-btn" id="move_bottom"><span class="bottom-mark">▲</span></button>
+              <button class="position-top btn cross-key-btn" id="camera_top"><span class="top-mark">▲</span></button>
+              <button class="position-left btn cross-key-btn" id="camera_left"><span class="left-mark">▲</span></button>
+              <button class="position-right btn cross-key-btn" id="camera_right"><span class="right-mark">▲</span></button>
+              <button class="position-bottom btn cross-key-btn" id="camera_bottom"><span class="bottom-mark">▲</span></button>
             </div>
           </div>
-
-          <div class="form-group row mb-3">
-            <div class="col-sm-5">
-              <label class="text-center"><b>CAMERA</b></label>
-              <div class="cross-layout col-sm-5">
-                <button class="position-top btn cross-key-btn" id="camera_top"><span class="top-mark">▲</span></button>
-                <button class="position-left btn cross-key-btn" id="camera_left"><span class="left-mark">▲</span></button>
-                <button class="position-right btn cross-key-btn" id="camera_right"><span class="right-mark">▲</span></button>
-                <button class="position-bottom btn cross-key-btn" id="camera_bottom"><span class="bottom-mark">▲</span></button>
-              </div>
-          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <script>
