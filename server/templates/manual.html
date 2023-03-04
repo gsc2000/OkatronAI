@@ -1,116 +1,68 @@
-{% extends "layout.html" %}
-{% block content %}
-<link rel="stylesheet" href="/static/css/cross-key.css">
-<br>
-<div class="row">
-  <div class="col-md-10">
-    <h1>Okatron AI   MANUAL MODE</h1>
-  </div>
-  <div class="col text-end" >
-    <img src="/static/img/logo.png" width="40%">
-  </div>
-</div>
-<hr>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-6">
-      <img src="{{ url_for('video_feed') }}" width="640" height="480" class="img-fluid mb-3">
-    </div>
-    <br>
-    <div class="col-md-6">
-      <div class="form-group row mb-3">
-        <div class="col-sm-5">
-          <label class="text-center"><b>MOVE</b></label>
-          <div class="cross-layout col-sm-5">
-            <button class="position-top btn cross-key-btn" id="move_top"><span class="top-mark">▲</span></button>
-            <button class="position-left btn cross-key-btn" id="move_left"><span class="left-mark">▲</span></button>
-            <button class="position-right btn cross-key-btn" id="move_right"><span class="right-mark">▲</span></button>
-            <button class="position-bottom btn cross-key-btn" id="move_bottom"><span class="bottom-mark">▲</span></button>
-          </div>
+<!DOCTYPE html>
+<html lang="ja">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Okatron AI</title>
+    <link rel="icon" href="../static/favicon/favicon.ico">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/cross-key.css">
+  </head>
+<body style="background-color: whitesmoke;">
+<div style="display: flex; flex-direction: column; min-height: 80vh">
+    <div class="container">
+      <br>
+      <div class="row">
+        <div class="col-md-10">
+          <h1>MANUAL MODE</h1>
         </div>
+        <div class="col text-end" >
+          <img src="../static/img/logo.png" width="40%">
+        </div>
+      </div>
+      <hr>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{{ url_for('video_feed') }}" width="640" height="480" class="img-fluid mb-3">
+          </div>
+          <br>
+          <div class="col-md-6">
+            <div class="form-group row mb-3">
+              <div class="col-sm-5">
+                <label class="text-center"><b>MOVE</b></label>
+                <div class="cross-layout col-sm-5">
+                  <button class="position-top btn cross-key-btn" id="move_forward"><span class="top-mark">▲</span></button>
+                  <button class="position-left btn cross-key-btn" id="move_left"><span class="left-mark">▲</span></button>
+                  <button class="position-right btn cross-key-btn" id="move_right"><span class="right-mark">▲</span></button>
+                  <button class="position-bottom btn cross-key-btn" id="move_back"><span class="bottom-mark">▲</span></button>
+                </div>
+              </div>
 
-        <div class="form-group row mb-3">
-          <div class="col-sm-5">
-            <label class="text-center"><b>CAMERA</b></label>
-            <div class="cross-layout col-sm-5">
-              <button class="position-top btn cross-key-btn" id="camera_top"><span class="top-mark">▲</span></button>
-              <button class="position-left btn cross-key-btn" id="camera_left"><span class="left-mark">▲</span></button>
-              <button class="position-right btn cross-key-btn" id="camera_right"><span class="right-mark">▲</span></button>
-              <button class="position-bottom btn cross-key-btn" id="camera_bottom"><span class="bottom-mark">▲</span></button>
+              <div class="form-group row mb-3">
+                <div class="col-sm-5">
+                  <label class="text-center"><b>CAMERA</b></label>
+                  <div class="cross-layout col-sm-5">
+                    <button class="position-top btn cross-key-btn" id="camera_top"><span class="top-mark">▲</span></button>
+                    <button class="position-left btn cross-key-btn" id="camera_left"><span class="left-mark">▲</span></button>
+                    <button class="position-right btn cross-key-btn" id="camera_right"><span class="right-mark">▲</span></button>
+                    <button class="position-bottom btn cross-key-btn" id="camera_bottom"><span class="bottom-mark">▲</span></button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <script src="../static/js/manual.js" async></script>
     </div>
-  </div>
 </div>
-
-<script>
-  const move_top = document.getElementById('move_top');
-  const move_left = document.getElementById('move_left');
-  const move_right = document.getElementById('move_right');
-  const move_bottom = document.getElementById('move_bottom');
-  const camera_top = document.getElementById('camera_top');
-  const camera_left = document.getElementById('camera_left');
-  const camera_right = document.getElementById('camera_right');
-  const camera_bottom = document.getElementById('camera_bottom');
-
-  move_top.addEventListener("mousedown", () => {
-    fetch("/mode/2/move_top")
-  });
-  move_top.addEventListener("mouseup", () => {
-    fetch("/mode/2/move_stop")
-  });
-
-  move_left.addEventListener("mousedown", () => {
-    fetch("/mode/2/move_left");
-  });
-  move_left.addEventListener("mouseup", () => {
-    fetch("/mode/2/move_stop")
-  });
-
-  move_right.addEventListener("mousedown", () => {
-    fetch("/mode/2/move_right");
-  });
-  move_right.addEventListener("mouseup", () => {
-    fetch("/mode/2/move_stop")
-  });
-
-  move_bottom.addEventListener("mousedown", () => {
-    fetch("/mode/2/move_bottom");
-  });
-  move_bottom.addEventListener("mouseup", () => {
-    fetch("/mode/2/move_stop")
-  });
-
-  camera_top.addEventListener("mousedown", () => {
-    fetch("/mode/2/camera_top");
-  });
-  camera_top.addEventListener("mouseup", () => {
-    fetch("/mode/2/camera_stop")
-  });
-
-  camera_left.addEventListener("mousedown", () => {
-    fetch("/mode/2/camera_left");
-  });
-  camera_left.addEventListener("mouseup", () => {
-    fetch("/mode/2/camera_stop")
-  });
-
-  camera_right.addEventListener("mousedown", () => {
-    fetch("/mode/2/camera_right");
-  });
-  camera_right.addEventListener("mouseup", () => {
-    fetch("/mode/2/camera_stop")
-  });
-
-  camera_bottom.addEventListener("mousedown", () => {
-    fetch("/mode/2/camera_bottom");
-  });
-  camera_bottom.addEventListener("mouseup", () => {
-    fetch("/mode/2/camera_stop")
-  });
-
-</script>
-
-{% endblock %}
+<br>
+<footer>
+    <div align="center">
+        <p>This is a Okatron AI application Powered by <b>GSMS OKTC</b></p>
+    </div>
+</footer>
+</body>
+</html>
