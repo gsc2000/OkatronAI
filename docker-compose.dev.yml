@@ -16,6 +16,8 @@ services:
       - ./resource/config:/resource/config
       - ./resource/model:/resource/model
       - ./server:/server
+    devices:
+      - "/dev/video0:/dev/video0"
     # command: python App.py
 
 networks:
