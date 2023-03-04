@@ -1,4 +1,4 @@
-console.log("manual.js")
+console.log("manual")
 
 class PostButton {
     constructor(button) {

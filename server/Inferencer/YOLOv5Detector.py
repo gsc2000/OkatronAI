@@ -160,8 +160,9 @@ class YOLOv5Detector():
         if len(pred):
             for *xyxy, conf, cls in reversed(pred):
                 c = int(cls)  # integer class
-                label = None if hide_labels else (self.names[c] if hide_conf else f'{self.names[c]} {conf:.2f}')
-                annotator.box_label(xyxy, label, color=colors(c, True))
+                # label = None if hide_labels else (self.names[c] if hide_conf else f'{self.names[c]} {conf:.2f}')
+                # annotator.box_label(xyxy, label, color=colors(c, True))
+                annotator.box_label(xyxy, f'{conf:.2f}', color=colors(c, True))
 
         im0 = annotator.result()
         return im0

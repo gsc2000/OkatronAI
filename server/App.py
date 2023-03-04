@@ -46,23 +46,21 @@ async def index(request: Request):
     server.state.mode = Mode.NONE
     server.state.status = Status.NONE
     return templates.TemplateResponse('index.html',
-                                      {'request': request})
+                                      {'request': request}) #, "button2_active": True})
 
 @app.get("/mode/{button_id}")
 async def toggle_button(request: Request, button_id: int):
+    state.status = Status.IDLE
     if button_id == 1:
         state.mode = Mode.AUTO
-        state.status = Status.IDLE
         return templates.TemplateResponse("auto.html",
                                           {"request": request})
     elif button_id == 2:
         state.mode = Mode.MANUAL
-        state.status = Status.IDLE
         return templates.TemplateResponse("manual.html",
                                           {"request": request})
     elif button_id == 3:
         state.mode = Mode.PROGRAM
-        state.status = Status.IDLE
         return templates.TemplateResponse("program.html",
                                           {"request": request})
 
@@ -86,13 +84,29 @@ async def video_feed():
 
 # Auto
 # ----------------------------------------------------------------------------------------------------
-@app.post("/mode/1/ai_start")
-async def ai_start():
-    state.status = Status.WORKING
+class AIReq(BaseModel):
+    sw: str
 
-@app.post("/mode/1/ai_stop")
-async def ai_stop():
-    state.status = Status.IDLE
+@app.post("/mode/1/ai")
+async def switchAI(aireq: AIReq):
+    if aireq.sw == "start":
+        state.status = Status.WORKING
+    elif aireq.sw == "stop":
+        state.status = Status.IDLE
+
+    return {"Success":True}
+    # if ai.ai == "start":
+    #     state.status = Status.WORKING
+    # elif ai.ai == "stop":
+    #     state.status = Status.IDLE
+
+# @app.post("/mode/1/ai_start")
+# async def ai_start():
+#     state.status = Status.WORKING
+
+# @app.post("/mode/1/ai_stop")
+# async def ai_stop():
+#     state.status = Status.IDLE
 
 @app.post("/mode/1/class1")
 async def class1():

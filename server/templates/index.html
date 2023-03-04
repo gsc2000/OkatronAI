@@ -1,27 +1,45 @@
-{% extends "layout.html" %}
-{% block content %}
-<br>
-<div class="row">
-    <div class="col-md-10">
-        <h1>Okatron AI</h1>
-    </div>
-    <div class="col text-end" >
-        <img src="/static/img/logo.png" width="40%">
-    </div>
-    </div>
-<hr>
-<div class="container">
-    <div class="row h-100 p-3">
-        <div class="col-md-2">
-            <button type="button" class="btn btn-primary btn-block" onclick="window.location.href='/mode/1'">AUTO</button>
+<!DOCTYPE html>
+<html lang="ja">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Okatron AI</title>
+    <link rel="icon" href="../static/favicon/favicon.ico">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body style="background-color: whitesmoke;">
+  <div style="display: flex; flex-direction: column; min-height: 80vh">
+    <div class="container">
+        <br>
+        <div class="row">
+            <div class="col-md-8" >
+                <a href="/"><img src="../static/img/logo.png" width="10%"></a>
+            </div>
+            <div class="col text-end">
+                <h1>Okatron AI</h1>
+            </div>
         </div>
-        <div class="col-md-2">
-            <button type="button" class="btn btn-success btn-block" onclick="window.location.href='/mode/2'">MANUAL</button>
+        <hr>
+        <div class="container">
+            <div class="row h-100 p-3">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-primary btn-block" onclick="window.location.href='/mode/1'">AUTO</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-success btn-block" onclick="window.location.href='/mode/2'">MANUAL</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-warning btn-block" onclick="window.location.href='/mode/3'">PROGRAM</button>
+                </div>
+            </div>
         </div>
-        <div class="col-md-2">
-            <button type="button" class="btn btn-warning btn-block" onclick="window.location.href='/mode/3'">PROGRAM</button>
-        </div>
-    </div>
-</div>
 
-{% endblock %}
+        </div>
+        <br>
+        <footer>
+            <div align="center">
+                <p>This is a Okatron AI application Powered by <b>GSMS OKTC</b></p>
+            </div>
+        </footer>
+    </body>
+</html>

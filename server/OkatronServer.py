@@ -29,7 +29,7 @@ class OkatronServer():
     async def main(self):
         while True:
             if self.state.mode == Mode.AUTO:
-                img = self.autoMode()
+                img = await self.autoMode()
             elif self.state.mode == Mode.MANUAL:
                 img = await self.manualMode()
             elif self.state.mode == Mode.PROGRAM:
@@ -41,7 +41,7 @@ class OkatronServer():
             await asyncio.sleep(0)
 
 
-    def autoMode(self) -> np.ndarray:
+    async def autoMode(self) -> np.ndarray:
         """自動追従モードの動作"""
         if self.state.status == Status.IDLE:
             # 画像取得
@@ -52,7 +52,7 @@ class OkatronServer():
             img = self.captorWork()
             det, img = self.inferencerWork(img)
             msg = self.postProcDet(det)
-            self.motorcontrollerWork(msg)
+            await self.motorcontrollerWork(msg)
 
         return img
 

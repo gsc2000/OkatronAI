@@ -3,20 +3,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Okatron AI</title>
-    <link rel="icon" href="/static/favicon/favicon.ico">
+    <link rel="icon" href="../static/favicon/favicon.ico">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body style="background-color: whitesmoke;">
-<div style="display: flex; flex-direction: column; min-height: 80vh">
+  <div style="display: flex; flex-direction: column; min-height: 80vh">
     <div class="container">
       <br>
       <div class="row">
-        <div class="col-md-10">
-          <h1>Okatron AI   AUTO MODE</h1>
+        <div class="col-md-8" >
+          <a href="/"><img src="../static/img/logo.png" width="10%"></a>
         </div>
-        <div class="col text-end" >
-          <img src="/static/img/logo.png" width="40%">
+        <div class="col text-end">
+            <h1>AUTO MODE</h1>
         </div>
       </div>
       <hr>
@@ -37,6 +37,7 @@
                   </div>
                 </div>
               </div>
+              <hr>
               <div class="row my-3">
                 <label class="col-md-2 col-form-label"><b>CLASS</b></label>
                 <div class="col-md-10">
@@ -59,32 +60,29 @@
               </div>
               <div class="row my-3">
                 <label class="col-md-2 col-form-label"><b>ImageSize</b></label>
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <input type="number" class="form-control mx-3" id="imgx" placeholder="x">
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <input type="number" class="form-control mx-1" id="imgy" placeholder="y">
-                  </div>
-                  <div class="col-md-4">
-                    <button id="submitimg" type="button" class="mx-1 btn btn-info">SET</button>
                   </div>
                 </div>
                 <div class="row my-3">
                   <label class="col-md-2 col-form-label"><b>IOU</b></label>
-                  <div class="col-md-4">
-                    <input type="number" class="form-control mx-3" id="iou" placeholder="Enter a number">
-                  </div>
-                  <div class="col-md-4">
-                    <button id="submitiou" type="button" class="mx-1 btn btn-info">SET</button>
+                  <div class="col-md-5">
+                    <input type="number" class="form-control mx-3" id="iou" placeholder="0~1">
                   </div>
                 </div>
                 <div class="row my-3">
                   <label class="col-md-2 col-form-label"><b>Confidence</b></label>
-                  <div class="col-md-4">
-                    <input type="number" class="form-control mx-3" id="conf" placeholder="Enter a number">
+                  <div class="col-md-5">
+                    <input type="number" class="form-control mx-3" id="conf" placeholder="0~1">
                   </div>
-                  <div class="col-md-4">
-                    <button id="submitconf" type="button" class="mx-1 btn btn-info">SET</button>
+                </div>
+                <div class="row my-3">
+                  <label class="col-md-2 col-form-label"><b></b></label>
+                  <div class="col-md-8">
+                    <button id="submitconf" type="button" class="mx-3 btn btn-dark btn-lg w-100">SET</button>
                   </div>
                 </div>
               </div>
@@ -92,16 +90,14 @@
           </div>
         </div>
       </div>
-
-      <script src="../static/js/auto.js" async></script>
-
-</div>
-</div>
-<br>
-<footer>
-    <div align="center">
-        <p>This is a Okatron AI application Powered by <b>GSMS OKTC</b></p>
     </div>
-</footer>
+  </div>
+  <br>
+  <footer>
+      <div align="center">
+          <p>This is a Okatron AI application Powered by <b>GSMS OKTC</b></p>
+      </div>
+  </footer>
 </body>
+<script src="../static/js/auto.js" async></script>
 </html>
