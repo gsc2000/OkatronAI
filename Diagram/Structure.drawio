@@ -4,26 +4,17 @@
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="2" value="フロントエンド&lt;br&gt;HTML" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="72" y="48" width="120" height="72" as="geometry"/>
+                <mxCell id="2" value="＜フロントエンド＞&lt;br&gt;・ユーザインタフェースを提供する&lt;br&gt;・Webブラウザ(クライアント側のPC)で実行される&lt;br&gt;&lt;br&gt;言語&lt;br&gt;HTML : 文字や画像などのコンテンツを表示させる&lt;br&gt;CSS : 大きさ、色、レイアウトなどの装飾をする&lt;br&gt;Javascript : 動的な動作を実現する" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="24" y="24" width="294" height="138" as="geometry"/>
                 </mxCell>
-                <mxCell id="3" value="FastAPI" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="72" y="192" width="120" height="72" as="geometry"/>
+                <mxCell id="3" value="＜Webサーバ＞&lt;br&gt;・クライアントからリクエストを受け取り、&lt;br&gt;　適切なWebアプリケーションへ転送する&lt;br&gt;・静的ファイルの配信、HTTPSのセットアップ、&lt;br&gt;　負荷分散などの機能を提供&lt;br&gt;・必要な処理を行ってからWebAPIやバックエンドにリクエストを送信する&lt;br&gt;&lt;br&gt;有名どころ&lt;br&gt;Nginx&lt;br&gt;Appach" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="336" y="24" width="456" height="162" as="geometry"/>
                 </mxCell>
-                <mxCell id="4" value="バックエンド&lt;br&gt;OkatronServer" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="72" y="336" width="120" height="72" as="geometry"/>
+                <mxCell id="4" value="バックエンド&lt;br&gt;OkatronServer" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="336" y="414" width="120" height="72" as="geometry"/>
                 </mxCell>
-                <mxCell id="5" value="・ユーザが見るところ&lt;br&gt;・ユーザからのリクエスト受付け" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-                    <mxGeometry x="216" y="48" width="204" height="48" as="geometry"/>
-                </mxCell>
-                <mxCell id="6" value="・フロントエンドのリクエスト処理&lt;br&gt;・バックエンドのリクエスト処理" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-                    <mxGeometry x="216" y="192" width="216" height="48" as="geometry"/>
-                </mxCell>
-                <mxCell id="7" value="・アプリの処理&lt;br&gt;　・撮影&lt;br&gt;　・AI処理&lt;br&gt;　・モータ制御" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
-                    <mxGeometry x="216" y="336" width="108" height="78" as="geometry"/>
-                </mxCell>
-                <mxCell id="Wj6vKax3r_KFzhZyF8nQ-7" value="DataBaseAPI&lt;br&gt;ファイル操作する" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="408" y="336" width="120" height="72" as="geometry"/>
+                <mxCell id="8" value="＜WebAPI＞&lt;br&gt;・Webアプリケーションから外部のプログラムにアクセスするための&lt;br&gt;　インタフェース&lt;br&gt;&lt;br&gt;FastAPI&lt;br&gt;・Webフレームワーク&lt;br&gt;Uvicorn&lt;br&gt;ASGIサーバ&lt;br&gt;&lt;br&gt;上記の両者を使ってWebサーバとWebAPIの機能を両方備えたアプリケーションを&lt;br&gt;作成することができる" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="336" y="216" width="456" height="186" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
