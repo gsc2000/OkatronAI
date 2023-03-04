@@ -1,57 +1,66 @@
 """モータ用の制御"""
 import sys
 import time
-import RPi.GPIO as GPIO
-import wiringpi as pi
+# import RPi.GPIO as GPIO
+# import wiringpi as pi
 
 class DCController():
     """DCモータ制御"""
     def __init__(self) -> None:
         #DCモーターに関する設定
         #GPIOピンの初期化
-        self.STBY = 4
+        self.OUTPUT_PIN_STBY = 4
         self.OUTPUT_PIN_LF = 5
         self.OUTPUT_PIN_LR = 6
-        self.OUTPUT_PIN_RF = 7
-        self.OUTPUT_PIN_RR = 8
+        self.OUTPUT_PIN_LPWM = 7
+        self.OUTPUT_PIN_RF = 8
+        self.OUTPUT_PIN_RR = 9
+        self.OUTPUT_PIN_RPWM = 10
 
-        GPIO.setmode( GPIO.BCM )
-        GPIO.setup( self.STBY, GPIO.OUT )
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.OUTPUT_PIN_STBY, GPIO.OUT)
+        GPIO.setup(self.OUTPUT_PIN_LF, GPIO.OUT)
+        GPIO.setup(self.OUTPUT_PIN_LR, GPIO.OUT)
+        GPIO.setup(self.OUTPUT_PIN_RF, GPIO.OUT)
+        GPIO.setup(self.OUTPUT_PIN_RR, GPIO.OUT)
 
         pi.wiringPiSetupGpio()
-        pi.pinMode(self.OUTPUT_PIN_LF, pi.OUTPUT)
-        pi.pinMode(self.OUTPUT_PIN_LR, pi.OUTPUT)
-        pi.pinMode(self.OUTPUT_PIN_RF, pi.OUTPUT)
-        pi.pinMode(self.OUTPUT_PIN_RR, pi.OUTPUT)
-        pi.softPwmCreate(self.OUTPUT_PIN_LF, 0, 100)
-        pi.softPwmCreate(self.OUTPUT_PIN_LR, 0, 100)
-        pi.softPwmCreate(self.OUTPUT_PIN_RF, 0, 100)
-        pi.softPwmCreate(self.OUTPUT_PIN_RR, 0, 100)
+        pi.pinMode(self.OUTPUT_PIN_LPWM, pi.OUTPUT)
+        pi.pinMode(self.OUTPUT_PIN_RPWM, pi.OUTPUT)
+        pi.softPwmCreate(self.OUTPUT_PIN_LPWM, 0, 100)
+        pi.softPwmCreate(self.OUTPUT_PIN_RPWM, 0, 100)
+        
         #初期値はSTBYのみON状態
-        GPIO.output( self.STBY, GPIO.HIGH )
-        pi.softPwmWrite(self.OUTPUT_PIN_LF, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_LR, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_RF, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_RR, 0)
+        GPIO.output(self.OUTPUT_PIN_STBY, GPIO.HIGH)
+        GPIO.output(self.OUTPUT_PIN_LF, GPIO.LOW)
+        GPIO.output(self.OUTPUT_PIN_LR, GPIO.LOW)
+        GPIO.output(self.OUTPUT_PIN_RF, GPIO.LOW)
+        GPIO.output(self.OUTPUT_PIN_RR, GPIO.LOW)
+        pi.softPwmWrite(self.OUTPUT_PIN_LPWM, 0)
+        pi.softPwmWrite(self.OUTPUT_PIN_RPWM, 0)
 
         time.sleep(0.05)
 
     def left(self):
         """左に向く"""
         print("Left")
-        pi.softPwmWrite(self.OUTPUT_PIN_LF, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_LR, 50)
-        pi.softPwmWrite(self.OUTPUT_PIN_RF, 50)
-        pi.softPwmWrite(self.OUTPUT_PIN_RR, 0)
+        GPIO.output(self.OUTPUT_PIN_LF, GPIO.LOW)
+        GPIO.output(self.OUTPUT_PIN_LR, GPIO.HIGH)
+        pi.softPwmWrite(self.OUTPUT_PIN_LPWM, 50)
+        GPIO.output(self.OUTPUT_PIN_RF, GPIO.HIGH)
+        GPIO.output(self.OUTPUT_PIN_RR, GPIO.LOW)
+        pi.softPwmWrite(self.OUTPUT_PIN_RPWM, 50)
         pass
 
     def right(self):
         """右に向く"""
         print("Right")
-        pi.softPwmWrite(self.OUTPUT_PIN_LF, 50)
-        pi.softPwmWrite(self.OUTPUT_PIN_LR, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_RF, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_RR, 50)
+        GPIO.output(self.OUTPUT_PIN_LF, GPIO.HIGH)
+        GPIO.output(self.OUTPUT_PIN_LR, GPIO.LOW)
+        pi.softPwmWrite(self.OUTPUT_PIN_LPWM, 50)
+        GPIO.output(self.OUTPUT_PIN_RF, GPIO.LOW)
+        GPIO.output(self.OUTPUT_PIN_RR, GPIO.HIGH)
+        pi.softPwmWrite(self.OUTPUT_PIN_RPWM, 50)
         pass
 
     def up(self):
@@ -65,26 +74,28 @@ class DCController():
     def forward(self):
         """前進する"""
         print("Foward")
-        pi.softPwmWrite(self.OUTPUT_PIN_LF, 50)
-        pi.softPwmWrite(self.OUTPUT_PIN_LR, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_RF, 50)
-        pi.softPwmWrite(self.OUTPUT_PIN_RR, 0)
+        GPIO.output(self.OUTPUT_PIN_LF, GPIO.HIGH)
+        GPIO.output(self.OUTPUT_PIN_LR, GPIO.LOW)
+        pi.softPwmWrite(self.OUTPUT_PIN_LPWM, 50)
+        GPIO.output(self.OUTPUT_PIN_RF, GPIO.HIGH)
+        GPIO.output(self.OUTPUT_PIN_RR, GPIO.LOW)
+        pi.softPwmWrite(self.OUTPUT_PIN_RPWM, 50)
         pass
 
     def back(self):
         """後進する"""
-        pi.softPwmWrite(self.OUTPUT_PIN_LF, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_LR, 50)
-        pi.softPwmWrite(self.OUTPUT_PIN_RF, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_RR, 50)
+        GPIO.output(self.OUTPUT_PIN_LF, GPIO.LOW)
+        GPIO.output(self.OUTPUT_PIN_LR, GPIO.HIGH)
+        pi.softPwmWrite(self.OUTPUT_PIN_LPWM, 50)
+        GPIO.output(self.OUTPUT_PIN_RF, GPIO.LOW)
+        GPIO.output(self.OUTPUT_PIN_RR, GPIO.HIGH)
+        pi.softPwmWrite(self.OUTPUT_PIN_RPWM, 50)
         pass
 
     def stop(self):
-        pi.softPwmWrite(self.OUTPUT_PIN_LF, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_LR, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_RF, 0)
-        pi.softPwmWrite(self.OUTPUT_PIN_RR, 0)
-        """止まる"""
+        pi.softPwmWrite(self.OUTPUT_PIN_LPWM, 0)
+        pi.softPwmWrite(self.OUTPUT_PIN_RPWM, 0)
+        """止まる(ショートストップ)"""
 
 class ServoController():
     """サーボモータ制御"""
@@ -92,8 +103,8 @@ class ServoController():
         #サーボモーターの初期設定
         print("サーボsetting...")
         GPIO.setmode(GPIO.BCM)
-        self.OUTPUT_PIN_CAMV = 9
-        self.OUTPUT_PIN_CAMH = 10
+        self.OUTPUT_PIN_CAMV = 11
+        self.OUTPUT_PIN_CAMH = 12
         GPIO.setup(self.OUTPUT_PIN_CAMV, GPIO.OUT)
         GPIO.setup(self.OUTPUT_PIN_CAMH, GPIO.OUT)
         self.v = GPIO.PWM(self.OUTPUT_PIN_CAMV, 50) #PWM設定、周波数は50Hz
