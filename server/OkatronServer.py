@@ -18,22 +18,30 @@ class OkatronServer():
     GUIから届くユーザリクエストの処理や
     内部状態に応じて行う処理を変更
     """
-    def __init__(self, state, q_recv_msg: queue.Queue, q_send_msg: queue.Queue) -> None:
+    def __init__(self, state) -> None:
         self.state: OkatronState = state
-        self.q_recv_msg = q_recv_msg # FastAPI <-> OkatronServer
-        self.q_send_msg = q_send_msg # OkatronServer <-> OkatronController
 
-    def run(self) -> None:
-        """メインループ"""
-        if self.state.mode == Mode.AUTO:
-            img = self.autoMode()
-        elif self.state.mode == Mode.MANUAL:
-            img = self.manualMode()
-        elif self.state.mode == Mode.PROGRAM:
-            img = self.programMode()
-        return img
+    async def run(self) -> None:
+        # ループの開始はAppが担う
+        asyncio.create_task(self.state.cont.run())
+        asyncio.create_task(self.main())
 
-    def autoMode(self):
+    async def main(self):
+        while True:
+            if self.state.mode == Mode.AUTO:
+                img = self.autoMode()
+            elif self.state.mode == Mode.MANUAL:
+                img = await self.manualMode()
+            elif self.state.mode == Mode.PROGRAM:
+                img = self.programMode()
+            else:
+                pass
+
+            self.state.img = img.copy()
+            await asyncio.sleep(0)
+
+
+    def autoMode(self) -> np.ndarray:
         """自動追従モードの動作"""
         if self.state.status == Status.IDLE:
             # 画像取得
@@ -48,19 +56,21 @@ class OkatronServer():
 
         return img
 
-    def manualMode(self):
+    async def manualMode(self) -> np.ndarray:
         """マニュアルモードの動作"""
         # 画像取得
         img = self.captorWork()
-        try:
-            msg = self.q_recv_msg.get(False)
-            print("Recv[Server]:{}".format(msg))
-            self.motorcontrollerWork(msg)
-        except:
+
+        q_size = self.state.q_user_req.qsize()
+        if q_size == 0:
             pass
+        else:
+            msg = await self.state.q_user_req.get()
+            print("Recv[Server]:{}".format(msg))
+            await self.motorcontrollerWork(msg)
         return img
 
-    def programMode(self):
+    def programMode(self) -> np.ndarray:
         """プログラムモードの動作"""
         if self.state.status == Status.IDLE:
             # 画像取得
@@ -92,15 +102,10 @@ class OkatronServer():
                "camera": [camera_direction, camera_deg]}
         return msg
 
-    def motorcontrollerWork(self, msg: dict) -> bool:
+    async def motorcontrollerWork(self, msg: dict) -> bool:
         """
         モータを制御する
-        Args:
-            msg: 動作を指示するメッセージ
-                 0: ON
-                 数字: 動作する距離・角度
+        オートモードの場合はここで左右の出力値を決める
         """
-        if msg["move"][0] == None and msg["camera"][0] == None:
-            pass
-        else:
-            self.q_send_msg.put(msg) # OkatronControllerへ渡す
+        for _msg in msg:
+            await self.state.q_cont_msg.put(_msg) # OkatronControllerへ渡す

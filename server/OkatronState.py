@@ -1,6 +1,7 @@
 """状態管理"""
-
 import enum
+import numpy as np
+import asyncio
 
 import DataBaseapi as db
 # from Captor.WebCamera import WebCamera
@@ -33,11 +34,16 @@ class OkatronState():
         self._mode: Mode = Mode(config["base"]["mode"])
         self._status: Status = Status.IDLE
 
-        # self._user_io = UserIO()
+        self.img = np.zeros((240, 320, 3), dtype="uint8")
+
         self.captor = WebCamera(config["camera"])
+
         self.yolov5 = YOLOv5Detector(config["yolov5"])
         self.yolo_info = config["yolov5"]
-        self.cont = OkatronController()
+
+        self.q_user_req = asyncio.Queue() # FastAPI <-> Okatron
+        self.q_cont_msg = asyncio.Queue() # Server <-> Controller
+        self.cont = OkatronController(self.q_cont_msg)
 
         print("OkatronState Setup")
 
@@ -68,10 +74,3 @@ class OkatronState():
     @status.setter
     def status(self, status):
         self._status = status
-
-    # @property
-    # def user_io(self):
-    #     return self._user_io
-    # @property
-    # def captor(self):
-    #     return self._captor
