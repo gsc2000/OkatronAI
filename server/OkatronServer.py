@@ -87,7 +87,7 @@ class OkatronServer():
         """AI処理する"""
         det = self.state.yolov5.detect(img)
         img = self.state.yolov5.showResult(img, det)
-        # img, center = self.state.facecascade.detect(img, det)
+        img, center = self.state.facecascade.detect(img, det)
         return det, img
 
     def postProcDet(self, det: np.ndarray):
