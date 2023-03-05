@@ -12,10 +12,19 @@
     <div class="container">
       <br>
       <div class="row">
-        <div class="col-md-8" >
-          <a href="/"><img src="../static/img/logo.png" width="10%"></a>
+        <div class="col-md-2" >
+          <a href="/"><img src="../static/img/logo.png" width="40%"></a>
         </div>
-        <div class="col text-end">
+        <div class="col-md-2 align-self-end">
+          <button type="button" class="btn btn-dark btn-block" onclick="goBack()">BACK</button>
+        </div>
+        <div class="col-md-2 align-self-end">
+            <button type="button" class="btn btn-success btn-block" onclick="window.location.href='/mode/2'">MANUAL</button>
+        </div>
+        <div class="col-md-2 align-self-end">
+            <button type="button" class="btn btn-warning btn-block" onclick="window.location.href='/mode/3'">PROGRAM</button>
+        </div>
+        <div class="col text-end align-self-end">
             <h1>AUTO MODE</h1>
         </div>
       </div>
@@ -101,4 +110,5 @@
   </footer>
 </body>
 <script src="../static/js/auto.js" async></script>
+<script src="../static/js/common.js" async></script>
 </html>
