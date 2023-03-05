@@ -87,23 +87,22 @@ class OkatronServer():
         """AI処理する"""
         det = self.state.yolov5.detect(img)
         img = self.state.yolov5.showResult(img, det)
-        img = self.state.facecascade.detect(img)
-        return det, img
+        img, center = self.state.facecascade.detect(img, det)
+        return center, img
 
     def postProcDet(self, det: np.ndarray):
         """YOLOの検出結果から距離・角度を算出する"""
         # タイヤの動作決定
         move_direction = "top"
-        move_length = 5
+        move_val = [5, 5]
 
         # カメラの動作決定
         camera_direction = "top"
         camera_deg = 5
-        msg = {"move": [move_direction, move_length],
-               "camera": [camera_direction, camera_deg]}
+        msg = [{"move": [move_direction, move_val]}]
         return msg
 
-    async def motorcontrollerWork(self, msg: dict) -> bool:
+    async def motorcontrollerWork(self, msg: list) -> bool:
         """
         モータを制御する
         オートモードの場合はここで左右の出力値を決める
