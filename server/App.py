@@ -3,22 +3,17 @@
 import os
 import sys
 import argparse
-
 import asyncio
+import cv2
 
 from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, StreamingResponse
-from fastapi.encoders import jsonable_encoder
 from fastapi.requests import Request
-from pydantic import BaseModel
-
 from uvicorn import Config, Server
 
-import cv2
-from io import BytesIO
-
+from api import schemas
 from OkatronServer import OkatronServer
 from OkatronState import OkatronState, Mode, Status
 
@@ -43,13 +38,15 @@ def myArgParser() -> argparse.Namespace:
 # ----------------------------------------------------------------------------------------------------
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
+    """初期画面"""
     server.state.mode = Mode.NONE
     server.state.status = Status.NONE
     return templates.TemplateResponse('index.html',
                                       {'request': request}) #, "button2_active": True})
 
 @app.get("/mode/{button_id}")
-async def toggle_button(request: Request, button_id: int):
+async def swithPage(request: Request, button_id: int):
+    """画面遷移"""
     state.status = Status.IDLE
     if button_id == 1:
         state.mode = Mode.AUTO
@@ -67,6 +64,7 @@ async def toggle_button(request: Request, button_id: int):
 # Common
 # ----------------------------------------------------------------------------------------------------
 async def updateImage():
+    """画像更新"""
     while True:
         try:
             frame = server.state.img.copy()
@@ -79,58 +77,58 @@ async def updateImage():
 
 @app.get('/video_feed')
 async def video_feed():
-    """Video streaming route. Put this in the src attribute of an img tag."""
+    """表示画像"""
     return  StreamingResponse(updateImage(), media_type='multipart/x-mixed-replace; boundary=frame')
 
 # Auto
 # ----------------------------------------------------------------------------------------------------
-class AIReq(BaseModel):
-    sw: str
-
 @app.post("/mode/1/ai")
-async def switchAI(aireq: AIReq):
-    if aireq.sw == "start":
+async def switchAI(req: schemas.UseAI):
+    if req.switch == True:
         state.status = Status.WORKING
-    elif aireq.sw == "stop":
+    elif req.switch == False:
         state.status = Status.IDLE
 
-    return {"Success":True}
-    # if ai.ai == "start":
-    #     state.status = Status.WORKING
-    # elif ai.ai == "stop":
-    #     state.status = Status.IDLE
+    return {"Success": True}
 
-# @app.post("/mode/1/ai_start")
-# async def ai_start():
-#     state.status = Status.WORKING
+@app.post("/mode/1/modelsize")
+async def switchModelSize(req: schemas.ModelSize):
+    if req.model == "nano":
+        pass
+    elif req.model == "small":
+        pass
+    elif req.model == "large":
+        pass
+    return {"Success": True}
 
-# @app.post("/mode/1/ai_stop")
-# async def ai_stop():
-#     state.status = Status.IDLE
+@app.post("/mode/1/param")
+async def selectParam(req: schemas.ModelParam):
+    print(req)
+    new_params = {}
+    if req.classes == "1":
+        new_params["det_class"] = 0
+    elif req.classes == "2":
+        new_params["det_class"] = 16
+    elif req.classes == "3":
+        new_params["det_class"] = 67
 
-@app.post("/mode/1/class1")
-async def class1():
-    state.yolo_info["det_class"] = 0
-    state.resetInferencerInfo()
+    new_params["image"] = (int(req.imgsize), int(req.imgsize))
+    if req.iou == "":
+        new_params["iou"] = float(state.yolo_info["iou"])
+    else:
+        new_params["iou"] = float(req.iou)
+    if req.conf == "":
+        new_params["conf"] = float(state.yolo_info["conf"])
+    else:
+        new_params["conf"] = float(req.conf)
 
-@app.post("/mode/1/class2")
-async def class2():
-    state.yolo_info["det_class"] = 16
-    state.resetInferencerInfo()
-
-@app.post("/mode/1/class3")
-async def class3():
-    state.yolo_info["det_class"] = 67
-    state.resetInferencerInfo()
+    state.resetInferencerInfo(new_params)
+    return {"Success": True}
 
 # Manual
 # ----------------------------------------------------------------------------------------------------
-class ManualReq(BaseModel):
-    kind: str
-    direction: str
-
 @app.post("/mode/2/crosskey")
-async def manual_req(req: ManualReq):
+async def manual_req(req: schemas.ManualReq):
     if req.kind == "move":
         msg = [{req.kind: [req.direction, [-1, -1]]}]
     elif req.kind == "camera":
@@ -140,15 +138,15 @@ async def manual_req(req: ManualReq):
 
 # Program
 # ----------------------------------------------------------------------------------------------------
-class UploadJson(BaseModel):
-    op: str
-    content: str
+# class UploadJson(BaseModel):
+#     op: str
+#     content: str
 
-@app.post("/mode/3/info")
-async def prog_info(item: UploadJson):
-    print(item)
-    data = jsonable_encoder(item)
-    print((data))
+# @app.post("/mode/3/info")
+# async def prog_info(item: UploadJson):
+#     print(item)
+#     data = jsonable_encoder(item)
+#     print((data))
 
 if __name__ == "__main__":
     """アプリを起動する"""

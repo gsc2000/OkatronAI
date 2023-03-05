@@ -37,17 +37,6 @@
                   </div>
                 </div>
               </div>
-              <hr>
-              <div class="row my-3">
-                <label class="col-md-2 col-form-label"><b>CLASS</b></label>
-                <div class="col-md-10">
-                  <div class="btn-group btn-group-toggle mx-3 btn-block" role="group" aria-label="Toggle buttons">
-                    <button id="class1" type="button" class="btn btn-info btn-lg {% if btn1_class_active %}active{% endif %}" disabled>Person</button>
-                    <button id="class2" type="button" class="btn btn-info btn-lg {% if btn2_class_active %}active{% endif %}">Dog</button>
-                    <button id="class3" type="button" class="btn btn-info btn-lg {% if btn3_class_active %}active{% endif %}">Cell phone</button>
-                  </div>
-                </div>
-              </div>
               <div class="row my-3">
                 <label class="col-md-2 col-form-label"><b>ModelSize</b></label>
                 <div class="col-md-10">
@@ -58,31 +47,43 @@
                   </div>
                 </div>
               </div>
+              <hr>
+              <div class="row my-3">
+                <label class="col-md-2 col-form-label"><b>CLASS</b></label>
+                <div class="col-md-10">
+                  <div class="btn-group btn-group-toggle mx-3 btn-block" role="group" aria-label="Toggle buttons">
+                    <button id="class_1" type="button" class="btn btn-info btn-lg {% if btn1_class_active %}active{% endif %}" disabled>Person</button>
+                    <button id="class_2" type="button" class="btn btn-info btn-lg {% if btn2_class_active %}active{% endif %}">Dog</button>
+                    <button id="class_3" type="button" class="btn btn-info btn-lg {% if btn3_class_active %}active{% endif %}">Cell phone</button>
+                  </div>
+                </div>
+              </div>
               <div class="row my-3">
                 <label class="col-md-2 col-form-label"><b>ImageSize</b></label>
-                  <div class="col-md-3">
-                    <input type="number" class="form-control mx-3" id="imgx" placeholder="x">
+                <div class="col-md-10">
+                  <div class="btn-group btn-group-toggle mx-3 btn-block" role="group" aria-label="Toggle buttons">
+                    <button id="imgsize_320" type="button" class="btn btn-info btn-lg {% if btn1_class_active %}active{% endif %}" disabled>320x320</button>
+                    <button id="imgsize_240" type="button" class="btn btn-info btn-lg {% if btn2_class_active %}active{% endif %}">240x240</button>
+                    <button id="imgsize_160" type="button" class="btn btn-info btn-lg {% if btn3_class_active %}active{% endif %}">160x160</button>
                   </div>
-                  <div class="col-md-3">
-                    <input type="number" class="form-control mx-1" id="imgy" placeholder="y">
-                  </div>
+                </div>
                 </div>
                 <div class="row my-3">
                   <label class="col-md-2 col-form-label"><b>IOU</b></label>
                   <div class="col-md-5">
-                    <input type="number" class="form-control mx-3" id="iou" placeholder="0~1">
+                    <input type="number" class="form-control mx-3" id="iou" placeholder="0~1" min="0.0" max="1.0" step="0.01">
                   </div>
                 </div>
                 <div class="row my-3">
                   <label class="col-md-2 col-form-label"><b>Confidence</b></label>
                   <div class="col-md-5">
-                    <input type="number" class="form-control mx-3" id="conf" placeholder="0~1">
+                    <input type="number" class="form-control mx-3" id="conf" placeholder="0~1" min="0.0" max="1.0" step="0.01">
                   </div>
                 </div>
                 <div class="row my-3">
                   <label class="col-md-2 col-form-label"><b></b></label>
                   <div class="col-md-8">
-                    <button id="submitconf" type="button" class="mx-3 btn btn-dark btn-lg w-100">SET</button>
+                    <button id="submit" type="button" class="mx-3 btn btn-dark btn-lg w-100">SET</button>
                   </div>
                 </div>
               </div>

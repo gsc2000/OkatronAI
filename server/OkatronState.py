@@ -4,10 +4,11 @@ import numpy as np
 import asyncio
 
 import DataBaseapi as db
-# from Captor.WebCamera import WebCamera
-from Captor.DemoCamera import DemoCamera as WebCamera
+from Captor.WebCamera import WebCamera
+# from Captor.DemoCamera import DemoCamera as WebCamera
 # from Captor.WebCamera import NullCamera as WebCamera
 from Inferencer.YOLOv5Detector import YOLOv5Detector
+from Inferencer.FaceDetector import FaceDetector
 from MotorController.OkatronController import OkatronController
 
 class Mode(enum.Enum):
@@ -41,6 +42,8 @@ class OkatronState():
         self.yolov5 = YOLOv5Detector(config["yolov5"])
         self.yolo_info = config["yolov5"]
 
+        self.facecascade = FaceDetector()
+
         self.q_user_req = asyncio.Queue() # FastAPI <-> Okatron
         self.q_cont_msg = asyncio.Queue() # Server <-> Controller
         self.cont = OkatronController(self.q_cont_msg)
@@ -54,13 +57,14 @@ class OkatronState():
         """
         self.yolov5.setupModel(weight)
 
-    def resetInferencerInfo(self) -> None:
+    def resetInferencerInfo(self, new_params) -> None:
         """
         Args:
             info: YOLOの推論設定情報
         """
-        self.yolov5.setupInfo(tuple(self.yolo_info["image"]), self.yolo_info["conf"],
-                              self.yolo_info["iou"], self.yolo_info["det_class"])
+        print(new_params)
+        self.yolov5.setupInfo(tuple(new_params["image"]), new_params["conf"],
+                              new_params["iou"], new_params["det_class"])
 
     @property
     def mode(self):
