@@ -24,6 +24,8 @@ class FaceDetector():
         faces = self.model.detectMultiScale(trim_img)
 
         center = (None, None)
+        w = None
+        h = None
         for x, y, w, h in faces:
             x = x+x1
             y = y+y1
@@ -32,4 +34,4 @@ class FaceDetector():
             cv2.circle(img, center, 5, (255, 0, 0), thickness=-1, lineType=cv2.LINE_8, shift=0)
             break
 
-        return img, center
+        return center, (w, h), img

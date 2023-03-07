@@ -129,10 +129,8 @@ async def selectParam(req: schemas.ModelParam):
 # ----------------------------------------------------------------------------------------------------
 @app.post("/mode/2/crosskey")
 async def manual_req(req: schemas.ManualReq):
-    if req.kind == "move":
-        msg = [{req.kind: [req.direction, [-1, -1]]}]
-    elif req.kind == "camera":
-        msg = [{req.kind: [req.direction, -1]}]
+    """サーバへメッセージ送付"""
+    msg = [req.kind, req.direction, [None, None]]
     await state.q_user_req.put(msg)
     return {"kind": req.kind, "direction": req.direction}
 

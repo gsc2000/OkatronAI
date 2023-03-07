@@ -7,6 +7,12 @@ camera:
   height: 240
   fps: 30
 
+controller:
+  span: 10
+
+lost:
+  time: 2
+
 yolov5:
   weight: yolov5n.pt
   image:

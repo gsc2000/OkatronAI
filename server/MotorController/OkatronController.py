@@ -36,32 +36,34 @@ class OkatronController():
         asyncio.create_task(self.servoControl(q_servo))
 
         while True:
-            msg: dict = await self.q_msg.get()
-
-            if "move" in msg.keys():
-                await q_dc.put(msg["move"])
-            elif "camera" in msg.keys():
-                await q_servo.put(msg["camera"])
-            await asyncio.sleep(0.01)
+            msg: list = await self.q_msg.get()
+            device = msg[0]
+            if device == "move":
+                await q_dc.put(msg[1:])
+            elif device == "camera":
+                await q_servo.put(msg[1:])
+            await asyncio.sleep(0.001)
 
     async def dcControl(self, q_dc: asyncio.Queue):
         """DCモータ制御"""
         while True:
-            msg = await q_dc.get() # キューに格納されるまでブロック
+            msg: list = await q_dc.get() # キューに格納されるまでブロック
+            print("Recv[DC]\t{}".format(msg))
             motion = msg[0] # 動作を取得
-            val_right = msg[1][0] # 左出力値を取得
-            val_left = msg[1][1] # 右出力値を取得
 
-            if motion == "stop":
-                self.dc.stop()
-            elif motion == "forward":
-                self._subdcControl(self.dc.forward, val_right, val_left)
-            elif motion == "left":
-                self._subdcControl(self.dc.left, val_right, val_left)
-            elif motion == "right":
-                self._subdcControl(self.dc.right, val_right, val_left)
-            elif motion == "back":
-                self._subdcControl(self.dc.back, val_right, val_left)
+            if motion == None:
+                coord = msg[1]
+            else:
+                if motion == "stop":
+                    self.dc.stop()
+                elif motion == "forward":
+                    self._subdcControl(self.dc.forward, val_right, val_left)
+                elif motion == "left":
+                    self._subdcControl(self.dc.left, val_right, val_left)
+                elif motion == "right":
+                    self._subdcControl(self.dc.right, val_right, val_left)
+                elif motion == "back":
+                    self._subdcControl(self.dc.back, val_right, val_left)
 
     def _subdcControl(self, func, val_right: int, val_left: int):
         """DCモータ制御サブ"""
@@ -75,8 +77,9 @@ class OkatronController():
     async def servoControl(self, q_servo: asyncio.Queue):
         while True:
             msg = await q_servo.get() # キューに格納されるまでブロック
+            print("Recv[Servo]\t{}".format(msg))
             motion = msg[0] # 動作を取得
-            value = msg[1] # 値を取得
+            coord = msg[1] # 値を取得
 
             if motion == "stop":
                 self.dc.stop()
