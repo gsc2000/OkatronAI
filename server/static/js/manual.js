@@ -1,4 +1,5 @@
 console.log("manual")
+const userAgent = navigator.userAgent;
 
 class PostButton {
     constructor(button) {
@@ -9,11 +10,16 @@ class PostButton {
         this.info = this.button.id.split("_");
 
         this.isPressed = false;
-        this.button.addEventListener('mousedown', this.handleMouseDown.bind(this));
-        this.button.addEventListener('touchstart', this.handleTouchStart.bind(this));
-        this.button.addEventListener('mouseup', this.handleMouseUp.bind(this));
-        this.button.addEventListener('touchend', this.handleTouchEnd.bind(this));
-        this.button.addEventListener('mouseleave', this.handleLeave.bind(this));
+        if (userAgent.indexOf("iPhone") != -1 ||
+            userAgent.indexOf("Android") != -1) {
+              this.button.addEventListener('touchstart', this.handleTouchStart.bind(this));
+              this.button.addEventListener('touchend', this.handleTouchEnd.bind(this));
+            }
+        else {
+          this.button.addEventListener('mousedown', this.handleMouseDown.bind(this));
+          this.button.addEventListener('mouseup', this.handleMouseUp.bind(this));
+          this.button.addEventListener('mouseleave', this.handleLeave.bind(this));
+        }
     }
 
     handleMouseDown() {
