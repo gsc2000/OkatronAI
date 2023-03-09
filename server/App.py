@@ -136,15 +136,10 @@ async def manual_req(req: schemas.ManualReq):
 
 # Program
 # ----------------------------------------------------------------------------------------------------
-# class UploadJson(BaseModel):
-#     op: str
-#     content: str
-
-# @app.post("/mode/3/info")
-# async def prog_info(item: UploadJson):
-#     print(item)
-#     data = jsonable_encoder(item)
-#     print((data))
+@app.post("/mode/3/info")
+async def prog_info(item: schemas.UploadJson):
+    print(item)
+    # data = jsonable_encoder(item)
 
 if __name__ == "__main__":
     """アプリを起動する"""
