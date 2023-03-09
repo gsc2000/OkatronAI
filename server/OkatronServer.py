@@ -114,11 +114,11 @@ class OkatronServer():
         z = (z-1)*camera_ratio # -1~1
 
         # 座標推定
-        msg = ["move", None, [int(x), int(y)]] # [機器, 方向, 座標(x, y)]
+        msg = ["move", "coord", [int(x), int(y)]] # [機器, 方向, 座標(x, y)]
         msg_list.append(msg)
 
         # # カメラの動作決定
-        msg = ["camera", None, [int(x), int(z)]] # [機器, 方向, 座標(x, z)]
+        msg = ["camera", "coord", [int(x), int(z)]] # [機器, 方向, 座標(x, z)]
         msg_list.append(msg)
 
         print("Det[Server]\t{}".format(msg_list))

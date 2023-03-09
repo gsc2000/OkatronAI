@@ -50,28 +50,29 @@ class OkatronController():
             msg: list = await q_dc.get() # キューに格納されるまでブロック
             print("Recv[DC]\t{}".format(msg))
             motion = msg[0] # 動作を取得
+            val = msg[1]
 
             if motion == None:
-                coord = msg[1]
+                self.dc.discrete_control(val[0], val[1])
             else:
                 if motion == "stop":
                     self.dc.stop()
                 elif motion == "forward":
-                    self._subdcControl(self.dc.forward, val_right, val_left)
+                    self._subdcControl(self.dc.forward, val[0], val[1])
                 elif motion == "left":
-                    self._subdcControl(self.dc.left, val_right, val_left)
+                    self._subdcControl(self.dc.left, val[0], val[1])
                 elif motion == "right":
-                    self._subdcControl(self.dc.right, val_right, val_left)
+                    self._subdcControl(self.dc.right, val[0], val[1])
                 elif motion == "back":
-                    self._subdcControl(self.dc.back, val_right, val_left)
+                    self._subdcControl(self.dc.back, val[0], val[1])
 
-    def _subdcControl(self, func, val_right: int, val_left: int):
+    def _subdcControl(self, func, val_left: int, val_right: int):
         """DCモータ制御サブ"""
         func() # ON
-        if val_right == -1: # 値が-1の場合はONして終わり
+        if val_left == None and val_right == None: # 値が-1の場合はONして終わり
             pass
         else:
-            time.sleep(val_right[0]) # 0以上の場合は、停止
+            time.sleep(val_left[0]) # 0以上の場合は、停止
             self.dc.stop()
 
     async def servoControl(self, q_servo: asyncio.Queue):

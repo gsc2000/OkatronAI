@@ -40,6 +40,10 @@ class DCController():
 
         time.sleep(0.05)
 
+    def discrete_control(self, left, right):
+        """"個別制御"""
+        pass
+
     def left(self):
         """左に向く"""
         print("Left")
@@ -105,7 +109,7 @@ class ServoController():
 
         self.v.start(0.0)
         self.h.start(0.0)
-        
+
         degree = 0
         dc = 2.5 + (12.0-2.5)/180*(degree+90)
         #DutyCycle dc%
