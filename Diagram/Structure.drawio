@@ -1,20 +1,47 @@
 <mxfile host="65bd71144e">
     <diagram id="X56hWuXkz_R3zDNtnNjE" name="ページ1">
-        <mxGraphModel dx="1066" dy="619" grid="1" gridSize="6" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1206" dy="774" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="2" value="＜フロントエンド＞&lt;br&gt;・ユーザインタフェースを提供する&lt;br&gt;・Webブラウザ(クライアント側のPC)で実行される&lt;br&gt;&lt;br&gt;言語&lt;br&gt;HTML : 文字や画像などのコンテンツを表示させる&lt;br&gt;CSS : 大きさ、色、レイアウトなどの装飾をする&lt;br&gt;Javascript : 動的な動作を実現する" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
-                    <mxGeometry x="24" y="24" width="294" height="138" as="geometry"/>
+                <mxCell id="2" value="＜フロントエンド＞&lt;br&gt;・ユーザインタフェースを提供する&lt;br&gt;・Webブラウザ(クライアント側のPC)で実行される&lt;br&gt;&lt;br&gt;＜言語＞&lt;br&gt;HTML : 文字や画像などのコンテンツを表示させる&lt;br&gt;CSS : 大きさ、色、レイアウトなどの装飾をする&lt;br&gt;Javascript : 動的な動作を実現する" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="80" width="288" height="168" as="geometry"/>
                 </mxCell>
-                <mxCell id="3" value="＜Webサーバ＞&lt;br&gt;・クライアントからリクエストを受け取り、&lt;br&gt;　適切なWebアプリケーションへ転送する&lt;br&gt;・静的ファイルの配信、HTTPSのセットアップ、&lt;br&gt;　負荷分散などの機能を提供&lt;br&gt;・必要な処理を行ってからWebAPIやバックエンドにリクエストを送信する&lt;br&gt;&lt;br&gt;有名どころ&lt;br&gt;Nginx&lt;br&gt;Appach" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
-                    <mxGeometry x="336" y="24" width="456" height="162" as="geometry"/>
+                <mxCell id="3" value="＜フロントエンドのサーバ→Webサーバ＞&lt;br&gt;・クライアントからリクエストを受け取り、&lt;br&gt;　適切なWebアプリケーションへ転送する&lt;br&gt;・静的ファイルの配信、HTTPSのセットアップ、&lt;br&gt;　負荷分散などの機能を提供&lt;br&gt;・必要な処理を行ってからWebAPIやバックエンドにリクエストを送信する&lt;br&gt;&lt;br&gt;＜フレームワーク＞&lt;br&gt;・Nginx&lt;br&gt;・Appach" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="80" width="456" height="168" as="geometry"/>
                 </mxCell>
-                <mxCell id="4" value="バックエンド&lt;br&gt;OkatronServer" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="336" y="414" width="120" height="72" as="geometry"/>
+                <mxCell id="4" value="＜バックエンド＞&lt;br&gt;・クライアントのリクエストを処理し、返答する&lt;br&gt;&lt;br&gt;＜言語＞&lt;br&gt;Python" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="280" width="288" height="144" as="geometry"/>
                 </mxCell>
-                <mxCell id="8" value="＜WebAPI＞&lt;br&gt;・Webアプリケーションから外部のプログラムにアクセスするための&lt;br&gt;　インタフェース&lt;br&gt;&lt;br&gt;FastAPI&lt;br&gt;・Webフレームワーク&lt;br&gt;Uvicorn&lt;br&gt;ASGIサーバ&lt;br&gt;&lt;br&gt;上記の両者を使ってWebサーバとWebAPIの機能を両方備えたアプリケーションを&lt;br&gt;作成することができる" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="1">
-                    <mxGeometry x="336" y="216" width="456" height="186" as="geometry"/>
+                <mxCell id="8" value="＜バックエンドのサーバ→WebAPI＞&lt;br&gt;・HTTPプロトコルによるクライアントからのリクエストに応じて&lt;br&gt;　何らかの処理を行い、返答を行うもの&lt;br&gt;&lt;br&gt;＜Pythonフレームワーク＞&lt;br&gt;・FastAPI：UvicornというASGIサーバを用いている&lt;br&gt;・Flask&lt;br&gt;・Django" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="360" y="280" width="456" height="144" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="大規模なWebブラウザ等で操作できるアプリケーション(Google Mapなど)の一般的な構成は&lt;br&gt;・Webサーバがクライアントのリクエストを受け付けて、適切なGUI(HTMLなど)をクライアントに返却する&lt;br&gt;・またWebサーバ受け取ったリクエストに応じてWebAPIへ処理を要求する&lt;br&gt;・WebAPIはリクエストを受け取り、処理結果をWebサーバへ送信する&lt;br&gt;・WebサーバはWebAPIの結果を含めたGUIをクライアントへ送信する&lt;br&gt;&lt;br&gt;みたいな感じっぽい&lt;br&gt;&lt;br&gt;ただ小規模(クライアントの同時リクエストがない場合)であれば、WebサーバとWebAPIを分けなくても&lt;br&gt;FastAPIなどのPythonフレームワークがWebサーバの役割も持てる&lt;br&gt;→OkatronAIはこの構成で行っている" style="text;html=1;align=left;verticalAlign=top;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="440" width="600" height="174" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="一般的なWebアプリケーションの構成とOkatronAIの構成について" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="40" width="380" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="一般的なWebアプリケーションの構成" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="50" width="230" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="OkatronAI" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="650" width="80" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="30" y="267" as="sourcePoint"/>
+                        <mxPoint x="820" y="267" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="17" value="＜フロントエンド＞&lt;br&gt;HTML : 文字や画像などのコンテンツを表示させる&lt;br&gt;CSS : 大きさ、色、レイアウトなどの装飾をする&lt;br&gt;Javascript : 動的な動作を実現する" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="680" width="288" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="＜バックエンド＞&lt;br&gt;Python" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="40" y="770" width="288" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="＜Webサーバ兼WebAPI＞&lt;br&gt;FastAPIで実装" style="whiteSpace=wrap;html=1;align=left;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="730" width="456" height="60" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
