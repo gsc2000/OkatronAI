@@ -129,7 +129,7 @@ class ServoController():
     def left(self):
         """左に向く"""
         print("CAM left")
-        degree = -60
+        degree = 60
         dc = 2.5 + (12.0-2.5)/180*(degree+90)
         #DutyCycle dc%
         self.h.ChangeDutyCycle(dc)
@@ -142,7 +142,7 @@ class ServoController():
     def right(self):
         """右に向く"""
         print("CAM right")
-        degree = 60
+        degree = -60
         dc = 2.5 + (12.0-2.5)/180*(degree+90)
         #DutyCycle dc%
         self.h.ChangeDutyCycle(dc)
