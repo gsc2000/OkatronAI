@@ -50,17 +50,18 @@ async def swithPage(request: Request, button_id: int):
     state.status = Status.IDLE
     if button_id == 1:
         state.mode = Mode.AUTO
-        return templates.TemplateResponse("auto.html",
-                                          {"request": request})
+        response =  templates.TemplateResponse("auto.html",
+                                               {"request": request})
     elif button_id == 2:
         state.mode = Mode.MANUAL
-        return templates.TemplateResponse("manual.html",
-                                          {"request": request})
+        response=  templates.TemplateResponse("manual.html",
+                                              {"request": request})
     elif button_id == 3:
         state.mode = Mode.PROGRAM
-        return templates.TemplateResponse("program.html",
-                                          {"request": request})
-
+        response = templates.TemplateResponse("program.html",
+                                              {"request": request})
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    return response
 # Common
 # ----------------------------------------------------------------------------------------------------
 async def updateImage():
