@@ -130,7 +130,7 @@ async def selectParam(req: schemas.ModelParam):
 @app.post("/mode/2/crosskey")
 async def manual_req(req: schemas.ManualReq):
     """サーバへメッセージ送付"""
-    msg = [req.kind, req.direction, [None, None]]
+    msg = [req.kind, req.direction]
     await state.q_user_req.put(msg)
     return {"kind": req.kind, "direction": req.direction}
 

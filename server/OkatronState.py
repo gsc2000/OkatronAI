@@ -52,6 +52,8 @@ class OkatronState():
 
         self.search_step = 0
 
+        self.camera_coord = [0, 0]
+
         self.cont_span = 0 # フレームのカウント
         self.max_span = config["controller"]["span"] # 何フレームごとにコントローラーへ送るか
         self.q_user_req = asyncio.Queue() # FastAPI <-> Okatron

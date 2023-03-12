@@ -52,7 +52,7 @@ class OkatronController():
             motion = msg[0] # 動作を取得
             val = msg[1]
 
-            if motion == None:
+            if motion == "coord":
                 self.dc.discrete_control(val[0], val[1])
             else:
                 if motion == "stop":

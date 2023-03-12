@@ -187,6 +187,10 @@ class NullDCController():
     def __init__(self) -> None:
         pass
 
+    def discrete_control(self, left, right):
+        """"個別制御"""
+        pass
+
     def left(self):
         """左に向く"""
         print("Left")

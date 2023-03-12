@@ -13,7 +13,7 @@ import queue
 
 from OkatronState import OkatronState, Mode, Status
 
-e = 0.000001
+e = 0.000001 # ゼロ割対策
 
 class OkatronServer():
     """アプリ本体
@@ -42,21 +42,18 @@ class OkatronServer():
             self.state.img = img.copy()
             await asyncio.sleep(0)
 
-
     async def autoMode(self) -> np.ndarray:
         """自動追従モードの動作"""
-        if self.state.status == Status.IDLE:
-            # 画像取得
+        if self.state.status == Status.IDLE: # 画像取得のみ
             img = self.captorWork()
-
-        elif self.state.status == Status.WORKING:
-            # AI処理
+        elif self.state.status == Status.WORKING: # AI処理
             st_time = time.time()
             img = self.captorWork()
             det, img = self.inferencerWork(img)
             sendable = self.state.adjustContSpan()
             if sendable:
-                msg = self.postProcDet(det)
+                motion, x, y, z = self.postProcDet(det)
+                msg = self.createContMessage(None, motion, x, y, z)
                 await self.motorcontrollerWork(msg)
             fps = (time.time()-st_time+e)**-1
             print("FPS:\t{:.2f}".format(fps))
@@ -70,8 +67,8 @@ class OkatronServer():
         if q_size == 0:
             pass
         else:
-            msg = await self.state.q_user_req.get()
-            print("Recv[Server]:\t{}".format(msg))
+            user_msg = await self.state.q_user_req.get()
+            msg = self.createContMessage(user_msg[0], user_msg[1], None, None, None)
             await self.motorcontrollerWork(msg)
         return img
 
@@ -96,30 +93,43 @@ class OkatronServer():
         return det, img
 
     def postProcDet(self, det: np.ndarray):
-        """YOLOの検出結果から距離・角度を算出する
-        物体が中心に来るようにカメラを動かす"""
-        msg_list = []
+        """物体検出結果から座標を算出する"""
         if det["center"][0] == None:
-            return None
-
+            return None, None, None, None
         move_ratio = 50
         camera_ratio = 50
-
         x = 2*det["center"][0]/self.state.width # 0~2
         x = (x-1)*move_ratio # -1~1
-
-        y = 1*move_ratio # とりあえず固定値
-
+        y = 1*move_ratio # とりあえず固定値 det["size"]から推定
         z = 2*det["center"][1]/self.state.height # 0~2
         z = (z-1)*camera_ratio # -1~1
+        return "coord", x, y, z
 
-        # 座標推定
-        msg = ["move", "coord", [int(x), int(y)]] # [機器, 方向, 座標(x, y)]
-        msg_list.append(msg)
-
-        # # カメラの動作決定
-        msg = ["camera", "coord", [int(x), int(z)]] # [機器, 方向, 座標(x, z)]
-        msg_list.append(msg)
+    def createContMessage(self, device, motion, x, y, z):
+        """コントローラ用のメッセージ作成"""
+        msg_list = []
+        if self.state.mode == Mode.AUTO:
+            if motion == None: # 物体が検出できなかった場合
+                print("None Detection\tFlag Lost:\t{}".format(self.state.lost))
+                self.state.adjustLostCount(False)
+                if self.state.lost: # 対象ロスト -> 検索処理
+                    msg = self.searchObject()
+                    msg_list.append(msg)
+                else:
+                    return None # 物体がないのでMessageは無し
+            else:
+                coord = [int(x)+self.state.camera_coord[0], int(y)] # Cameraの座標を足す
+                msg = ["move", motion, coord]
+                self.state.adjustLostCount(True)
+                msg_list.append(msg)
+                msg = ["camera", motion, [0, int(z)]] # 物体を検出しているのでカメラを中心に戻す
+                msg_list.append(msg)
+        elif self.state.mode == Mode.MANUAL: # Manualモードでは方向で指示
+            coord = [None, None]
+            msg = [device, motion, coord]
+            msg_list.append(msg)
+        elif self.state.mode == Mode.PROGRAM:
+            pass
 
         print("Det[Server]\t{}".format(msg_list))
         return msg_list
@@ -127,24 +137,20 @@ class OkatronServer():
     async def motorcontrollerWork(self, msg: list) -> bool:
         """モータを制御する"""
         if msg == None:
-            print("None Det")
-            self.state.adjustLostCount(False)
-            if self.state.lost: # 対象ロスト -> 検索処理
-                msg = [self.searchObject()]
-            else:
-                return False
-        else:
-            self.state.adjustLostCount(True)
+            return False
 
         for _msg in msg:
+            print("Put Msg:\t{}".format(_msg))
+            if _msg[0] == "camera" and _msg[1] == "coord":
+                self.state.camera_coord = _msg[2] # Cameraの座標を保持する
             await self.state.q_cont_msg.put(_msg) # OkatronControllerへ渡す
         return True
 
     def searchObject(self):
-        search_seq = [["camera", "left", [None, None]],
-                      ["camera", "top", [None, None]],
-                      ["camera", "right", [None, None]],
-                      ["camera", "bottom", [None, None]]]
+        search_seq = [["camera", "coord", [0, 50]],
+                      ["camera", "coord", [50, 0]],
+                      ["camera", "coord", [-50, 0]],
+                      ["camera", "coord", [0, 0]]]
         msg = search_seq[self.state.search_step]
         self.state.search_step += 1
         if self.state.search_step > len(search_seq)-1:
