@@ -115,8 +115,8 @@ class ServoController():
         
         self.max_deg_h = 60
         self.min_deg_h = -60
-        self.max_deg_v = 15
-        self.min_deg_v = -15
+        self.max_deg_v = 90
+        self.min_deg_v = -20
         self.degree_h = 0
         dc = 2.5 + (12.0-2.5)/180*(self.degree_h+90)
         self.h.ChangeDutyCycle(dc)
@@ -165,7 +165,7 @@ class ServoController():
     def up(self):
         """前or上に向く"""
         if self.degree_v < self.max_deg_v:
-            self.degree_v = self.degree_v + 2
+            self.degree_v = self.degree_v + 5
             dc = 2.5 + (12.0-2.5)/180*(self.degree_v+90)
             #DutyCycle dc%
             self.v.ChangeDutyCycle(dc)
@@ -181,7 +181,7 @@ class ServoController():
     def down(self):
         """後ろor下に向く"""
         if self.degree_v > self.min_deg_v:
-            self.degree_v = self.degree_v - 2
+            self.degree_v = self.degree_v - 5
             dc = 2.5 + (12.0-2.5)/180*(self.degree_v+90)
             #DutyCycle dc%
             self.v.ChangeDutyCycle(dc)
