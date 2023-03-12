@@ -193,6 +193,21 @@ class ServoController():
         else:
             print("stroke limmit(CAM down)")
         pass
+    
+    def center(self):
+        """中央に戻る"""
+        self.degree_h = 0
+        dc = 2.5 + (12.0-2.5)/180*(self.degree_h+90)
+        self.h.ChangeDutyCycle(dc)
+        self.degree_v = 0
+        dc = 2.5 + (12.0-2.5)/180*(self.degree_v+90)
+        self.v.ChangeDutyCycle(dc)
+        time.sleep(1)
+        #回転終了したら一旦DutyCycle0%にする
+        self.h.ChangeDutyCycle(0.0)
+        self.v.ChangeDutyCycle(0.0)
+        print("CAM center")
+        pass
 
 class NullDCController():
     """机上テスト用クラス"""
