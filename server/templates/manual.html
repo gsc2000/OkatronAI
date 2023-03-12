@@ -37,6 +37,7 @@
               <div class="cross-layout col-sm-5">
                 <button class="position-top btn cross-key-btn" id="camera_top"><span class="top-mark">▲</span></button>
                 <button class="position-left btn cross-key-btn" id="camera_left"><span class="left-mark">▲</span></button>
+                <button class="position-center btn cross-key-btn" id="camera_center"><span class="top-mark">●</span></button>
                 <button class="position-right btn cross-key-btn" id="camera_right"><span class="right-mark">▲</span></button>
                 <button class="position-bottom btn cross-key-btn" id="camera_bottom"><span class="bottom-mark">▲</span></button>
               </div>
@@ -52,6 +53,7 @@
   const move_bottom = document.getElementById('move_bottom');
   const camera_top = document.getElementById('camera_top');
   const camera_left = document.getElementById('camera_left');
+  const camera_center = document.getElementById('camera_center')
   const camera_right = document.getElementById('camera_right');
   const camera_bottom = document.getElementById('camera_bottom');
 
@@ -94,6 +96,13 @@
     fetch("/mode/2/camera_left");
   });
   camera_left.addEventListener("mouseup", () => {
+    fetch("/mode/2/camera_stop")
+  });
+
+  camera_center.addEventListener("mousedown", () => {
+    fetch("/mode/2/camera_center");
+  });
+  camera_center.addEventListener("mouseup", () => {
     fetch("/mode/2/camera_stop")
   });
 

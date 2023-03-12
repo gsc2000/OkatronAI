@@ -93,6 +93,9 @@ class OkatronController():
                 self.servo.right()
             elif motion == "bottom":
                 self.servo.down()
+            elif motion == "center":
+                # self.servo.
+                pass
 
     def subservoControl(self, func, value):
         """サーボ制御サブ"""

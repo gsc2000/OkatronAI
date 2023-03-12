@@ -153,6 +153,11 @@ async def manual_camera_left():
     msg = {"move": [None, None], "camera": ["left", -1]}
     q_user_msg.put(msg)
 
+@app.get("/mode/2/camera_center")
+async def manual_camera_center():
+    msg = {"move": [None, None], "camera": ["center", -1]}
+    q_user_msg.put(msg)
+
 @app.get("/mode/2/camera_right")
 async def manual_camera_right():
     # print("camera_right")
