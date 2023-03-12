@@ -56,7 +56,7 @@ class OkatronServer():
                 msg = self.createContMessage(None, motion, x, y, z)
                 await self.motorcontrollerWork(msg)
             fps = (time.time()-st_time+e)**-1
-            print("FPS:\t{:.2f}".format(fps))
+            # print("FPS:\t{:.2f}".format(fps))
         return img
 
     async def manualMode(self) -> np.ndarray:
@@ -110,9 +110,10 @@ class OkatronServer():
         msg_list = []
         if self.state.mode == Mode.AUTO:
             if motion == None: # 物体が検出できなかった場合
-                print("None Detection\tFlag Lost:\t{}".format(self.state.lost))
+                print("Can't Detection")
                 self.state.adjustLostCount(False)
                 if self.state.lost: # 対象ロスト -> 検索処理
+                    print("Object Lost")
                     msg = self.searchObject()
                     msg_list.append(msg)
                 else:
@@ -130,8 +131,6 @@ class OkatronServer():
             msg_list.append(msg)
         elif self.state.mode == Mode.PROGRAM:
             pass
-
-        print("Det[Server]\t{}".format(msg_list))
         return msg_list
 
     async def motorcontrollerWork(self, msg: list) -> bool:
@@ -140,7 +139,7 @@ class OkatronServer():
             return False
 
         for _msg in msg:
-            print("Put Msg:\t{}".format(_msg))
+            print("Send to Controller[Server]:\t{}".format(_msg))
             if _msg[0] == "camera" and _msg[1] == "coord":
                 self.state.camera_coord = _msg[2] # Cameraの座標を保持する
             await self.state.q_cont_msg.put(_msg) # OkatronControllerへ渡す

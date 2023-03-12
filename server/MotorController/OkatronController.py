@@ -37,6 +37,7 @@ class OkatronController():
 
         while True:
             msg: list = await self.q_msg.get()
+            print("Recv from Server[Controller]\t{}".format(msg))
             device = msg[0]
             if device == "move":
                 await q_dc.put(msg[1:])
@@ -48,7 +49,7 @@ class OkatronController():
         """DCモータ制御"""
         while True:
             msg: list = await q_dc.get() # キューに格納されるまでブロック
-            print("Recv[DC]\t{}".format(msg))
+            print("Recv from Controller[DC]\t{}".format(msg))
             motion = msg[0] # 動作を取得
             val = msg[1]
 
@@ -78,7 +79,7 @@ class OkatronController():
     async def servoControl(self, q_servo: asyncio.Queue):
         while True:
             msg = await q_servo.get() # キューに格納されるまでブロック
-            print("Recv[Servo]\t{}".format(msg))
+            print("Recv from Controller[Servo]\t{}".format(msg))
             motion = msg[0] # 動作を取得
             coord = msg[1] # 値を取得
 
