@@ -40,7 +40,7 @@ class DCController():
 
         time.sleep(0.05)
 
-    def discrete_control(self, left, right):
+    def each_control(self, left, right):
         """"個別制御"""
         pass
 
@@ -187,7 +187,7 @@ class NullDCController():
     def __init__(self) -> None:
         pass
 
-    def discrete_control(self, left, right):
+    def each_control(self, left, right):
         """"個別制御"""
         pass
 
