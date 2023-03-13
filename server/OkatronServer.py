@@ -49,9 +49,9 @@ class OkatronServer():
         elif self.state.status == Status.WORKING: # AI処理
             st_time = time.time()
             img = self.captorWork()
-            det, img = self.inferencerWork(img)
             sendable = self.state.adjustContSpan()
             if sendable:
+                det, img = self.inferencerWork(img)
                 motion, x, y, z = self.postProcDet(det)
                 msg = self.createContMessage(None, motion, x, y, z)
                 await self.motorcontrollerWork(msg)
@@ -146,8 +146,8 @@ class OkatronServer():
         return True
 
     def searchObject(self):
-        search_seq = [["camera", "coord", [0, 50]],
-                      ["camera", "coord", [50, 0]],
+        search_seq = [["camera", "top", [-50, 0]],
+                      ["camera", "left", [-50, 0]],
                       ["camera", "coord", [-50, 0]],
                       ["camera", "coord", [0, 0]]]
         msg = search_seq[self.state.search_step]
