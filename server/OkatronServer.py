@@ -146,9 +146,10 @@ class OkatronServer():
                 self.state.camera_coord = _msg[2] # Cameraの座標を保持する
             q_size = self.state.q_cont_msg.qsize()
             if q_size == 0:
-                pass
-            else:
                 await self.state.q_cont_msg.put(_msg) # OkatronControllerへ渡す
+            else:
+                pass
+
         return True
 
     def searchObject(self):

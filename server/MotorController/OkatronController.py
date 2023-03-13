@@ -77,14 +77,26 @@ class OkatronController():
             self.dc.stop()
 
     async def servoControl(self, q_servo: asyncio.Queue):
+        flg = False
+        motion = None
         while True:
-            msg = await q_servo.get() # キューに格納されるまでブロック
-            print("Recv from Controller[Servo]\t{}".format(msg))
-            motion = msg[0] # 動作を取得
-            coord = msg[1] # 値を取得
+            q_size = q_servo.qsize()
+            if q_size == 0 and flg:
+                await asyncio.sleep(0.1)
+            elif q_size != 0:
+                msg = await q_servo.get() # キューに格納されるまでブロック
+                print("Recv from Controller[Servo]\t{}".format(msg))
+                motion = msg[0] # 動作を取得
+                coord = msg[1] # 値を取得
+                flg = True
+            else:
+                await asyncio.sleep(0.1)
 
+            print(motion)
             if motion == "stop":
                 self.dc.stop()
+                flg = False
+                motion = None
             elif motion == "top":
                 self.servo.up()
             elif motion == "left":
