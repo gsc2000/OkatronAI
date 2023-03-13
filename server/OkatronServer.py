@@ -88,7 +88,9 @@ class OkatronServer():
         """AI処理する"""
         det = self.state.yolov5.detect(img)
         img = self.state.yolov5.showResult(img, det)
-        center, size, img = self.state.facecascade.detect(img, det)
+        # center, size, img = self.state.facecascade.detect(img, det)
+        center = (10, 10)
+        size = (10, 10)
         det = {"center": center, "size": size}
         return det, img
 
