@@ -8,7 +8,7 @@ camera:
   fps: 30
 
 controller:
-  span: 1
+  span: 10
 
 lost:
   time: 2
