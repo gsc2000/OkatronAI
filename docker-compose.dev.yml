@@ -16,7 +16,9 @@ services:
       - ./resource/config:/resource/config
       - ./resource/model:/resource/model
       - ./server:/server
-    # command: python App.py
+    devices:
+      - "/dev/video0:/dev/video0"
+    command: python App.py
 
 networks:
   okatronAI:

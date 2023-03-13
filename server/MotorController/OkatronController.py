@@ -19,72 +19,69 @@ except:
 
 class OkatronController():
     """Okatron用モータ制御のクラス"""
-    def __init__(self) -> None:
+    def __init__(self, q_msg: asyncio.Queue) -> None:
         self.dc = DCController()
         self.servo = ServoController()
 
-    def run(self, q_msg: queue.Queue):
+        self.q_msg = q_msg
+
+    async def run(self):
         """
         検出結果の処理はここで行う
         """
         print("Okatron Controller Start")
-        # 平行処理
-        q_dc = queue.Queue(maxsize=1) # DC用キュー
-        q_servo = queue.Queue(maxsize=1) # SERVO用キュー
-        thread_dc = threading.Thread(target=self.dcControl, args=(q_dc, ))
-        thread_dc.daemon = True
-        thread_servo = threading.Thread(target=self.servoControl, args=(q_servo, ))
-        thread_servo.daemon = True
-
-        thread_dc.start()
-        thread_servo.start()
+        q_dc = asyncio.Queue()
+        q_servo = asyncio.Queue()
+        asyncio.create_task(self.dcControl(q_dc))
+        asyncio.create_task(self.servoControl(q_servo))
 
         while True:
-            try:
-                msg = q_msg.get()
-                print("Recv[Controller]:{}".format(msg))
+            msg: list = await self.q_msg.get()
+            print("Recv from Server[Controller]\t{}".format(msg))
+            device = msg[0]
+            if device == "move":
+                await q_dc.put(msg[1:])
+            elif device == "camera":
+                await q_servo.put(msg[1:])
+            await asyncio.sleep(0.001)
 
-                if not q_dc.full(): # キューがいっぱいだったら捨てる
-                    q_dc.put(msg["move"])
-                if not q_servo.full(): # キューがいっぱいだったら捨てる
-                    q_servo.put(msg["camera"])
-            except:
-                pass
-
-    def dcControl(self, q_msg: queue.Queue):
+    async def dcControl(self, q_dc: asyncio.Queue):
         """DCモータ制御"""
         while True:
-            msg = q_msg.get() # キューに格納されるまでブロック
+            msg: list = await q_dc.get() # キューに格納されるまでブロック
+            print("Recv from Controller[DC]\t{}".format(msg))
             motion = msg[0] # 動作を取得
-            value = msg[1] # 値を取得
+            val = msg[1]
 
-            if motion == "stop":
-                self.dc.stop()
-            elif motion == "top":
-                self.subdcControl(self.dc.forward, value)
-            elif motion == "left":
-                self.subdcControl(self.dc.left, value)
-            elif motion == "right":
-                self.subdcControl(self.dc.right, value)
-            elif motion == "bottom":
-                self.subdcControl(self.dc.back, value)
+            if motion == "coord":
+                self.dc.each_control(val[0], val[1])
+            else:
+                if motion == "stop":
+                    self.dc.stop()
+                elif motion == "forward":
+                    self._subdcControl(self.dc.forward, val[0], val[1])
+                elif motion == "left":
+                    self._subdcControl(self.dc.left, val[0], val[1])
+                elif motion == "right":
+                    self._subdcControl(self.dc.right, val[0], val[1])
+                elif motion == "back":
+                    self._subdcControl(self.dc.back, val[0], val[1])
 
-            time.sleep(0.01) # スリープ設けないと動作を占有する可能性あり
-
-    def subdcControl(self, func, value: int):
+    def _subdcControl(self, func, val_left: int, val_right: int):
         """DCモータ制御サブ"""
         func() # ON
-        if value == -1: # 値が-1の場合はONして終わり
+        if val_left == None and val_right == None: # 値が-1の場合はONして終わり
             pass
         else:
-            time.sleep(value) # 0以上の場合は、停止
+            time.sleep(val_left[0]) # 0以上の場合は、停止
             self.dc.stop()
 
-    def servoControl(self, q_msg: queue.Queue):
+    async def servoControl(self, q_servo: asyncio.Queue):
         while True:
-            msg = q_msg.get() # キューに格納されるまでブロック
+            msg = await q_servo.get() # キューに格納されるまでブロック
+            print("Recv from Controller[Servo]\t{}".format(msg))
             motion = msg[0] # 動作を取得
-            value = msg[1] # 値を取得
+            coord = msg[1] # 値を取得
 
             if motion == "stop":
                 self.dc.stop()
@@ -96,8 +93,4 @@ class OkatronController():
                 self.servo.right()
             elif motion == "bottom":
                 self.servo.down()
-
-    def subservoControl(self, func, value):
-        """サーボ制御サブ"""
-        pass
 

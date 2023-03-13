@@ -45,6 +45,10 @@ class DCController():
 
         time.sleep(0.05)
 
+    def each_control(self, left, right):
+        """"個別制御"""
+        pass
+
     def left(self):
         """左に向く"""
         print("Left")
@@ -123,6 +127,7 @@ class ServoController():
         self.min_deg_v = -15
         self.degree_h = 0
         dc = 2.5 + (12.0-2.5)/180*(self.degree_h+90)
+
         self.h.ChangeDutyCycle(dc)
         self.degree_v = 0
         dc = 2.5 + (12.0-2.5)/180*(self.degree_v+90)
@@ -201,6 +206,10 @@ class ServoController():
 class NullDCController():
     """机上テスト用クラス"""
     def __init__(self) -> None:
+        pass
+
+    def each_control(self, left, right):
+        """"個別制御"""
         pass
 
     def left(self):

@@ -1,28 +1,22 @@
 
+"""Webサーバ、WebAPI"""
 import os
 import sys
-
 import argparse
-
-
 import asyncio
-import threading
+import cv2
 
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, StreamingResponse
-from fastapi.encoders import jsonable_encoder
 from fastapi.requests import Request
-from pydantic import BaseModel
+from uvicorn import Config, Server
 
-import uvicorn
-
-import cv2
-
+from api import schemas
 from OkatronServer import OkatronServer
 from OkatronState import OkatronState, Mode, Status
-import queue
+
 
 app = FastAPI(title='Okatron AI')
 current = str(os.path.dirname(os.path.abspath(__file__)))
@@ -44,156 +38,123 @@ def myArgParser() -> argparse.Namespace:
 # ----------------------------------------------------------------------------------------------------
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
+    """初期画面"""
+    server.state.mode = Mode.NONE
+    server.state.status = Status.NONE
     return templates.TemplateResponse('index.html',
                                       {'request': request}) #, "button2_active": True})
 
 @app.get("/mode/{button_id}")
-async def toggle_button(request: Request, button_id: int):
+async def swithPage(request: Request, button_id: int):
+    """画面遷移"""
+    state.status = Status.IDLE
     if button_id == 1:
         state.mode = Mode.AUTO
-        state.status = Status.IDLE
-        return templates.TemplateResponse("auto.html",
-                                          {"request": request})
+        response =  templates.TemplateResponse("auto.html",
+                                               {"request": request})
     elif button_id == 2:
         state.mode = Mode.MANUAL
-        state.status = Status.IDLE
-        return templates.TemplateResponse("manual.html",
-                                          {"request": request})
+        response=  templates.TemplateResponse("manual.html",
+                                              {"request": request})
     elif button_id == 3:
         state.mode = Mode.PROGRAM
-        state.status = Status.IDLE
-        return templates.TemplateResponse("program.html",
-                                          {"request": request})
-
+        response = templates.TemplateResponse("program.html",
+                                              {"request": request})
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    return response
 # Common
 # ----------------------------------------------------------------------------------------------------
-async def gen():
+async def updateImage():
+    """画像更新"""
     while True:
         try:
-            # frame = await q_img.get()
-            frame = server.run()
+            frame = server.state.img.copy()
             frame = cv2.imencode('.jpg', frame)[1].tobytes()
             yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
             await asyncio.sleep(0.01)
         except:
             pass
 
 @app.get('/video_feed')
 async def video_feed():
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    return  StreamingResponse(gen(),
-                    media_type='multipart/x-mixed-replace; boundary=frame')
+    """表示画像"""
+    return  StreamingResponse(updateImage(), media_type='multipart/x-mixed-replace; boundary=frame')
 
 # Auto
 # ----------------------------------------------------------------------------------------------------
-@app.post("/mode/1/ai_start")
-async def ai_start():
-    state.status = Status.WORKING
+@app.post("/mode/1/ai")
+async def switchAI(req: schemas.UseAI):
+    if req.switch == True:
+        state.status = Status.WORKING
+    elif req.switch == False:
+        state.status = Status.IDLE
 
-@app.post("/mode/1/ai_stop")
-async def ai_stop():
-    state.status = Status.IDLE
+    return {"Success": True}
 
-@app.post("/mode/1/class1")
-async def class1():
-    state.yolo_info["det_class"] = 0
-    state.resetInferencerInfo()
+@app.post("/mode/1/modelsize")
+async def switchModelSize(req: schemas.ModelSize):
+    if req.model == "nano":
+        pass
+    elif req.model == "small":
+        pass
+    elif req.model == "large":
+        pass
+    return {"Success": True}
 
-@app.post("/mode/1/class2")
-async def class2():
-    state.yolo_info["det_class"] = 16
-    state.resetInferencerInfo()
+@app.post("/mode/1/param")
+async def selectParam(req: schemas.ModelParam):
+    print(req)
+    new_params = {}
+    if req.classes == "1":
+        new_params["det_class"] = 0
+    elif req.classes == "2":
+        new_params["det_class"] = 16
+    elif req.classes == "3":
+        new_params["det_class"] = 67
 
-@app.post("/mode/1/class3")
-async def class3():
-    state.yolo_info["det_class"] = 67
-    state.resetInferencerInfo()
+    new_params["image"] = (int(req.imgsize), int(req.imgsize))
+    if req.iou == "":
+        new_params["iou"] = float(state.yolo_info["iou"])
+    else:
+        new_params["iou"] = float(req.iou)
+    if req.conf == "":
+        new_params["conf"] = float(state.yolo_info["conf"])
+    else:
+        new_params["conf"] = float(req.conf)
+
+    state.resetInferencerInfo(new_params)
+    return {"Success": True}
 
 # Manual
 # ----------------------------------------------------------------------------------------------------
-@app.get("/mode/2/move_top")
-async def manual_move_top():
-    # print("move_top")
-    msg = {"move": ["top", -1], "camera": [None, None]}
-    q_user_msg.put(msg)
-
-@app.get("/mode/2/move_left")
-async def manual_move_left():
-    # print("move_left")
-    msg = {"move": ["left", -1], "camera": [None, None]}
-    q_user_msg.put(msg)
-
-@app.get("/mode/2/move_right")
-async def manual_move_right():
-    # print("move_right")
-    msg = {"move": ["right", -1], "camera": [None, None]}
-    q_user_msg.put(msg)
-
-@app.get("/mode/2/move_bottom")
-async def manual_move_bottom():
-    # print("move_bottom")
-    msg = {"move": ["bottom", -1], "camera": [None, None]}
-    q_user_msg.put(msg)
-
-@app.get("/mode/2/move_stop")
-async def manual_move_bottom():
-    # print("move_stop")
-    msg = {"move": ["stop", -1], "camera": [None, None]}
-    q_user_msg.put(msg)
-
-@app.get("/mode/2/camera_top")
-async def manual_camera_top():
-    # print("camera_top")
-    msg = {"move": [None, None], "camera": ["top", -1]}
-    q_user_msg.put(msg)
-
-@app.get("/mode/2/camera_left")
-async def manual_camera_left():
-    msg = {"move": [None, None], "camera": ["left", -1]}
-    q_user_msg.put(msg)
-
-@app.get("/mode/2/camera_right")
-async def manual_camera_right():
-    # print("camera_right")
-    msg = {"move": [None, None], "camera": ["right", -1]}
-    q_user_msg.put(msg)
-
-@app.get("/mode/2/camera_bottom")
-async def manual_camera_bottom():
-    # print("camera_bottom")
-    msg = {"move": [None, None], "camera": ["bottom", -1]}
-    q_user_msg.put(msg)
-
-@app.get("/mode/2/camera_stop")
-async def manual_camera_bottom():
-    # print("camera_stop")
-    msg = {"move": [None, None], "camera": ["stop", -1]}
-    q_user_msg.put(msg)
+@app.post("/mode/2/crosskey")
+async def manual_req(req: schemas.ManualReq):
+    """サーバへメッセージ送付"""
+    msg = [req.kind, req.direction]
+    await state.q_user_req.put(msg)
+    return {"kind": req.kind, "direction": req.direction}
 
 # Program
 # ----------------------------------------------------------------------------------------------------
-class UploadJson(BaseModel):
-    op: str
-    content: str
-
 @app.post("/mode/3/info")
-async def prog_info(item: UploadJson):
+async def prog_info(item: schemas.UploadJson):
     print(item)
-    data = jsonable_encoder(item)
-    print((data))
-
-
-"""アプリを起動する"""
-print("OkatronAI Boot")
-args: argparse.Namespace = myArgParser()
-state: OkatronState = OkatronState(args.config)
-q_user_msg = queue.Queue(maxsize=1) # FastAPI <-> OkatronServer
-q_server_msg = queue.Queue(maxsize=1) # OkatronServer <-> OkatronController
-server: OkatronServer = OkatronServer(state, q_user_msg, q_server_msg)
+    # data = jsonable_encoder(item)
 
 if __name__ == "__main__":
-    th = threading.Thread(target=state.cont.run, args=(q_server_msg,))
-    th.daemon = True
-    th.start()
-    uvicorn.run(app=app, host="0.0.0.0", port=8000)
+    """アプリを起動する"""
+    print("OkatronAI Boot")
+    loop = asyncio.get_event_loop()
+
+    args: argparse.Namespace = myArgParser()
+    state: OkatronState = OkatronState(args.config)
+    server: OkatronServer = OkatronServer(state)
+
+    config = Config(app=app, host="0.0.0.0", port=8000)
+    uvicorn_server = Server(config)
+
+    task1 = loop.create_task(server.run())
+    task2 = loop.create_task(uvicorn_server.serve())
+
+    loop.run_until_complete(asyncio.gather(task1, task2))

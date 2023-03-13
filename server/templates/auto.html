@@ -1,164 +1,113 @@
-{% extends "layout.html" %}
-{% block content %}
-<br>
-<div class="row">
-  <div class="col-md-10">
-    <h1>Okatron AI   AUTO MODE</h1>
-  </div>
-  <div class="col text-end" >
-    <img src="/static/img/logo.png" width="40%">
-  </div>
-</div>
-<hr>
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-6">
-      <img src="{{ url_for('video_feed') }}" width="640" height="480" class="img-fluid mb-3">
-    </div>
-    <br>
-    <div class="col-md-6">
+<!DOCTYPE html>
+<html lang="ja">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Okatron AI</title>
+    <link rel="icon" href="../static/favicon/favicon.ico">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+<body style="background-color: whitesmoke;">
+  <div style="display: flex; flex-direction: column; min-height: 80vh">
+    <div class="container">
+      <br>
       <div class="row">
-        <label class="col-md-2 col-form-label"><b>AI</b></label>
-          <div class="col-md-5">
-            <div class="btn-group btn-group-toggle mx-3 btn-block" role="group" aria-label="Toggle buttons">
-              <button id=ai_start type="button" class="btn btn-primary btn-lg {% if btn1_ai_active %}active{% endif %}">START</button>
-              <button id=ai_stop type="button" class="btn btn-danger btn-lg {% if btn2_ai_active %}active{% endif %}" disabled>STOP</button>
-            </div>
-          </div>
+        <div class="col-md-2" >
+          <a href="/"><img src="../static/img/logo.png" width="40%"></a>
         </div>
-        <div class="row my-3">
-          <label class="col-md-2 col-form-label"><b>CLASS</b></label>
-          <div class="col-md-10">
-            <div class="btn-group btn-group-toggle mx-3 btn-block" role="group" aria-label="Toggle buttons">
-              <button id="class1" type="button" class="btn btn-info btn-lg {% if btn1_class_active %}active{% endif %}" disabled>Person</button>
-              <button id="class2" type="button" class="btn btn-info btn-lg {% if btn2_class_active %}active{% endif %}">Dog</button>
-              <button id="class3" type="button" class="btn btn-info btn-lg {% if btn3_class_active %}active{% endif %}">Cell phone</button>
-            </div>
-          </div>
+        <div class="col-md-2 align-self-end">
+          <button type="button" class="btn btn-dark btn-block" onclick="goBack()">BACK</button>
         </div>
-        <div class="row my-3">
-          <label class="col-md-2 col-form-label"><b>ModelSize</b></label>
-          <div class="col-md-10">
-            <div class="btn-group btn-group-toggle mx-3 btn-block" role="group" aria-label="Toggle buttons">
-              <button id="model1" type="button" class="btn btn-info btn-lg {% if btn1_model_active %}active{% endif %}" disabled>nano</button>
-              <button id="model2" type="button" class="btn btn-info btn-lg {% if btn2_model_active %}active{% endif %}">small</button>
-              <button id="model3" type="button" class="btn btn-info btn-lg {% if btn3_model_active %}active{% endif %}">large</button>
-            </div>
-          </div>
+        <div class="col-md-2 align-self-end">
+            <button type="button" class="btn btn-success btn-block" onclick="window.location.href='/mode/2'">MANUAL</button>
         </div>
-        <div class="row my-3">
-          <label class="col-md-2 col-form-label"><b>ImageSize</b></label>
-            <div class="col-md-2">
-              <input type="number" class="form-control mx-3" id="imgx" placeholder="x">
-            </div>
-            <div class="col-md-2">
-              <input type="number" class="form-control mx-1" id="imgy" placeholder="y">
-            </div>
-            <div class="col-md-4">
-              <button id="submitimg" type="button" class="mx-1 btn btn-info">SET</button>
-            </div>
+        <div class="col-md-2 align-self-end">
+            <button type="button" class="btn btn-warning btn-block" onclick="window.location.href='/mode/3'">PROGRAM</button>
+        </div>
+        <div class="col text-end align-self-end text-right">
+            <h1>AUTO MODE</h1>
+        </div>
+      </div>
+      <hr>
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="{{ url_for('video_feed') }}" width="640" height="480" class="img-fluid mb-3">
           </div>
-          <div class="row my-3">
-            <label class="col-md-2 col-form-label"><b>IOU</b></label>
-            <div class="col-md-4">
-              <input type="number" class="form-control mx-3" id="iou" placeholder="Enter a number">
-            </div>
-            <div class="col-md-4">
-              <button id="submitiou" type="button" class="mx-1 btn btn-info">SET</button>
-            </div>
-          </div>
-          <div class="row my-3">
-            <label class="col-md-2 col-form-label"><b>Confidence</b></label>
-            <div class="col-md-4">
-              <input type="number" class="form-control mx-3" id="conf" placeholder="Enter a number">
-            </div>
-            <div class="col-md-4">
-              <button id="submitconf" type="button" class="mx-1 btn btn-info">SET</button>
+          <br>
+          <div class="col-md-6">
+            <div class="row">
+              <label class="col-md-2 col-form-label"><b>AI</b></label>
+                <div class="col-md-5">
+                  <div class="btn-group btn-group-toggle mx-3 btn-block" role="group" aria-label="Toggle buttons">
+                    <button id=ai_start type="button" class="btn btn-primary btn-lg {% if btn1_ai_active %}active{% endif %}">START</button>
+                    <button id=ai_stop type="button" class="btn btn-danger btn-lg {% if btn2_ai_active %}active{% endif %}" disabled>STOP</button>
+                  </div>
+                </div>
+              </div>
+              <div class="row my-3">
+                <label class="col-md-2 col-form-label"><b>ModelSize</b></label>
+                <div class="col-md-10">
+                  <div class="btn-group btn-group-toggle mx-3 btn-block" role="group" aria-label="Toggle buttons">
+                    <button id="model1" type="button" class="btn btn-info btn-lg {% if btn1_model_active %}active{% endif %}" disabled>nano</button>
+                    <button id="model2" type="button" class="btn btn-info btn-lg {% if btn2_model_active %}active{% endif %}">small</button>
+                    <button id="model3" type="button" class="btn btn-info btn-lg {% if btn3_model_active %}active{% endif %}">large</button>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row my-3">
+                <label class="col-md-2 col-form-label"><b>CLASS</b></label>
+                <div class="col-md-10">
+                  <div class="btn-group btn-group-toggle mx-3 btn-block" role="group" aria-label="Toggle buttons">
+                    <button id="class_1" type="button" class="btn btn-info btn-lg {% if btn1_class_active %}active{% endif %}" disabled>Person</button>
+                    <button id="class_2" type="button" class="btn btn-info btn-lg {% if btn2_class_active %}active{% endif %}">Dog</button>
+                    <button id="class_3" type="button" class="btn btn-info btn-lg {% if btn3_class_active %}active{% endif %}" style="font-size: 17.5px;">Cell phone</button>
+                  </div>
+                </div>
+              </div>
+              <div class="row my-3">
+                <label class="col-md-2 col-form-label"><b>ImageSize</b></label>
+                <div class="col-md-10">
+                  <div class="btn-group btn-group-toggle mx-3 btn-block" role="group" aria-label="Toggle buttons">
+                    <button id="imgsize_320" type="button" class="btn btn-info btn-lg {% if btn1_class_active %}active{% endif %}" disabled>320x320</button>
+                    <button id="imgsize_240" type="button" class="btn btn-info btn-lg {% if btn2_class_active %}active{% endif %}">240x240</button>
+                    <button id="imgsize_160" type="button" class="btn btn-info btn-lg {% if btn3_class_active %}active{% endif %}">160x160</button>
+                  </div>
+                </div>
+                </div>
+                <div class="row my-3">
+                  <label class="col-md-2 col-form-label"><b>IOU</b></label>
+                  <div class="col-md-5">
+                    <input type="number" class="form-control mx-3" id="iou" placeholder="0~1" min="0.0" max="1.0" step="0.01">
+                  </div>
+                </div>
+                <div class="row my-3">
+                  <label class="col-md-2 col-form-label"><b>Confidence</b></label>
+                  <div class="col-md-5">
+                    <input type="number" class="form-control mx-3" id="conf" placeholder="0~1" min="0.0" max="1.0" step="0.01">
+                  </div>
+                </div>
+                <div class="row my-3">
+                  <label class="col-md-2 col-form-label"><b></b></label>
+                  <div class="col-md-8">
+                    <button id="submit" type="button" class="mx-3 btn btn-dark btn-lg w-100">SET</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<script>
-  const btn_ai_start = document.getElementById("ai_start");
-  const btn_ai_stop = document.getElementById("ai_stop");
-
-  btn_ai_start.addEventListener("click", function() {
-    btn_ai_start.disabled = true;
-    btn_ai_stop.disabled = false;
-    fetch('/mode/1/ai_start', {
-      method: 'POST'
-    })
-  });
-  btn_ai_stop.addEventListener("click", function() {
-    btn_ai_start.disabled = false;
-    btn_ai_stop.disabled = true;
-    fetch('/mode/1/ai_stop', {
-      method: 'POST'
-    })
-  });
-
-  const btn_class1 = document.getElementById("class1");
-  const btn_class2 = document.getElementById("class2");
-  const btn_class3 = document.getElementById("class3");
-
-  btn_class1.addEventListener("click", function() {
-    btn_class1.disabled = true;
-    btn_class2.disabled = false;
-    btn_class3.disabled = false;
-    fetch('/mode/1/class1', {
-      method: 'POST'
-    })
-  });
-  btn_class2.addEventListener("click", function() {
-    btn_class1.disabled = false;
-    btn_class2.disabled = true;
-    btn_class3.disabled = false;
-    fetch('/mode/1/class2', {
-      method: 'POST'
-    })
-  });
-  btn_class3.addEventListener("click", function() {
-    btn_class1.disabled = false;
-    btn_class2.disabled = false;
-    btn_class3.disabled = true;
-    fetch('/mode/1/class3', {
-      method: 'POST'
-    })
-  });
-
-  const btn_model1 = document.getElementById("model1");
-  const btn_model2 = document.getElementById("model2");
-  const btn_model3 = document.getElementById("model3");
-
-  btn_model1.addEventListener("click", function() {
-    btn_model1.disabled = true;
-    btn_model2.disabled = false;
-    btn_model3.disabled = false;
-    // fetch('/mode/1/class1', {
-    //   method: 'POST'
-    // })
-  });
-  btn_model2.addEventListener("click", function() {
-    btn_model1.disabled = false;
-    btn_model2.disabled = true;
-    btn_model3.disabled = false;
-    // fetch('/mode/1/class2', {
-    //   method: 'POST'
-    // })
-  });
-  btn_model3.addEventListener("click", function() {
-    btn_model1.disabled = false;
-    btn_model2.disabled = false;
-    btn_model3.disabled = true;
-    // fetch('/mode/1/class3', {
-    //   method: 'POST'
-    // })
-  });
-</script>
-
-{% endblock %}
+  <br>
+  <footer>
+      <div align="center">
+          <p>This is a Okatron AI application Powered by <b>GSMS OKTC</b></p>
+      </div>
+  </footer>
+</body>
+<script src="../static/js/auto.js" async></script>
+<script src="../static/js/common.js" async></script>
+</html>
