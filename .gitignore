@@ -18,6 +18,6 @@ notebook/
 .Workspace
 
 # yolo weight
-resource/model/
+resource/model/yolov5
 
 
