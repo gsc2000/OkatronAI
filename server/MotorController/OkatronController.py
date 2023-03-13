@@ -86,8 +86,6 @@ class OkatronController():
 
             if motion == "stop":
                 self.dc.stop()
-                flg = False
-                motion = None
             elif motion == "top":
                 self.servo.up()
             elif motion == "left":
